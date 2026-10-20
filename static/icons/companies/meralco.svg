@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="meralcoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff7a00" />
+      <stop offset="100%" stop-color="#e64a00" />
+    </linearGradient>
+  </defs>
+  <!-- Background Shield -->
+  <rect width="100" height="100" rx="22" fill="#fff3eb" />
+  <!-- Meralco Iconic Torch & Flame Shape -->
+  <path d="M50 15 C45 28 35 34 35 48 C35 62 44 71 50 71 C56 71 65 62 65 48 C65 34 55 28 50 15 Z" fill="url(#meralcoGrad)" />
+  <path d="M50 28 C48 35 42 40 42 49 C42 56 46 61 50 61 C54 61 58 56 58 49 C58 40 52 35 50 28 Z" fill="#ffffff" />
+  <path d="M50 38 C49 43 46 46 46 51 C46 55 48 57 50 57 C52 57 54 55 54 51 C54 46 51 43 50 38 Z" fill="#ff7a00" />
+  <!-- Base Torch Handle / Stand -->
+  <path d="M43 73 L57 73 L54 83 L46 83 Z" fill="#d84315" />
+  <rect x="42" y="83" width="16" height="3" rx="1.5" fill="#bf360c" />
+</svg>

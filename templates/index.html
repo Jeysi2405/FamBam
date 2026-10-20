@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>FamBam — Smart Household Expense, Inventory &amp; Bill Management</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Varela Round & Material Symbols Rounded -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Varela+Round&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400..700,0..1,-50..200" rel="stylesheet" />
+
+  <!-- PWA Manifest & App Meta -->
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#121418" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FamBam" />
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/logo.png" />
+  <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css?v=20261020_6" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+  <!-- jsPDF & AutoTable (PDF Export) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <!-- jsPDF-AutoTable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.3/jspdf.plugin.autotable.min.js" defer></script>
+  <!-- html2pdf.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+  <!-- Main Application JS -->
+  <script src="/static/js/main.js?v=20261020_6" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- ==========================================
+         LEFT SIDEBAR
+         ========================================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-text" style="display:flex;flex-direction:row;align-items:center;gap:0.65rem;">
+          <img src="/static/icons/logo.png" alt="FamBam" class="app-brand-logo" width="30" height="30" />
+          <span class="brand-title">FamBam</span>
+        </div>
+        <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" title="Close sidebar" aria-label="Close sidebar">
+          <span class="material-symbols-rounded">chevron_left</span>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Main Navigation">
+        <button type="button" class="nav-link active" data-tab="dashboard">
+          <span class="material-symbols-rounded">dashboard</span>
+          <span>Dashboard</span>
+        </button>
+
+        <button type="button" class="nav-link" data-tab="expenses">
+          <span class="material-symbols-rounded">receipt_long</span>
+          <span>Expenses</span>
+        </button>
+
+        <button type="button" class="nav-link" data-tab="shopping">
+          <span class="material-symbols-rounded">shopping_cart</span>
+          <span>Shopping</span>
+          <span class="nav-pill hidden" id="navShoppingBadge"></span>
+        </button>
+
+        <button type="button" class="nav-link" data-tab="bills">
+          <span class="material-symbols-rounded">calendar_month</span>
+          <span>Bills</span>
+          <span class="nav-pill hidden" id="navBillsBadge"></span>
+        </button>
+
+        <button type="button" class="nav-link" data-tab="activity">
+          <span class="material-symbols-rounded">history</span>
+          <span>Activity</span>
+        </button>
+
+        <button type="button" class="nav-link" data-tab="reports">
+          <span class="material-symbols-rounded">bar_chart</span>
+          <span>Reports</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <!-- Admin Profile Card -->
+        <div class="admin-profile-card" id="sidebarProfileCard" title="Profile">
+          <div class="admin-avatar">AD</div>
+          <div class="admin-details">
+            <div class="admin-name">Admin</div>
+          </div>
+          <button type="button" class="icon-btn-subtle" id="openMembersModalBtn" title="Settings" aria-label="Settings">
+            <span class="material-symbols-rounded">settings</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT AREA
+         ========================================== -->
+    <div class="main-wrapper">
+      <!-- TOP HEADER -->
+      <header class="top-header">
+        <div class="header-left">
+          <button type="button" class="sidebar-open-btn hidden" id="sidebarOpenBtn" title="Open sidebar" aria-label="Open sidebar">
+            <span class="material-symbols-rounded">chevron_right</span>
+          </button>
+          <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+            <span class="material-symbols-rounded">menu</span>
+          </button>
+          <div class="header-title-date-wrap">
+            <h1 class="greeting-title" id="headerOverviewTitle">Overview</h1>
+            
+            <!-- Month Label Outside Box + Expenses Month Filter -->
+            <div class="header-month-outer-wrap">
+              <span class="header-month-external-label">Month</span>
+              <div class="header-month-indicator" id="headerMonthWrap" title="Expenses Month">
+                <button type="button" class="month-dropdown-btn" id="monthDropdownBtn" aria-expanded="false" aria-haspopup="listbox" aria-label="Select month">
+                  <span id="selectedMonthLabel">Oct 2026</span>
+                </button>
+                <div class="month-dropdown-menu hidden" id="monthDropdownMenu" role="listbox" aria-label="Select month">
+                  <div class="month-dropdown-list" id="monthDropdownList"></div>
+                </div>
+                <select id="monthFilterSelect" style="display: none;" aria-hidden="true" tabindex="-1"></select>
+              </div>
+            </div>
+
+            <!-- Global Search Pill Button & Slide-expanding Input -->
+            <div class="header-search-container" id="headerSearchContainer">
+              <button type="button" class="search-circle-btn" id="headerSearchToggleBtn" title="Search (Ctrl + K)" aria-label="Search">
+                <span class="material-symbols-rounded">search</span>
+              </button>
+              <div class="search-slide-expand-wrap hidden" id="searchSlideExpandWrap">
+                <span class="search-input-leading-icon material-symbols-rounded" aria-hidden="true">search</span>
+                <input type="text" id="globalSearchInput" class="header-search-slide-input" autocomplete="off" aria-label="Search records" />
+                <button type="button" class="search-close-btn" id="clearSearchBtn" title="Close Search" aria-label="Close search">
+                  <span class="material-symbols-rounded">close</span>
+                </button>
+                <div class="search-dropdown hidden" id="globalSearchDropdown" role="listbox"></div>
+              </div>
+            </div>
+
+            <p class="greeting-subtitle hidden" id="headerSubtitle"></p>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Live Date & Time (Top Right, No icon, No bg box) -->
+          <div class="header-clock-date-widget" id="headerClockDateWidget" aria-label="Live Date and Time">
+            <span class="header-clock-date" id="headerClockDate"></span>
+            <span class="header-clock-time" id="headerClockTime"></span>
+          </div>
+
+          <!-- PWA Offline Status Badge -->
+          <span id="pwaOfflineBadge" class="status-badge badge-terracotta hidden" title="Offline Mode: Cached data is active">Offline</span>
+
+          <!-- PWA Install App Button (Auto-surfaced if installable) -->
+          <button type="button" class="header-icon-btn hidden" id="pwaInstallBtn" title="Install FamBam App" aria-label="Install FamBam App">
+            <span class="material-symbols-rounded">download_for_offline</span>
+          </button>
+
+          <!-- Notification Bell (Bills & Low Stock) -->
+          <button type="button" class="header-icon-btn" id="notifBellBtn" title="Notifications" aria-label="Notifications">
+            <span class="material-symbols-rounded">notifications</span>
+            <span class="notif-badge hidden" id="notifBadgeCount">0</span>
+          </button>
+
+          <!-- Dark & Light Mode Toggle (Dark Mode moon, Light Mode lightbulb) -->
+          <button type="button" class="header-icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+            <span id="themeMoonIcon" class="material-symbols-rounded">dark_mode</span>
+            <span id="themeBulbIcon" class="material-symbols-rounded hidden">light_mode</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ==========================================
+           TAB 1: BENTO-GRID MAIN DASHBOARD
+           ========================================== -->
+      <main id="tab-dashboard" class="tab-view active">
+        <!-- ROW 1: 6 KPI CARDS WITH PREDICTIVE BUDGET PROGRESS & AMBIENT GLOW -->
+        <section class="bento-row-kpi" aria-label="Key Performance Indicators">
+          <!-- KPI 1: Total Expenses (Current Month) -->
+          <article class="glass-card kpi-card ambient-glow-card" id="kpiCardExpenses" tabindex="0" role="button" aria-label="Expenses">
+            <div class="kpi-card-top">
+              <span class="kpi-label">Expenses (<span id="kpiMonthLabel">Oct 2026</span>)</span>
+              <div class="kpi-header-actions">
+                <span class="material-symbols-rounded kpi-icon-sage">payments</span>
+              </div>
+            </div>
+            <div class="kpi-collapsible-content">
+              <div class="kpi-value" id="kpiTotalExpenses">0.00</div>
+              <!-- Predictive Budget Progress Bar -->
+              <div class="predictive-budget-wrap" id="kpiPredictiveBudgetWrap">
+                <div class="predictive-budget-bar-bg">
+                  <div class="predictive-budget-fill" id="kpiBudgetProgressBar" style="width: 0%;"></div>
+                </div>
+                <div class="predictive-budget-labels">
+                  <span class="predictive-budget-caption" id="kpiBudgetPaceText">On track</span>
+                  <span class="predictive-budget-pct" id="kpiBudgetPercentText">0% of budget</span>
+                </div>
+              </div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext" id="kpiExpensesSubtext">Total spent</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- KPI 2: Daily Average Spending -->
+          <article class="glass-card kpi-card ambient-glow-card" id="kpiCardDailyAvg" tabindex="0" role="button" aria-label="Daily Average Spending">
+            <div class="kpi-card-top">
+              <span class="kpi-label">Daily Average</span>
+              <div class="kpi-header-actions">
+                <span class="material-symbols-rounded kpi-icon-sage">trending_up</span>
+              </div>
+            </div>
+            <div class="kpi-collapsible-content">
+              <div class="kpi-value" id="kpiDailyAvgValue">₱0.00</div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext" id="kpiDailyAvgSub">Per day burn rate</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- KPI 3: Top Spending Category -->
+          <article class="glass-card kpi-card ambient-glow-card" id="kpiCardTopCategory" tabindex="0" role="button" aria-label="Top Spending Category">
+            <div class="kpi-card-top">
+              <span class="kpi-label">Top Category</span>
+              <div class="kpi-header-actions">
+                <span class="material-symbols-rounded kpi-icon-sage">category</span>
+              </div>
+            </div>
+            <div class="kpi-collapsible-content">
+              <div class="kpi-value" id="kpiTopCategoryValue">None</div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext" id="kpiTopCategorySub">No expenses</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- KPI 4: Projected Month-End Balance -->
+          <article class="glass-card kpi-card ambient-glow-card" id="kpiCardProjected" tabindex="0" role="button" aria-label="Projected Month-End Balance">
+            <div class="kpi-card-top">
+              <span class="kpi-label">Projected Month-End</span>
+              <div class="kpi-header-actions">
+                <span class="material-symbols-rounded kpi-icon-sage">event_upcoming</span>
+              </div>
+            </div>
+            <div class="kpi-collapsible-content">
+              <div class="kpi-value" id="kpiProjectedValue">₱0.00</div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext" id="kpiProjectedSub">Est. month total</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- KPI 5: Upcoming Due Bills -->
+          <article class="glass-card kpi-card ambient-glow-card" id="kpiCardBills" tabindex="0" role="button" aria-label="Bills">
+            <div class="kpi-card-top">
+              <span class="kpi-label">Bills</span>
+              <div class="kpi-header-actions">
+                <span class="status-badge badge-amber hidden" id="kpiUnpaidBillsBadge"></span>
+              </div>
+            </div>
+            <div class="kpi-collapsible-content">
+              <div class="kpi-value" id="kpiUnpaidBillsTotal">₱0.00</div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext" id="kpiPaidBillsSubtext">0 paid</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- KPI 6: Shopping Stock -->
+          <article class="glass-card kpi-card ambient-glow-card" id="kpiCardPantry" tabindex="0" role="button" aria-label="Shopping">
+            <div class="kpi-card-top">
+              <span class="kpi-label">Shopping</span>
+              <div class="kpi-header-actions">
+                <span class="status-badge badge-terracotta hidden" id="kpiLowStockBadge"></span>
+              </div>
+            </div>
+            <div class="kpi-collapsible-content">
+              <div class="kpi-value" id="kpiPantryTotal">0 Items</div>
+              <div class="kpi-footer">
+                <span class="kpi-subtext" id="kpiPantrySubtext">Inventory</span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- ROW 2: MIDDLE WIDGETS (Expense Breakdown) -->
+        <section class="bento-row-middle">
+          <!-- Widget 2.1: Expense Breakdown -->
+          <div class="glass-card bento-widget">
+            <div class="widget-header">
+              <div>
+                <h2 class="widget-title">Breakdown</h2>
+              </div>
+            </div>
+
+            <div class="breakdown-grid">
+              <div class="donut-chart-container">
+                <canvas id="expenseDonutChart" aria-label="Breakdown Chart"></canvas>
+                <div class="donut-center-label">
+                  <span class="donut-center-caption">Spent</span>
+                  <strong class="donut-center-amount" id="donutCenterTotal">0</strong>
+                </div>
+              </div>
+              <div class="category-bars-list" id="dashboardCategoryBars"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- ==========================================
+           TAB 2: EXPENSES (FULL CRUD)
+           ========================================== -->
+      <section id="tab-expenses" class="tab-view">
+        <div class="view-header glass-card">
+          <div>
+            <h2 class="view-title">Expenses</h2>
+          </div>
+          <div class="view-actions">
+            <button type="button" class="btn-primary" id="viewAddExpenseBtn">
+              <span class="material-symbols-rounded">add</span>
+              <span>Expense</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="glass-card table-card">
+          <div class="table-responsive">
+            <table class="fambam-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Qty</th>
+                  <th>Category</th>
+                  <th>Receipt</th>
+                  <th class="text-right">Amount</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="fullExpensesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           TAB 3: SHOPPING
+           ========================================== -->
+      <section id="tab-shopping" class="tab-view">
+        <div class="view-header glass-card">
+          <div>
+            <h2 class="view-title">Shopping</h2>
+          </div>
+          <div class="view-actions">
+            <button type="button" class="btn-secondary" id="toggleShoppingTripModeBtn" title="In-Store Shopping Checklist Mode">
+              <span class="material-symbols-rounded">directions_car</span>
+              <span id="shoppingTripModeBtnText">Trip Mode</span>
+            </button>
+            <button type="button" class="btn-primary" id="viewAddInventoryBtn">
+              <span class="material-symbols-rounded">add</span>
+              <span>Item</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- In-Store Shopping Trip Mode Container (Live cart calculator & tactile aisle checklist) -->
+        <div id="shoppingTripModeContainer" class="glass-card bento-widget hidden" style="margin-bottom: 1.5rem;">
+          <div class="trip-mode-header">
+            <div class="trip-mode-stats">
+              <div class="trip-stat-chip">
+                <span class="trip-stat-label">In Cart</span>
+                <strong class="trip-stat-val" id="tripCartCount">0 / 0</strong>
+              </div>
+              <div class="trip-stat-chip highlight">
+                <span class="trip-stat-label">Est. Total</span>
+                <strong class="trip-stat-val" id="tripCartTotal">₱0.00</strong>
+              </div>
+            </div>
+            <div class="trip-mode-actions">
+              <button type="button" class="btn-primary" id="tripAddItemBtn" title="Add Item">
+                <span class="material-symbols-rounded">add</span>
+                <span>Item</span>
+              </button>
+              <button type="button" class="btn-primary" id="btnFinishShoppingTrip" title="Finish Trip">
+                <span class="material-symbols-rounded">check</span>
+                <span>Finish</span>
+              </button>
+            </div>
+          </div>
+          <div class="trip-checklist-hint">
+            <span>Tap items as you put them in your cart to calculate live in-store spend.</span>
+          </div>
+          <div class="trip-checklist-items" id="tripChecklistItems"></div>
+        </div>
+
+        <div class="two-col-layout" id="shoppingStandardLayout">
+          <!-- Left: Shopping List -->
+          <div class="glass-card bento-widget">
+            <div class="widget-header">
+              <div>
+                <h3 class="widget-title">Shopping</h3>
+              </div>
+              <span class="status-badge badge-terracotta hidden" id="shoppingActiveCountBadge"></span>
+            </div>
+            <div id="activeShoppingListContainer" class="shopping-cards-list"></div>
+          </div>
+
+          <!-- Right: Inventory -->
+          <div class="glass-card bento-widget">
+            <div class="widget-header">
+              <div>
+                <h3 class="widget-title">Inventory</h3>
+              </div>
+            </div>
+            <div id="fullInventoryListContainer" class="inventory-full-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           TAB 4: BILLS
+           ========================================== -->
+      <section id="tab-bills" class="tab-view">
+        <div class="view-header glass-card">
+          <div>
+            <h2 class="view-title">Bills</h2>
+          </div>
+          <div class="view-actions">
+            <button type="button" class="btn-outline" id="billsPushReminderBtn" title="Due Date Push Reminders" aria-label="Due Date Push Reminders">
+              <span class="material-symbols-rounded">notifications_active</span>
+              <span id="billsPushReminderText">Allow Alerts</span>
+            </button>
+            <button type="button" class="btn-outline" id="billsExportIcsBtn" title="Export All Bills to Calendar (.ics)" aria-label="Export All Bills to Calendar">
+              <span class="material-symbols-rounded">calendar_add_on</span>
+              <span id="billsCalendarText">Allow Calendar</span>
+            </button>
+            <button type="button" class="btn-outline" id="viewCompanyDetailsBtn" title="Company Details">
+              <span class="material-symbols-rounded">apartment</span>
+              <span>Company</span>
+            </button>
+            <button type="button" class="btn-primary" id="viewAddBillBtn">
+              <span class="material-symbols-rounded">add</span>
+              <span>Bill</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bills-grid-cards" id="fullBillsGrid"></div>
+      </section>
+
+      <!-- ==========================================
+           TAB: ACTIVITY (TRANSACTION LOG / RECEIPT)
+           ========================================== -->
+      <section id="tab-activity" class="tab-view">
+        <div class="view-header glass-card">
+          <div>
+            <h2 class="view-title">Activity</h2>
+          </div>
+          <div class="view-actions">
+            <select id="activityCategoryFilter" class="form-select filter-select" aria-label="Filter activity by category">
+              <option value="ALL">All Categories</option>
+            </select>
+            <button type="button" class="btn-primary" id="activityExportPdfBtn" title="Export PDF">
+              <span class="material-symbols-rounded">picture_as_pdf</span>
+              <span>PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="glass-card bento-widget">
+          <div class="transaction-log-list" id="activityTransactionList"></div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           TAB 7: REPORTS
+           ========================================== -->
+      <section id="tab-reports" class="tab-view">
+        <div class="view-header glass-card">
+          <div>
+            <h2 class="view-title">Reports</h2>
+          </div>
+          <div class="view-actions">
+            <button type="button" class="btn-primary" id="reportExportPdfBtn" title="Export PDF">
+              <span class="material-symbols-rounded">picture_as_pdf</span>
+              <span>PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Printable Report Container -->
+        <div id="printableReportArea" class="report-printable-container">
+          <div class="two-col-layout">
+            <div class="glass-card bento-widget">
+              <div class="widget-header">
+                <div>
+                  <h3 class="widget-title">Trend</h3>
+                </div>
+              </div>
+              <div class="line-chart-container large-chart">
+                <canvas id="reportsMomChart" aria-label="Trend Chart"></canvas>
+              </div>
+            </div>
+
+            <div class="glass-card bento-widget">
+              <div class="widget-header">
+                <div>
+                  <h3 class="widget-title">Summary (<span id="reportMonthHeading">2026-10</span>)</h3>
+                </div>
+              </div>
+              <div id="reportSummaryStatsGrid" class="report-summary-grid"></div>
+              <div class="table-responsive" style="margin-top: 1rem;">
+                <table class="fambam-table">
+                  <thead>
+                    <tr>
+                      <th>Category</th>
+                      <th class="text-right">Spent</th>
+                      <th class="text-right">Share</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reportCategoryTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       FLOATING ACTION BUTTON (FAB)
+       ========================================== -->
+  <button type="button" class="fab-quick-add" id="fabQuickAddBtn" aria-label="Add" title="Add">
+    <span class="material-symbols-rounded">add</span>
+  </button>
+
+  <!-- ==========================================
+       MODALS (<dialog closedby="any">)
+       ========================================== -->
+
+  <!-- 1. Quick Add Hub / Unified Add & Edit Expense Modal -->
+  <dialog id="expenseModal" class="fambam-dialog" closedby="any" aria-labelledby="expenseModalTitle">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <div class="dialog-header-left">
+          <button type="button" class="dialog-back-icon-btn hidden" id="modalHeaderBackBtn" aria-label="Back" title="Back">
+            <span class="material-symbols-rounded">arrow_back</span>
+          </button>
+          <div>
+            <h3 id="expenseModalTitle" class="dialog-title">Add</h3>
+            <p class="dialog-subtitle hidden" id="expenseModalSubtitle"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Entry Type Selection inside Quick Add -->
+      <div class="quick-add-kpi-grid" id="quickAddModeTabs" role="group" aria-label="Select Entry Type">
+        <!-- Card 1: Expense -->
+        <button type="button" class="glass-card kpi-card q-kpi-card q-tab" data-qmode="expense" aria-label="Add Expense">
+          <span class="q-kpi-icon-wrap blue">
+            <span class="material-symbols-rounded" style="font-size: 32px;">receipt_long</span>
+          </span>
+          <span class="q-kpi-label">Expense</span>
+        </button>
+
+        <!-- Card 2: Recurring Bill -->
+        <button type="button" class="glass-card kpi-card q-kpi-card q-tab" data-qmode="bill" aria-label="Add Recurring Bill">
+          <span class="q-kpi-icon-wrap blue">
+            <span class="material-symbols-rounded" style="font-size: 32px;">calendar_month</span>
+          </span>
+          <span class="q-kpi-label">Bills</span>
+        </button>
+
+        <!-- Card 3: Inventory Item -->
+        <button type="button" class="glass-card kpi-card q-kpi-card q-tab" data-qmode="inventory" aria-label="Add Shopping Item">
+          <span class="q-kpi-icon-wrap blue">
+            <span class="material-symbols-rounded" style="font-size: 32px;">shopping_bag</span>
+          </span>
+          <span class="q-kpi-label">Shopping</span>
+        </button>
+      </div>
+
+      <!-- FORM A: EXPENSE FORM (1 STRAIGHT COLUMN CONTAINER) -->
+      <form id="expenseForm" class="qmode-form hidden" enctype="multipart/form-data">
+        <input type="hidden" id="expenseIdInput" name="expense_id" value="" />
+        <input type="hidden" id="expStore" name="store_name" value="" />
+        <div class="expense-form-straight-col">
+          <!-- Field 1: Name / Product -->
+          <div class="form-group">
+            <label for="expTitle">Name / Product <span class="required-tag">(Required)</span></label>
+            <input type="text" id="expTitle" name="title" autocomplete="off" required />
+          </div>
+
+          <!-- Field 2: Category (Hidden when title is empty) -->
+          <div class="form-group hidden" id="expCategoryGroup">
+            <div class="form-label-with-action">
+              <label for="expCategory">Category <span class="required-tag">(Required)</span></label>
+              <button type="button" class="category-edit-toggle-btn" id="toggleExpCatEditBtn" aria-expanded="false" title="Edit category" aria-label="Edit category">
+                <svg id="expCatEditPencilIcon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+                <svg id="expCatEditCheckIcon" class="hidden" viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="category-display-row">
+              <span id="expCategoryDisplay" class="category-display-text">Essential</span>
+              <input type="text" id="expCategory" name="category" class="category-edit-input hidden" value="Essential" autocomplete="off" required title="Category" />
+            </div>
+          </div>
+
+          <!-- Field 3: Quantity Stepper -->
+          <div class="form-group">
+            <label for="expQuantity">Quantity <span class="required-tag">(Required)</span></label>
+            <div class="stock-number-stepper">
+              <button type="button" class="stock-step-btn" id="expQtyDecBtn" aria-label="Decrease">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                  <path d="M19 13H5v-2h14v2z"/>
+                </svg>
+              </button>
+              <input type="number" id="expQuantity" name="quantity" min="1" step="1" value="1" required />
+              <button type="button" class="stock-step-btn" id="expQtyIncBtn" aria-label="Increase">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Expanding Circle Row: Amount, Date, and Notes -->
+          <div class="expanding-circle-controls-row">
+            <!-- Control A: Amount (₱) -->
+            <div class="expanding-control-item" id="expAmountControlItem">
+              <div class="expanding-control-tray active-tray" id="expAmountTray">
+                <label for="expAmount" class="expanding-tray-label">Amount <span class="required-tag">(Required)</span></label>
+                <div class="currency-input-wrap">
+                  <span class="currency-prefix">₱</span>
+                  <input type="number" id="expAmount" name="amount" step="0.01" min="0.01" required />
+                </div>
+              </div>
+            </div>
+
+            <!-- Control B: Date (Calendar Icon) -->
+            <div class="expanding-control-item" id="expDateControlItem">
+              <button type="button" class="expanding-circle-trigger-btn active" id="expDateTriggerBtn" title="Toggle Date input" aria-label="Date">
+                <span class="material-symbols-rounded">calendar_today</span>
+              </button>
+              <div class="expanding-control-tray" id="expDateTray">
+                <label for="expDate" class="expanding-tray-label">Date <span class="required-tag">(Required)</span></label>
+                <div class="date-input-wrap">
+                  <span class="date-input-prefix-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                      <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H5V8h14v13z"/>
+                    </svg>
+                  </span>
+                  <input type="date" id="expDate" name="date_incurred" class="date-custom-input" required />
+                </div>
+              </div>
+            </div>
+
+            <!-- Control C: Notes (Description/Sticky Note Icon) -->
+            <div class="expanding-control-item" id="expNotesControlItem">
+              <button type="button" class="expanding-circle-trigger-btn" id="expNotesTriggerBtn" title="Toggle Notes input" aria-label="Notes">
+                <span class="material-symbols-rounded">description</span>
+              </button>
+              <div class="expanding-control-tray hidden" id="expNotesTray">
+                <label for="expNotes" class="expanding-tray-label">Notes</label>
+                <div class="notes-input-wrap">
+                  <span class="notes-prefix-icon" id="toggleNotesBtn" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                      <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                    </svg>
+                  </span>
+                  <input type="text" id="expNotes" name="notes" autocomplete="off" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn-secondary" data-close-dialog="expenseModal">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveExpenseBtn">Save expense</button>
+        </div>
+      </form>
+
+      <!-- FORM B: RECURRING BILL FORM -->
+      <form id="billForm" class="qmode-form hidden">
+        <input type="hidden" id="billIdInput" value="" />
+        <input type="hidden" id="billCategoryInput" value="Bills" />
+        <input type="hidden" id="billLastPaidInput" value="" />
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="billCompanySelectBtn">Company</label>
+            <div class="company-select-wrap" id="billCompanySelectWrap">
+              <button type="button" class="company-select-btn has-placeholder" id="billCompanySelectBtn" aria-haspopup="listbox" aria-expanded="false">
+                <span id="billCompanySelectLabel">Select registered company (optional)</span>
+              </button>
+              <div class="company-select-menu hidden" id="billCompanySelectMenu" role="listbox" aria-label="Select registered company">
+                <div class="company-select-list" id="billCompanySelectList"></div>
+              </div>
+              <select id="billCompanySelect" class="sr-only" tabindex="-1" aria-hidden="true">
+                <option value="">Select registered company (optional)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group span-2">
+            <label for="billNameInput">Name <span class="required-tag">(Required)</span></label>
+            <input type="text" id="billNameInput" autocomplete="off" required />
+          </div>
+          <div class="form-group">
+            <label for="billAmountInput">Amount <span class="required-tag">(Required)</span></label>
+            <div class="currency-input-wrap">
+              <span class="currency-prefix">₱</span>
+              <input type="number" id="billAmountInput" step="0.01" min="1" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="billDueDayInput">Date <span class="required-tag">(Required)</span></label>
+            <div class="date-input-wrap">
+              <span class="date-input-prefix-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H5V8h14v13z"/>
+                </svg>
+              </span>
+              <input type="date" id="billDueDayInput" class="date-custom-input" required />
+            </div>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn-secondary" data-close-dialog="expenseModal">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveBillBtn">Save bill</button>
+        </div>
+      </form>
+
+      <!-- FORM C: INVENTORY ITEM FORM -->
+      <form id="inventoryForm" class="qmode-form hidden">
+        <input type="hidden" id="invIdInput" value="" />
+        <input type="hidden" id="invPriceInput" value="0" />
+        <input type="hidden" id="invStoreInput" value="" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="invNameInput">Item <span class="required-tag">(Required)</span></label>
+            <input type="text" id="invNameInput" autocomplete="off" required />
+          </div>
+          <div class="form-group">
+            <div class="form-label-with-action">
+              <label for="invCategorySelect">Category</label>
+              <button type="button" class="category-edit-toggle-btn" id="toggleInvCatEditBtn" aria-expanded="false" title="Edit category" aria-label="Edit category">
+                <svg id="invCatEditPencilIcon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+                <svg id="invCatEditCheckIcon" class="hidden" viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="category-display-row">
+              <span id="invCategoryDisplay" class="category-display-text">Essential</span>
+              <input type="text" id="invCategorySelect" name="category" class="category-edit-input hidden" value="Essential" autocomplete="off" title="Category" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="invUnitInput">Stock <span class="required-tag">(Required)</span></label>
+            <div class="stock-number-stepper">
+              <button type="button" class="stock-step-btn" id="invStockDecBtn" aria-label="Decrease">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                  <path d="M19 13H5v-2h14v2z"/>
+                </svg>
+              </button>
+              <input type="number" id="invUnitInput" min="0" step="1" value="1" required />
+              <button type="button" class="stock-step-btn" id="invStockIncBtn" aria-label="Increase">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="invStatusInput">Status</label>
+            <input type="text" id="invStatusInput" class="readonly-input" value="Low" readonly />
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn-secondary" data-close-dialog="expenseModal">Cancel</button>
+          <button type="submit" class="btn-primary" id="saveInventoryBtn">Save item</button>
+        </div>
+      </form>
+
+    </div>
+  </dialog>
+
+  <!-- 2. Convert Shopping/Inventory Item to Expense Modal -->
+  <dialog id="convertShoppingModal" class="fambam-dialog" closedby="any" aria-labelledby="convertModalTitle">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <div>
+          <h3 id="convertModalTitle" class="dialog-title">Restock</h3>
+          <p class="dialog-subtitle hidden"></p>
+        </div>
+        <button type="button" class="dialog-close-btn" data-close-dialog="convertShoppingModal" aria-label="Close dialog">
+          <span class="material-symbols-rounded">close</span>
+          <span>Close</span>
+        </button>
+      </div>
+
+      <form id="convertShoppingForm" enctype="multipart/form-data">
+        <input type="hidden" id="convertItemId" name="item_id" />
+        <input type="hidden" id="convertStoreInput" name="store_name" value="" />
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="convertItemDisplay">Item</label>
+            <input type="text" id="convertItemDisplay" readonly class="readonly-input" />
+          </div>
+          <div class="form-group">
+            <label for="convertPriceInput">Amount <span class="required-tag">(Required)</span></label>
+            <div class="currency-input-wrap">
+              <span class="currency-prefix">₱</span>
+              <input type="number" id="convertPriceInput" name="amount" step="0.01" min="0.01" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="convertDateInput">Date <span class="required-tag">(Required)</span></label>
+            <div class="date-input-wrap">
+              <span class="date-input-prefix-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+                </svg>
+              </span>
+              <input type="date" id="convertDateInput" name="date_incurred" class="date-custom-input" required />
+            </div>
+          </div>
+          <div class="form-group span-2">
+            <label for="convertReceiptInput">Receipt</label>
+            <input type="file" id="convertReceiptInput" name="receipt" accept=".jpg,.jpeg,.png,.webp,.svg" />
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn-secondary" data-close-dialog="convertShoppingModal">Cancel</button>
+          <button type="submit" class="btn-primary" id="convertSubmitBtn">Put to expense</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 3. Update Profile Modal (Settings) -->
+  <dialog id="membersModal" class="fambam-dialog" closedby="any" aria-labelledby="membersModalTitle">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <div>
+          <h3 id="membersModalTitle" class="dialog-title">Profile</h3>
+        </div>
+        <button type="button" class="dialog-close-btn" data-close-dialog="membersModal" aria-label="Close">
+          <span class="material-symbols-rounded">close</span>
+          <span>Close</span>
+        </button>
+      </div>
+
+      <form id="profileForm" class="update-profile-form" enctype="multipart/form-data">
+        <!-- Photo Centered in Container -->
+        <div class="profile-avatar-center-wrap">
+          <div class="profile-avatar-wrapper" id="profileAvatarWrapper">
+            <img id="profilePhotoPreviewImg" class="profile-preview-img hidden" src="" alt="Profile Photo" />
+            <div id="profilePhotoDefaultAvatar" class="profile-default-avatar">AD</div>
+            
+            <!-- Photo button & Add photo text inside photo -->
+            <label for="profilePhotoInput" class="profile-avatar-overlay hidden" id="profilePhotoOverlay" title="Add photo">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <circle cx="12" cy="12" r="3.2"/>
+                <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+              </svg>
+              <span>Add photo</span>
+            </label>
+            <input type="file" id="profilePhotoInput" name="photo" accept=".jpg,.jpeg,.png,.webp,.svg" style="display:none;" />
+          </div>
+        </div>
+
+        <!-- Name, Birthday, and Address aligned from top to bottom -->
+        <div class="profile-fields-vertical">
+          <div class="form-group">
+            <label for="profileNameInput" class="profile-field-label">Name <span class="required-tag">(Required)</span></label>
+            <div class="profile-field-display" id="profileNameDisplay">Admin</div>
+            <div class="profile-field-edit hidden" id="profileNameEditWrap">
+              <input type="text" id="profileNameInput" name="name" autocomplete="off" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="profileBirthdayInput" class="profile-field-label">Birthday</label>
+            <div class="profile-field-display" id="profileBirthdayDisplay">Not set</div>
+            <div class="profile-field-edit hidden" id="profileBirthdayEditWrap">
+              <div class="date-input-wrap">
+                <span class="date-input-prefix-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+                  </svg>
+                </span>
+                <input type="date" id="profileBirthdayInput" name="birthday" class="date-custom-input" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="profileAddressInput" class="profile-field-label">Address</label>
+            <div class="profile-field-display" id="profileAddressDisplay">Not set</div>
+            <div class="profile-field-edit hidden" id="profileAddressEditWrap">
+              <input type="text" id="profileAddressInput" name="address" autocomplete="off" />
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn-primary" id="saveProfileBtn">
+            <svg id="profileBtnSaveIcon" class="hidden" viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+              <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+            </svg>
+            <svg id="profileBtnEditIcon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+            <span id="profileBtnText">Edit</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- 5. Receipt Photo Lightbox Modal -->
+  <dialog id="receiptModal" class="fambam-dialog receipt-lightbox" closedby="any" aria-labelledby="receiptModalTitle">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <div>
+          <h3 id="receiptModalTitle" class="dialog-title">Receipt</h3>
+          <p id="receiptModalSubtitle" class="dialog-subtitle"></p>
+        </div>
+        <button type="button" class="dialog-close-btn" data-close-dialog="receiptModal" aria-label="Close dialog">
+          <span class="material-symbols-rounded">close</span>
+          <span>Close</span>
+        </button>
+      </div>
+      <div class="receipt-image-container">
+        <img id="receiptLightboxImg" src="" alt="Receipt" />
+      </div>
+      <div class="dialog-actions">
+        <a id="receiptDownloadLink" href="#" download class="btn-secondary">Download receipt</a>
+        <button type="button" class="btn-primary" data-close-dialog="receiptModal">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 6. Expanding KPI Granular Detail Modal -->
+  <dialog id="kpiDetailModal" class="fambam-dialog" closedby="any" aria-labelledby="kpiDetailTitle">
+    <div class="dialog-inner">
+      <div class="dialog-header">
+        <div>
+          <h3 id="kpiDetailTitle" class="dialog-title">Details</h3>
+          <p id="kpiDetailSubtitle" class="dialog-subtitle"></p>
+        </div>
+        <button type="button" class="dialog-close-btn" data-close-dialog="kpiDetailModal" aria-label="Close dialog">
+          <span class="material-symbols-rounded">close</span>
+          <span>Close</span>
+        </button>
+      </div>
+      <div id="kpiDetailBody" class="kpi-detail-body"></div>
+    </div>
+  </dialog>
+
+  <!-- 7. Action Confirmation Dialog -->
+  <dialog id="confirmModal" class="fambam-dialog" closedby="any" aria-labelledby="confirmModalTitle">
+    <div class="dialog-inner" style="max-width: 440px;">
+      <div class="dialog-header">
+        <div>
+          <h3 id="confirmModalTitle" class="dialog-title">Confirm Action</h3>
+          <p id="confirmModalBody" class="dialog-subtitle"></p>
+        </div>
+        <button type="button" class="dialog-close-btn" data-close-dialog="confirmModal" aria-label="Close dialog">
+          <span class="material-symbols-rounded">close</span>
+          <span>Close</span>
+        </button>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" class="btn-secondary" data-close-dialog="confirmModal">Cancel</button>
+        <button type="button" class="btn-primary" id="confirmModalActionBtn">Confirm</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 8. Notifications Modal (Bills & Low Stock Items) -->
+  <dialog id="notificationsModal" class="fambam-dialog" closedby="any" aria-labelledby="notificationsModalTitle">
+    <div class="dialog-inner notif-dialog-inner">
+      <div class="dialog-header notif-dialog-header">
+        <div>
+          <h3 id="notificationsModalTitle" class="dialog-title">Notifications</h3>
+        </div>
+        <button type="button" class="btn-notif-close-red" data-close-dialog="notificationsModal" aria-label="Close">Close</button>
+      </div>
+      <div class="notif-dialog-content">
+        <!-- Section 1: Due Bills -->
+        <div class="notif-section">
+          <div class="notif-section-header">
+            <div class="notif-section-title-wrap">
+              <span class="material-symbols-rounded" style="font-size: 18px;">calendar_month</span>
+              <span>Bills</span>
+            </div>
+            <span class="status-badge badge-amber" id="notifBillsCountBadge">0</span>
+          </div>
+          <div id="notifBillsList" class="notif-items-list"></div>
+        </div>
+
+        <!-- Section 2: Low Stock Items -->
+        <div class="notif-section">
+          <div class="notif-section-header">
+            <div class="notif-section-title-wrap">
+              <span class="material-symbols-rounded" style="font-size: 18px;">shopping_bag</span>
+              <span>Low Stock Items</span>
+            </div>
+            <span class="status-badge badge-terracotta" id="notifStockCountBadge">0</span>
+          </div>
+          <div id="notifStockList" class="notif-items-list"></div>
+        </div>
+
+
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 9. Company Details Modal -->
+  <dialog id="companyDetailsModal" class="fambam-dialog" closedby="any" aria-labelledby="companyDetailsTitle">
+    <div class="dialog-inner" style="max-width: 520px;">
+      <div class="dialog-header">
+        <div>
+          <h3 id="companyDetailsTitle" class="dialog-title">Company Details</h3>
+        </div>
+        <button type="button" class="dialog-close-btn" data-close-dialog="companyDetailsModal" title="Close" aria-label="Close">
+          <span class="material-symbols-rounded">close</span>
+          <span>Close</span>
+        </button>
+      </div>
+
+      <!-- Add / Edit Company Form (Photo on right side of name) -->
+      <form id="companyDetailsForm" enctype="multipart/form-data">
+        <input type="hidden" id="companyEditIdInput" value="" />
+        <div class="company-form-row">
+          <div class="form-group company-form-name-group">
+            <label for="companyNameInput">Company Name <span class="required-tag">(Required)</span></label>
+            <input type="text" id="companyNameInput" name="name" autocomplete="off" required />
+          </div>
+
+          <div class="form-group company-form-photo-group">
+            <label for="companyLogoInput">Photo</label>
+            <div class="company-logo-uploader-row">
+              <label for="companyLogoInput" class="company-logo-preview" id="companyLogoPreviewBox" tabindex="0" role="button" aria-label="Upload photo or logo">
+                <div class="company-logo-empty-state" id="companyLogoEmptyState">
+                  <span class="material-symbols-rounded" style="font-size: 28px;">photo_camera</span>
+                  <span class="company-logo-label">Photo</span>
+                </div>
+                <img id="companyLogoPreviewImg" src="" alt="Preview" class="hidden" />
+              </label>
+              <input type="file" id="companyLogoInput" name="logo_file" accept=".png,.jpg,.jpeg,.webp,.svg" class="hidden" style="display: none;" />
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-actions" style="margin-top: 1rem;">
+          <button type="button" class="btn-secondary hidden" id="companyCancelEditBtn">Cancel edit</button>
+          <button type="submit" class="btn-primary btn-save-icon" id="companySubmitBtn" title="Save company" aria-label="Save company">
+            <span class="material-symbols-rounded" style="font-size: 20px;">save</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Registered Companies Section (4:3 cards name and logo only + collapsible via building icon) -->
+      <div class="company-list-section" style="margin-top: 1.5rem;">
+        <div class="company-list-header">
+          <div class="company-list-header-left">
+            <div class="settings-section-subtitle">Registered Companies</div>
+            <button type="button" class="company-building-toggle-btn" id="companyListCollapseToggleBtn" title="Collapse / Expand Registered Companies" aria-label="Toggle registered companies list">
+              <span class="material-symbols-rounded">apartment</span>
+            </button>
+          </div>
+          <button type="button" class="btn-sm btn-secondary" id="companyEditSelectBtn" title="Choose a company to edit">
+            <span class="material-symbols-rounded" style="font-size: 16px;">edit</span>
+            <span id="companyEditSelectBtnText">Edit</span>
+          </button>
+        </div>
+        <p class="company-edit-hint hidden" id="companyEditHintText">Click a company below to change its details.</p>
+        <div id="companyListContainer" class="company-grid-43"></div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Command Palette Modal (Ctrl + K Enhanced Power Actions) -->
+  <dialog id="commandPaletteModal" class="fambam-dialog command-palette-dialog" closedby="any" aria-labelledby="paletteTitle">
+    <div class="dialog-inner command-palette-inner">
+      <div class="palette-search-row">
+        <span class="material-symbols-rounded palette-search-icon">terminal</span>
+        <input type="text" id="paletteSearchInput" class="palette-search-input" autocomplete="off" aria-label="Type a command or search" />
+        <kbd class="palette-kbd-chip">ESC</kbd>
+      </div>
+      <div class="palette-results-list" id="paletteResultsList" role="menu">
+        <!-- Quick actions and tabs rendered via main.js -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+</body>
+</html>
