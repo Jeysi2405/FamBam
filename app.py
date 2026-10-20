@@ -87,32 +87,69 @@ def resolve_member_id(conn, raw_id):
     return mid if cur.fetchone() else None
 
 
-VALID_CATEGORIES = ("Essential", "Condiments", "Meat and Vegetables", "Bills")
+VALID_CATEGORIES = (
+    "Housing & Shelter",
+    "Utilities & Connectivity",
+    "Food & Household Groceries",
+    "Home Maintenance & Upkeep",
+    "Healthcare & Personal Care",
+    "Transportation & Personal Lifestyle",
+    "Miscellaneous",
+)
 
 CATEGORY_KEYWORDS = {
-    "Essential": [
-        "shampoo", "palmolive", "clear men", "safeguard", "silca", "powder",
-        "bar sabon", "sabon", "dishwashing", "toothpaste", "deo", "milcu",
-        "sponge", "downy", "sanitary", "modes",
+    "Housing & Shelter": [
+        "house", "rent", "upa", "bahay", "mortgage", "apartment", "hoa",
+        "condo", "dues", "lease", "amortization", "6k",
     ],
-    "Condiments": [
-        "suka", "toyo", "mantika", "sibuyas", "bawang", "paminta",
-        "magic sarap", "asukal", "tomato", "sili", "bigas", "kape",
-        "kopiko", "water (jag)", "jag",
+    "Utilities & Connectivity": [
+        "electric", "kuryente", "meralco", "water", "tubig", "maynilad",
+        "manila water", "primewater", "lpg", "gas", "gasul", "solane",
+        "internet", "wifi", "pldt", "converge", "globe", "smart", "dito",
+        "load", "cable", "cignal", "netflix", "utility", "bill",
     ],
-    "Meat and Vegetables": [
-        "fish", "tilapia", "bangus", "chicken", "adobo", "tinola",
-        "pork", "sinigang", "gulay", "talong", "kangkong", "repolyo",
-        "sitaw", "kalabasa", "potato", "cucumber", "miswa", "odong",
-        "can foods", "sardinas", "tuna", "noodles", "lucky me", "pancit canton",
+    "Food & Household Groceries": [
+        "bigas", "rice", "suka", "vinegar", "toyo", "soy sauce", "patis",
+        "mantika", "cooking oil", "oil", "sibuyas", "onion", "bawang", "garlic",
+        "luya", "ginger", "paminta", "pepper", "magic sarap", "knorr",
+        "sinigang mix", "asin", "salt", "asukal", "sugar", "tomato",
+        "ketchup", "mayo", "sili", "chili", "kape", "coffee", "kopiko",
+        "nescafe", "milo", "gatas", "milk", "water (jag)", "mineral water",
+        "jag", "fish", "isda", "tilapia", "bangus", "chicken", "manok",
+        "adobo", "tinola", "pork", "baboy", "beef", "baka", "karne",
+        "gulay", "vegetable", "talong", "kangkong", "repolyo", "sitaw",
+        "kalabasa", "potato", "patatas", "cucumber", "pipino", "kamatis",
+        "pechay", "okra", "ampalaya", "sayote", "malunggay", "monggo",
+        "miswa", "odong", "bihon", "canton", "pancit", "spaghetti",
+        "can foods", "canned", "delata", "sardinas", "tuna", "century",
+        "corned beef", "spam", "noodles", "lucky me", "itlog", "egg",
+        "hotdog", "tocino", "tinapay", "bread", "grocery", "food", "snack",
     ],
-    "Bills": [
-        "electric", "water", "gas", "house", "6k", "meralco", "maynilad", "pldt", "bill",
+    "Home Maintenance & Upkeep": [
+        "dishwashing", "joy", "bar sabon", "powder", "tide", "surf",
+        "ariel", "breeze", "downy", "fabcon", "bleach", "zonrox",
+        "sponge", "scrub", "walis", "mop", "trash bag", "bulb",
+        "repair", "faucet", "gripo", "hardware", "paint", "cleaning", "upkeep",
+    ],
+    "Healthcare & Personal Care": [
+        "shampoo", "palmolive", "clear men", "clear", "safeguard", "silca",
+        "body wash", "bath soap", "toothpaste", "colgate", "close up",
+        "toothbrush", "deo", "deodorant", "milcu", "rexona", "sanitary",
+        "modes", "modess", "whisper", "napkin", "tissue", "wet wipes",
+        "alcohol", "cotton", "lotion", "gamot", "medicine", "biogesic",
+        "neozep", "paracetamol", "vitamins", "band aid", "betadine",
+        "doctor", "clinic", "dental",
+    ],
+    "Transportation & Personal Lifestyle": [
+        "pamasahe", "fare", "jeep", "jeepney", "tricycle", "trike", "bus",
+        "mrt", "lrt", "grab", "taxi", "angkas", "joyride", "gasoline",
+        "diesel", "petron", "shell", "caltex", "parking", "toll", "rfid",
+        "easytrip", "autosweep", "car wash", "motor", "motorcycle", "gym",
+        "cinema", "movie", "shopping", "clothes", "damit", "shoes",
     ],
 }
 
-
-def infer_category_from_title(title, fallback="Essential"):
+def infer_category_from_title(title, fallback="Miscellaneous"):
     t = (title or "").strip().lower()
     if not t:
         return fallback
@@ -121,6 +158,7 @@ def infer_category_from_title(title, fallback="Essential"):
             if kw in t:
                 return cat
     return fallback
+
 
 
 def compute_stock_status(stock_val):
@@ -190,8 +228,9 @@ def api_bootstrap():
         ORDER BY m DESC
     """)
     db_months = [r["m"] for r in cursor.fetchall() if r["m"]]
-    default_months = ["2026-10", "2026-09"]
+    default_months = ["2026-10"]
     available_months = sorted(list(set(db_months + default_months + [selected_month])), reverse=True)
+    available_months = [m for m in available_months if m != "2026-09"]
 
     # 4. Expenses for Selected Month
     cursor.execute(
@@ -224,14 +263,25 @@ def api_bootstrap():
         mom_percentage = 0.0 if current_month_total == 0 else 100.0
 
     # 6. Category Breakdown & Category Budgets
-    default_cats = ["Essential", "Condiments", "Meat and Vegetables", "Bills"]
+    default_cats = [
+        "Housing & Shelter",
+        "Utilities & Connectivity",
+        "Food & Household Groceries",
+        "Home Maintenance & Upkeep",
+        "Healthcare & Personal Care",
+        "Transportation & Personal Lifestyle",
+        "Miscellaneous",
+    ]
     extra_cats = sorted(list(set(e["category"] for e in expenses if e.get("category") and e["category"] not in default_cats)))
     categories = default_cats + extra_cats
     cat_budget_keys = {
-        "Essential": float(settings.get("budget_groceries", 0.0)),
-        "Condiments": float(settings.get("budget_utilities", 0.0)),
-        "Meat and Vegetables": float(settings.get("budget_maintenance", 0.0)),
-        "Bills": float(settings.get("budget_others", 0.0)),
+        "Housing & Shelter": float(settings.get("budget_housing", 0.0)),
+        "Utilities & Connectivity": float(settings.get("budget_utilities", 0.0)),
+        "Food & Household Groceries": float(settings.get("budget_groceries", 0.0)),
+        "Home Maintenance & Upkeep": float(settings.get("budget_maintenance", 0.0)),
+        "Healthcare & Personal Care": float(settings.get("budget_healthcare", 0.0)),
+        "Transportation & Personal Lifestyle": float(settings.get("budget_lifestyle", 0.0)),
+        "Miscellaneous": float(settings.get("budget_others", 0.0)),
     }
     category_breakdown = {}
     for cat in categories:

@@ -1,141 +1,136 @@
 /* ==========================================================================
    FamBam — Smart Household Expense, Inventory & Bill Management
-   Clean Minimalist Flat Design System (Zero Shadows, Clear Separation)
+   Soft Minimal Flat System with #02007d Navy Blue & Glassmorphic Buttons
    ========================================================================== */
 
 :root,
 html[data-theme="dark"] {
   color-scheme: dark;
-  --bg-primary: #0e1015;
-  --bg-secondary: #14171f;
-  --bg-elevated: #1a1e28;
-  --card-bg: #181c26;
-  --card-bg-hover: #222736;
-  --card-border: transparent;
-  --card-border-strong: transparent;
-  --card-border-highlight: transparent;
+
+  /* Soft Dark Surfaces (Gentle slate charcoal, no harsh #000 or saturated blue) */
+  --bg-primary: #12151b;
+  --bg-secondary: #161a22;
+  --bg-elevated: #1e232f;
+  --card-bg: #181c25;
+  --card-bg-hover: #1f2532;
+
+  /* Soft Hairline Dividers & Borders */
+  --card-border: rgba(255, 255, 255, 0.055);
+  --card-border-strong: rgba(255, 255, 255, 0.085);
+  --card-border-highlight: rgba(255, 255, 255, 0.12);
   --divider: rgba(255, 255, 255, 0.06);
 
-  --text-primary: #f8fafc;
-  --text-secondary: #9cb0c9;
-  --text-muted: #6b7f99;
+  /* Soft Whites (Lower text & background contrast - gentle, no blinding glare) */
+  --text-primary: #dbe0ea;
+  --text-secondary: #949eb0;
+  --text-muted: #646e80;
+  --text-soft-white: #e2e7f0;
+  --icon-color: #cbd2df;
 
-  /* Semantic Bricks */
-  --grad-blue:   #2563eb;
-  --grad-green:  #059669;
-  --grad-amber:  #d97706;
-  --grad-red:    #dc2626;
-  --grad-indigo: #4f46e5;
+  /* Brand Color & Softened Brand Accent */
+  --brand-color: #02007d;
+  --brand-light: #455ecb;
+  --brand-accent: #455ecb;
+  --accent-sage: #455ecb;
+  --accent-sage-soft: rgba(69, 94, 203, 0.15);
+  --accent-sage-text: #6b82ea;
 
-  /* Primary & Desaturated Status Accents (Saturated yet deep) */
-  --accent-sage: #3366ff;
-  --accent-sage-soft: rgba(51, 102, 255, 0.18);
-  --accent-sage-text: #5b84ff;
+  /* Reduced Color Saturation (Muted, sophisticated status tones) */
+  --accent-green: #489370;
+  --accent-green-soft: rgba(72, 147, 112, 0.14);
+  --accent-green-text: #6cb895;
 
-  --accent-amber: #f59e0b;
-  --accent-amber-soft: rgba(245, 158, 11, 0.18);
-  --accent-amber-text: #fbbf24;
+  --accent-amber: #b48540;
+  --accent-amber-soft: rgba(180, 133, 64, 0.14);
+  --accent-amber-text: #d4a35f;
 
-  --accent-terracotta: #f43f5e;
-  --accent-terracotta-soft: rgba(244, 63, 94, 0.18);
-  --accent-terracotta-text: #fb7185;
+  --accent-terracotta: #b85454;
+  --accent-terracotta-soft: rgba(184, 84, 84, 0.14);
+  --accent-terracotta-text: #d47878;
 
-  --accent-slate: #64748b;
-  --accent-slate-soft: rgba(100, 116, 139, 0.18);
+  --accent-slate: #5e6878;
+  --accent-slate-soft: rgba(94, 104, 120, 0.14);
 
-  --input-bg: #202534;
-  --input-border: transparent;
+  --input-bg: #141821;
+  --input-border: rgba(255, 255, 255, 0.07);
 
-  /* Minimalist Design: Zero Shadows */
-  --shadow-sm: none;
-  --shadow-md: none;
-  --shadow-pop: none;
-  --shadow-modal: none;
-  --shadow-soft: none;
-  --shadow-specular-top: none;
-  --shadow-specular-bottom: none;
-  --shadow-specular: none;
+  /* Shadows: NOT the same as light mode (Surface elevation + subtle contact depth, zero muddy blur) */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  --shadow-elevated: 0 4px 14px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  --shadow-modal: 0 12px 36px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  --shadow-sm: var(--shadow-card);
+  --shadow-md: var(--shadow-elevated);
   --shadow-glass: none;
   --shadow-glass-hover: none;
-  --shadow-spatial: none;
-  --brand-color: #2b59ff;
+  --shadow-specular: none;
 
-  /* Radius Ladder (All Rounded Corners) */
+  /* Soft Radius Ladder */
   --radius-sm: 10px;
   --radius-ctl: 12px;
-  --radius: 14px;
+  --radius: 16px;
   --radius-inner: 12px;
   --radius-lg: 18px;
   --radius-xl: 22px;
   --radius-pill: 9999px;
-  --card-radius: 18px;
+  --card-radius: 16px;
   --card-padding: 1.45rem;
 }
 
 html[data-theme="light"] {
   color-scheme: light;
-  --bg-primary: #f8fafc;
+  --bg-primary: #f2f4fa;
   --bg-secondary: #ffffff;
   --bg-elevated: #ffffff;
   --card-bg: #ffffff;
-  --card-bg-hover: #f1f5f9;
-  --card-border: transparent;
-  --card-border-strong: transparent;
-  --card-border-highlight: transparent;
-  --divider: rgba(0, 0, 0, 0.05);
+  --card-bg-hover: #f7f9fd;
+  --card-border: rgba(2, 0, 125, 0.07);
+  --card-border-strong: rgba(2, 0, 125, 0.12);
+  --card-border-highlight: rgba(2, 0, 125, 0.18);
+  --divider: rgba(2, 0, 125, 0.06);
 
-  --grad-blue:   #2b59ff;
-  --grad-green:  #10b981;
-  --grad-amber:  #d97706;
-  --grad-red:    #dc2626;
-  --grad-indigo: #4f46e5;
+  --text-primary: #0a0e28;
+  --text-secondary: #4a5472;
+  --text-muted: #7480a0;
+  --text-soft-white: #ffffff;
+  --icon-color: #02007d;
 
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
+  --brand-color: #02007d;
+  --brand-light: #02007d;
+  --brand-accent: #02007d;
+  --accent-sage: #02007d;
+  --accent-sage-soft: rgba(2, 0, 125, 0.08);
+  --accent-sage-text: #02007d;
 
-  --accent-sage: #2b59ff;
-  --accent-sage-soft: rgba(43, 89, 255, 0.08);
-  --accent-sage-text: #2563eb;
+  --accent-green: #2f855a;
+  --accent-green-soft: rgba(47, 133, 90, 0.10);
+  --accent-green-text: #276749;
 
-  --accent-amber: #d97706;
-  --accent-amber-soft: rgba(217, 119, 6, 0.1);
-  --accent-amber-text: #b45309;
+  --accent-amber: #b45309;
+  --accent-amber-soft: rgba(180, 83, 9, 0.10);
+  --accent-amber-text: #92400e;
 
-  --accent-terracotta: #dc2626;
-  --accent-terracotta-soft: rgba(220, 38, 38, 0.1);
-  --accent-terracotta-text: #b91c1c;
+  --accent-terracotta: #b91c1c;
+  --accent-terracotta-soft: rgba(185, 28, 28, 0.10);
+  --accent-terracotta-text: #991b1b;
 
   --accent-slate: #64748b;
   --accent-slate-soft: rgba(100, 116, 139, 0.08);
 
-  --input-bg: #f1f5f9;
+  --input-bg: #e8ecf6;
   --input-border: transparent;
 
-  /* Minimalist Design: Zero Shadows */
-  --shadow-sm: none;
-  --shadow-md: none;
-  --shadow-pop: none;
-  --shadow-modal: none;
-  --shadow-soft: none;
-  --shadow-specular-top: none;
-  --shadow-specular-bottom: none;
-  --shadow-specular: none;
+  /* Light mode shadows: soft ambient diffused light shadows */
+  --shadow-card: 0 1px 3px rgba(10, 14, 40, 0.04), 0 4px 12px rgba(10, 14, 40, 0.04);
+  --shadow-elevated: 0 6px 20px rgba(10, 14, 40, 0.08);
+  --shadow-modal: 0 16px 40px rgba(10, 14, 40, 0.14);
+  --shadow-sm: var(--shadow-card);
+  --shadow-md: var(--shadow-elevated);
   --shadow-glass: none;
   --shadow-glass-hover: none;
-  --shadow-spatial: none;
-  --brand-color: #2b59ff;
-
-  --radius-sm: 10px;
-  --radius-ctl: 12px;
-  --radius: 14px;
-  --radius-inner: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 22px;
-  --radius-pill: 9999px;
-  --card-radius: 18px;
-  --card-padding: 1.45rem;
+  --shadow-specular: none;
 }
+
+
 
 *,
 *::before,
@@ -147,7 +142,7 @@ html[data-theme="light"] {
   -webkit-tap-highlight-color: transparent !important;
   scrollbar-width: thin;
   scrollbar-color: rgba(128, 128, 128, 0.28) transparent;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 *:focus,
@@ -175,9 +170,12 @@ a:focus-visible {
 *::-webkit-scrollbar-thumb:hover { background: rgba(128, 128, 128, 0.45); }
 
 html {
-  font-size: 118%;
+  font-size: 100%;
   scroll-behavior: smooth;
   scroll-padding-block-start: 5.5rem;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body,
@@ -186,58 +184,118 @@ input,
 select,
 textarea,
 optgroup {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100dvh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   line-height: 1.5;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.025em;
+  word-spacing: 0.035em;
   accent-color: var(--brand-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html[data-theme="dark"] body {
+  background: var(--bg-primary);
+}
+
+html[data-theme="light"] body {
+  background: var(--bg-primary);
 }
 
 input,
 button,
 select,
 textarea {
-  letter-spacing: normal;
+  letter-spacing: 0.025em;
+  word-spacing: 0.035em;
 }
 
 .num,
 .mono,
 .kpi-value,
+.kpi-unit,
+.trip-stat-val,
+.tx-amount,
 .bill-amount-tag,
-.tx-amount {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+.fambam-table td,
+.stat-num,
+.header-clock-date,
+.header-clock-time,
+.badge-num,
+.undo-timer,
+.notif-badge,
+.progress-pill,
+.calc-val,
+.report-stat-val,
+.expense-amount,
+.price-num,
+.inv-quick-item,
+.stock-unit-pill,
+.chip-num,
+.q-kpi-val {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-variant-numeric: tabular-nums slashed-zero;
+  letter-spacing: 0.055em !important;
 }
 
-/* Material Symbols Rounded (Google Icons) */
-.material-symbols-rounded {
-  font-family: 'Material Symbols Rounded', sans-serif !important;
-  font-weight: normal;
-  font-style: normal;
+/* ==========================================================================
+   UNIFIED ICON SYSTEM (Material Symbols Outlined - Balanced, Centered, Regular)
+   ========================================================================== */
+.material-symbols-rounded,
+.material-symbols-outlined,
+.material-icons,
+.material-icons-round {
+  font-family: 'Material Symbols Outlined', 'Material Symbols Rounded', sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
   font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
+  line-height: 1 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 1em !important;
+  height: 1em !important;
+  box-sizing: content-box !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
-  -webkit-font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga' 1;
+  -moz-font-feature-settings: 'liga=1';
+  -moz-font-feature-settings: 'liga';
+  -ms-font-feature-settings: 'liga' 1;
+  -o-font-feature-settings: 'liga' 1;
+  font-feature-settings: 'liga' 1;
   -webkit-font-smoothing: antialiased;
-  font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
   user-select: none;
-  vertical-align: middle;
+  vertical-align: middle !important;
+  color: var(--icon-color, #cbd2df) !important;
+  background: transparent !important;
+  filter: none !important;
+  text-shadow: none !important;
 }
 
-.material-symbols-rounded.filled {
-  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+/* Ensure 100% consistent outline fill across all states (unfilled outline style) */
+.material-symbols-rounded.filled,
+.material-symbols-outlined.filled,
+.material-icons.filled,
+.material-icons-round.filled {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
 }
 
 /* ==========================================================================
@@ -247,6 +305,9 @@ textarea {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
   min-height: 100dvh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   transition: grid-template-columns 0.25s ease;
 }
 
@@ -263,9 +324,27 @@ textarea {
   justify-content: space-between;
   padding: 1.35rem 1rem;
   background: var(--bg-secondary);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: none !important;
   border-right: none !important;
+  outline: none !important;
   z-index: 40;
   transition: width 0.25s ease, padding 0.25s ease;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 998;
+  transition: opacity 0.25s ease;
+}
+
+.sidebar-backdrop.hidden {
+  display: none !important;
 }
 
 .app-shell.sidebar-closed .sidebar {
@@ -393,16 +472,16 @@ html[data-theme="light"] .app-brand-logo {
 
 .nav-link svg,
 .nav-link .material-symbols-rounded {
-  width: 24px;
-  height: 24px;
-  font-size: 24px;
+  width: 26px;
+  height: 26px;
+  font-size: 26px;
   color: #7b889b;
   flex-shrink: 0;
   transition: color 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-link:hover {
-  background: #1c2028;
+  background: var(--card-bg-hover, rgba(255, 255, 255, 0.05));
   color: var(--text-primary);
   box-shadow: none !important;
   border: none !important;
@@ -490,6 +569,49 @@ html[data-theme="light"] .nav-link.active .nav-pill-amber {
   border-top: none !important;
 }
 
+/* Sidebar Download / Install App Button (Borderless & Clean) */
+.sidebar-download-wrap {
+  width: 100%;
+}
+
+.sidebar-download-wrap.hidden {
+  display: none !important;
+}
+
+.sidebar-download-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.65rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-ctl, 10px);
+  background: transparent !important;
+  color: var(--accent-sage-text, #5b84ff);
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.sidebar-download-btn:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--text-primary);
+  transform: none;
+}
+
+.sidebar-download-btn:active {
+  transform: none;
+}
+
+.sidebar-download-btn .material-symbols-rounded {
+  font-size: 22px;
+  color: var(--accent-sage, #3366ff);
+}
+
 .theme-switch-card {
   display: flex;
   align-items: center;
@@ -502,7 +624,7 @@ html[data-theme="light"] .nav-link.active .nav-pill-amber {
 }
 
 .theme-switch-card:hover {
-  background: #1c2028;
+  background: var(--card-bg-hover, rgba(255, 255, 255, 0.05));
 }
 
 .theme-switch-info {
@@ -574,7 +696,7 @@ html[data-theme="light"] .nav-link.active .nav-pill-amber {
 }
 
 .admin-profile-card:hover {
-  background: #1c2028;
+  background: var(--card-bg-hover, rgba(255, 255, 255, 0.05));
 }
 
 .admin-avatar {
@@ -640,13 +762,13 @@ html[data-theme="light"] .nav-link.active .nav-pill-amber {
 .main-wrapper {
   display: flex;
   flex-direction: column;
-  padding: 0 clamp(0.85rem, 2.4vw, 1.75rem) 5.25rem;
-  gap: clamp(0.85rem, 1.8vw, 1.2rem);
+  padding: 0 clamp(0.85rem, 2vw, 1.75rem) 4rem;
+  gap: clamp(0.75rem, 1.3vw, 1rem);
   min-width: 0;
   width: 100%;
-  max-width: 1920px;
-  margin: 0 auto;
-  overflow-x: clip;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
   transition: max-width 0.25s ease;
 }
 
@@ -658,13 +780,13 @@ html[data-theme="light"] .nav-link.active .nav-pill-amber {
 
 .glass-card {
   background: var(--card-bg);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
   border: none !important;
   outline: none !important;
   border-radius: var(--card-radius);
   box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  transition: background-color 0.15s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card.interactive:hover,
@@ -673,8 +795,8 @@ button.glass-card:hover {
   border: none !important;
   outline: none !important;
   background: var(--card-bg-hover);
-  transform: none !important;
   box-shadow: none !important;
+  transform: translateY(-2px);
 }
 
 .top-header {
@@ -682,7 +804,7 @@ button.glass-card:hover {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.45rem 0.25rem 0.85rem;
+  padding: 2rem 0.5rem 0.85rem;
   position: relative !important;
   top: auto !important;
   z-index: 50;
@@ -724,6 +846,40 @@ button.glass-card:hover {
   font-size: 1.15rem;
   font-weight: 600;
   color: var(--text-primary);
+}
+
+.header-app-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+  user-select: none;
+  line-height: 1;
+  margin-right: 0.35rem;
+}
+
+.header-brand-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+}
+
+.header-brand-logo {
+  width: 26px;
+  height: 26px;
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.header-brand-title {
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1;
 }
 
 .greeting-subtitle {
@@ -924,7 +1080,7 @@ button.glass-card:hover {
 }
 
 .search-circle-btn .material-symbols-rounded {
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .search-slide-expand-wrap {
@@ -941,7 +1097,7 @@ button.glass-card:hover {
   border-radius: var(--radius-ctl, 10px);
   padding: 0.2rem 0.5rem 0.2rem 0.75rem;
   z-index: 80;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  box-shadow: none !important;
   animation: searchSlideExpand 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   overflow: visible;
 }
@@ -1060,28 +1216,35 @@ button.glass-card:hover {
 
 .header-clock-date-widget {
   display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.12rem;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   line-height: 1;
+  user-select: none;
 }
 
 .header-clock-date {
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 0.72rem;
+  font-weight: 600;
   color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  line-height: 1;
 }
 
 .header-clock-time {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: 0.5px;
+  letter-spacing: 0.02em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  line-height: 1;
 }
 
 .header-icon-btn {
@@ -1100,9 +1263,9 @@ button.glass-card:hover {
 
 .header-icon-btn svg,
 .header-icon-btn .material-symbols-rounded {
-  width: 24px;
-  height: 24px;
-  font-size: 24px;
+  width: 26px;
+  height: 26px;
+  font-size: 26px;
   flex-shrink: 0;
 }
 
@@ -1133,14 +1296,18 @@ button.glass-card:hover {
    BENTO-GRID MAIN DASHBOARD
    ========================================================================== */
 .tab-view {
-  display: none;
+  display: none !important;
   flex-direction: column;
   gap: 1.15rem;
+  width: 100%;
 }
 
 .tab-view.active {
-  display: flex;
-  animation: tabFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex !important;
+  flex-direction: column;
+  width: 100%;
+  flex: 1 1 auto;
+  animation: tabFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes tabFadeIn {
@@ -1158,24 +1325,26 @@ button.glass-card:hover {
 .bento-row-kpi {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.15rem;
+  gap: 0.85rem;
   width: 100%;
 }
 
 .kpi-card {
-  padding: 1.45rem 1.6rem;
+  padding: 1.1rem 1.35rem;
   border-radius: var(--card-radius);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.85rem;
+  gap: 0.65rem;
   min-width: 0;
   cursor: pointer;
   background: var(--card-bg);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
-  transition: background-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .kpi-card:hover,
@@ -1184,7 +1353,7 @@ button.glass-card:hover {
   outline: none !important;
   background: var(--card-bg-hover);
   box-shadow: none !important;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 .kpi-card:active {
@@ -1267,24 +1436,41 @@ button.glass-card:hover {
   pointer-events: none !important;
 }
 
-/* Zero Background Box on KPI Icons */
+/* KPI Card Icon: Transparent Flat White (No Background) */
+.kpi-header-actions .material-symbols-rounded.kpi-icon-sage,
+.kpi-header-actions .material-symbols-rounded,
 .kpi-icon-wrap {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-  padding: 0 !important;
-  width: auto !important;
-  height: auto !important;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-size: 24px !important;
+  filter: none !important;
+  transition: opacity 0.2s ease;
+}
+
+.kpi-card:hover .kpi-header-actions .material-symbols-rounded,
+.kpi-card:hover .kpi-icon-wrap {
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  color: #ffffff !important;
 }
 
 .kpi-icon-wrap svg,
 .kpi-icon-wrap .material-symbols-rounded {
-  width: 24px;
-  height: 24px;
-  font-size: 24px;
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
 }
 
 .kpi-icon-wrap.sage {
@@ -1541,27 +1727,38 @@ button.glass-card:hover {
 .category-bars-list {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.52rem;
+  min-width: 0;
+  width: 100%;
 }
 
 .cat-bar-item {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
+  min-width: 0;
+  width: 100%;
 }
 
 .cat-bar-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.76rem;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 0.78rem !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
 }
 
 .cat-bar-name {
   font-weight: 500;
   color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .cat-dot {
@@ -1569,11 +1766,16 @@ button.glass-card:hover {
   height: 8px;
   border-radius: 50%;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .cat-bar-numbers {
   color: var(--text-secondary);
-  font-size: 0.72rem;
+  font-size: 0.76rem !important;
+  letter-spacing: 0.04em !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  text-align: right !important;
 }
 
 /* Recurring Bills Checklist */
@@ -2198,12 +2400,20 @@ html[data-theme="light"] .btn-outline:hover {
 }
 
 .view-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.1rem 1.35rem;
-  flex-wrap: wrap;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem;
+  padding: 0.6rem 0.2rem 1.1rem 0.2rem !important;
+  margin-bottom: 0.25rem !important;
+  flex-wrap: nowrap !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  width: 100% !important;
 }
 
 .view-title {
@@ -2217,10 +2427,19 @@ html[data-theme="light"] .btn-outline:hover {
 }
 
 .view-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.5rem !important;
+  margin-left: auto !important;
+  width: auto !important;
+  flex-wrap: nowrap !important;
+}
+.view-actions .btn-primary,
+.view-actions .btn-secondary,
+.view-actions .btn-outline {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 .two-col-layout {
@@ -2274,7 +2493,16 @@ html[data-theme="light"] .btn-outline:hover {
 }
 
 .fambam-table tbody tr:hover {
-  background: #1c2028;
+  background: var(--card-bg-hover, rgba(25, 32, 71, 0.45));
+}
+
+.fambam-table tbody tr:has(.empty-state-card),
+.fambam-table tbody tr:has(.empty-state-card):hover,
+.fambam-table tbody tr.empty-state-row,
+.fambam-table tbody tr.empty-state-row:hover,
+.empty-state-card:hover,
+.table-card .empty-state-card:hover {
+  background: transparent !important;
 }
 
 .text-right {
@@ -2304,44 +2532,97 @@ html[data-theme="light"] .btn-outline:hover {
 /* ==========================================================================
    FLOATING ACTION BUTTON (FAB)
    ========================================================================== */
-.fab-quick-add {
+.fab-stack {
   position: fixed;
-  right: calc(4.5rem + env(safe-area-inset-right, 0px));
-  bottom: calc(2.25rem + env(safe-area-inset-bottom, 0px));
+  right: 1.75rem !important;
+  bottom: calc(1.75rem + env(safe-area-inset-bottom, 0px)) !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  z-index: 90;
+}
+
+.fab-action-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(26, 34, 52, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: none !important;
+  outline: none !important;
+  color: var(--text-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 62px;
-  height: 62px;
-  padding: 0;
-  border-radius: 50%;
-  border: none !important;
-  background: var(--accent-sage);
-  color: #ffffff;
-  box-shadow: none !important;
   cursor: pointer;
-  z-index: 45;
-  transition: opacity 0.15s ease;
+  box-shadow: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.fab-quick-add svg,
-.fab-quick-add .material-symbols-rounded {
-  width: 30px;
-  height: 30px;
-  font-size: 30px;
-  flex-shrink: 0;
+.fab-action-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+  background: rgba(52, 131, 235, 0.25);
+  box-shadow: none !important;
+  color: #ffffff;
+}
+
+.fab-action-btn:active {
+  transform: scale(0.95);
+}
+
+.fab-action-btn .material-symbols-rounded {
+  font-size: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.fab-quick-add {
+  position: static !important;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5ea5f9 0%, #3483eb 55%, #1e64cc 100%);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none !important;
+  cursor: pointer;
+  border: none !important;
+  outline: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .fab-quick-add:hover {
-  opacity: 0.92;
-  transform: none !important;
-  filter: none !important;
+  transform: translateY(-3px) scale(1.08);
   box-shadow: none !important;
 }
 
 .fab-quick-add:active {
-  transform: none !important;
-  filter: none !important;
+  transform: translateY(0) scale(0.96);
+}
+
+.fab-quick-add .material-symbols-rounded {
+  font-size: 30px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.fab-quick-add svg,
+.fab-quick-add .material-symbols-rounded {
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.fab-quick-add:hover {
+  opacity: 0.95;
+  transform: scale(1.06);
+}
+
+.fab-quick-add:active {
+  transform: scale(0.95);
 }
 
 .fab-quick-add:focus-visible {
@@ -2357,22 +2638,40 @@ dialog:modal {
   overscroll-behavior: contain;
 }
 
+@keyframes dialogScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 dialog[open] {
-  animation: none !important;
+  animation: dialogScaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 dialog::backdrop {
-  /* MANDATORY: ::backdrop defaults to overflow: visible (not a scroll container).
-     Set overflow: hidden so it becomes a non-scrollable scroll container that honors overscroll-behavior. */
   overflow: hidden;
   overscroll-behavior: contain;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 dialog[open]::backdrop {
-  animation: none !important;
+  animation: backdropFadeIn 0.22s ease forwards !important;
 }
 
 .fambam-dialog {
@@ -2383,10 +2682,10 @@ dialog[open]::backdrop {
   overflow-y: auto;
   border: none !important;
   outline: none !important;
-  border-radius: var(--card-radius, 16px) !important;
+  border-radius: 20px !important;
   background: var(--bg-elevated);
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
   color: var(--text-primary);
   box-shadow: none !important;
   padding: 0;
@@ -2521,9 +2820,9 @@ dialog[open]::backdrop {
 
 .q-kpi-icon-wrap svg,
 .q-kpi-icon-wrap .material-symbols-rounded {
-  font-size: 34px !important;
-  width: 34px;
-  height: 34px;
+  font-size: 38px !important;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
 }
 
@@ -2785,6 +3084,10 @@ dialog[open]::backdrop {
   margin-bottom: 0.4rem;
 }
 
+.form-label-with-action.category-label-wrap {
+  margin-bottom: 0.12rem !important;
+}
+
 .form-label-with-action label {
   margin-bottom: 0 !important;
 }
@@ -2792,17 +3095,20 @@ dialog[open]::backdrop {
 .category-display-row {
   display: flex;
   align-items: center;
-  min-height: 42px;
+  min-height: unset !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.35rem;
+  padding: 0.1rem 0;
   width: 100%;
 }
 
 .category-display-text {
   display: inline-block;
   font-family: inherit;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.3;
+  color: #3b82f6;
+  line-height: 1.2;
 }
 
 .category-display-text.hidden {
@@ -3242,7 +3548,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .notes-input-wrap input:focus,
 .expanding-control-tray input:focus {
   border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.22) !important;
+  box-shadow: none !important;
   background: rgba(255, 255, 255, 0.05) !important;
 }
 
@@ -3331,12 +3637,41 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .profile-avatar-wrapper .profile-default-avatar {
-  font-size: 1.55rem;
-  font-weight: 700;
-  color: var(--accent-sage-text);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  gap: 0.2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
   user-select: none;
+}
+
+.profile-avatar-wrapper .profile-default-avatar.hidden {
+  display: none !important;
+}
+
+.profile-default-icon {
+  font-size: 38px !important;
+  color: #3b82f6 !important;
+  transition: transform 0.2s ease;
+}
+
+.profile-default-add-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.profile-avatar-wrapper:hover .profile-default-icon {
+  transform: scale(1.08);
+}
+
+.profile-avatar-wrapper:hover .profile-default-add-text {
+  color: var(--text-primary);
 }
 
 .profile-avatar-overlay {
@@ -3585,25 +3920,24 @@ input[type="number"]::-webkit-inner-spin-button {
   animation: none !important;
 }
 
-/* Undo Deletion Toast Notification (Capsule Pill with Countdown Timer Line) */
+/* Undo Deletion Toast Notification (Capsule Pill matching Image 2 & Theme) */
 .undo-toast-snackbar {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 0.45rem 0.85rem 0.45rem 1.15rem;
+  display: inline-flex;
+  align-items: stretch;
+  padding: 0;
   border-radius: 9999px;
-  background: #111520;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.25);
+  background: var(--brand-color, #2b59ff);
   color: #ffffff;
-  font-size: 0.84rem;
+  box-shadow: none !important;
+  font-size: 0.86rem;
   font-weight: 500;
   overflow: hidden;
   pointer-events: auto !important;
   max-width: min(520px, calc(100vw - 2rem));
-  animation: undoToastEnter 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: undoToastEnter 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   z-index: 1000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 @keyframes undoToastEnter {
@@ -3617,46 +3951,56 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 }
 
-.undo-toast-trash-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #ef4444;
-  font-size: 19px;
-  flex-shrink: 0;
-}
-
 .undo-toast-text {
-  flex: 1;
-  min-width: 0;
+  display: flex;
+  align-items: center;
+  padding: 0.55rem 0.95rem 0.55rem 1.25rem;
+  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #f1f5f9;
+  font-size: 0.86rem;
+  font-weight: 500;
 }
 
 .undo-toast-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
-  padding: 0.32rem 0.85rem;
-  border-radius: 9999px;
-  background: #3b82f6;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.86rem;
+  font-weight: 700;
   border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.15s ease;
-  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
 }
 
 .undo-toast-btn:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.undo-toast-btn:active {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.undo-toast-timer-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
 .undo-toast-close {
@@ -3665,39 +4009,19 @@ input[type="number"]::-webkit-inner-spin-button {
   justify-content: center;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 1.15rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.25rem;
   line-height: 1;
-  padding: 0.2rem 0.35rem;
+  padding: 0.55rem 0.85rem;
   cursor: pointer;
-  border-radius: 50%;
   flex-shrink: 0;
-  transition: color 0.15s ease, background 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .undo-toast-close:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.undo-toast-timer-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  background: #38bdf8;
-  width: 100%;
-  transform-origin: left center;
-  animation: timerCountdown 5s linear forwards;
-}
-
-@keyframes timerCountdown {
-  from {
-    width: 100%;
-  }
-  to {
-    width: 0%;
-  }
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .hidden {
@@ -3711,12 +4035,51 @@ input[type="number"]::-webkit-inner-spin-button {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 1.6rem 1.2rem;
-  border-radius: var(--radius-sm);
+  padding: 2.5rem 1.25rem;
+  border-radius: var(--radius-md);
   background: var(--input-bg);
   border: 1px dashed var(--card-border-strong);
-  gap: 0.35rem;
+  gap: 0.45rem;
   margin: 0.35rem 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Remove double nested box in table-card and bento-widget */
+.table-card .empty-state-card,
+.bento-widget .empty-state-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 1.85rem 1.25rem !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+}
+
+/* Consistent full-width glass containers across all tabs matching Recurring Bills */
+.tab-view > .table-card,
+.tab-view > .bills-grid-cards,
+#tab-bills .bills-grid-cards,
+#tab-bills .empty-state-card {
+  width: 100% !important;
+  min-height: 280px;
+  box-sizing: border-box;
+}
+
+#tab-bills .empty-state-card {
+  background: var(--card-bg) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: var(--card-radius, 16px) !important;
+  box-shadow: none !important;
+  padding: 3rem 1.25rem !important;
+  min-height: 280px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .empty-state-title {
@@ -3745,13 +4108,15 @@ input[type="number"]::-webkit-inner-spin-button {
 
 @media (max-width: 768px) {
   .bento-row-kpi {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.65rem;
   }
 }
 
 @media (max-width: 480px) {
   .bento-row-kpi {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.5rem;
   }
 }
 
@@ -3772,13 +4137,14 @@ input[type="number"]::-webkit-inner-spin-button {
   .sidebar {
     position: fixed;
     top: 0;
-    left: -290px;
-    width: 265px;
+    left: -300px;
+    width: 275px;
     height: 100dvh;
     background: var(--bg-elevated);
     border-right: none !important;
     box-shadow: none !important;
-    transition: left 0.2s ease;
+    z-index: 1000 !important;
+    transition: left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .sidebar.open {
     left: 0;
@@ -3789,35 +4155,126 @@ input[type="number"]::-webkit-inner-spin-button {
   .mobile-menu-btn {
     display: inline-flex;
   }
+  .mobile-menu-btn .material-symbols-rounded {
+    font-size: 28px !important;
+  }
   .sidebar-open-btn {
     display: none !important;
   }
   .top-header {
-    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    position: sticky;
     top: 0;
-    padding: 0.75rem 0.5rem;
+    z-index: 80;
+    padding: 2rem 0.75rem 0.75rem !important;
+    padding-top: max(2rem, calc(env(safe-area-inset-top, 0px) + 1.35rem)) !important;
+    background: var(--bg-primary);
+    width: 100%;
+    margin-bottom: 0.35rem;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-left: auto;
+    justify-content: flex-end;
+    flex-shrink: 0;
   }
   .header-center {
     order: 3;
     max-width: 100%;
     flex: 1 1 100%;
   }
+  .header-search-container {
+    position: static;
+  }
+  .search-slide-expand-wrap {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0.5rem;
+    right: 0.5rem;
+    width: calc(100% - 1rem);
+    max-width: calc(100vw - 1rem);
+    transform: none;
+    z-index: 150;
+    box-shadow: none !important;
+    background: var(--bg-elevated);
+    border: 1px solid var(--accent-sage);
+    border-radius: var(--radius-ctl, 10px);
+    animation: searchSlideDown 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes searchSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
   .view-header {
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.5rem 0.1rem 0.9rem 0.1rem !important;
+    width: 100% !important;
   }
   .view-actions {
-    width: 100%;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.45rem !important;
+    margin-left: auto !important;
+    width: auto !important;
+    flex-wrap: nowrap !important;
+  }
+  #tab-bills .view-actions #billsPushReminderBtn span:not(.material-symbols-rounded),
+  #tab-bills .view-actions #billsExportIcsBtn span:not(.material-symbols-rounded),
+  #tab-bills .view-actions #viewCompanyDetailsBtn span:not(.material-symbols-rounded) {
+    display: none;
+  }
+  #tab-bills .view-actions .btn-outline {
+    padding: 0.5rem 0.65rem !important;
   }
 }
 
 @media (max-width: 680px) {
-  .quick-add-kpi-grid,
   .form-grid,
   .breakdown-grid,
   .custom-splits-grid,
   .report-summary-grid {
     grid-template-columns: 1fr;
+  }
+  .quick-add-kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.5rem;
+  }
+  .q-kpi-card {
+    padding: 1rem 0.35rem !important;
+    gap: 0.45rem !important;
+  }
+  .q-kpi-label {
+    font-size: 0.85rem !important;
+  }
+  .q-kpi-icon-wrap svg,
+  .q-kpi-icon-wrap .material-symbols-rounded {
+    font-size: 36px !important;
+    width: 36px;
+    height: 36px;
   }
   .form-group.span-2 {
     grid-column: span 1;
@@ -3839,18 +4296,56 @@ input[type="number"]::-webkit-inner-spin-button {
     max-height: 92dvh;
     border-radius: var(--card-radius);
   }
+  .fab-stack {
+    right: clamp(1.5rem, 8vw, 3rem) !important;
+    bottom: calc(2.8rem + env(safe-area-inset-bottom, 0px)) !important;
+    gap: 0.55rem !important;
+  }
+  .fab-action-btn,
+  .fab-search-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .fab-action-btn .material-symbols-rounded,
+  .fab-search-btn .material-symbols-rounded {
+    font-size: 22px;
+  }
   .fab-quick-add {
-    right: calc(2.5rem + env(safe-area-inset-right, 0px));
-    bottom: calc(1.75rem + env(safe-area-inset-bottom, 0px));
-    width: 56px;
-    height: 56px;
+    width: 54px;
+    height: 54px;
     padding: 0;
   }
   .fab-quick-add svg,
   .fab-quick-add .material-symbols-rounded {
-    width: 28px;
-    height: 28px;
-    font-size: 28px;
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+  }
+  .trip-mode-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+  }
+  .trip-mode-stats {
+    gap: 0.3rem;
+  }
+  .trip-stat-chip {
+    padding: 0.35rem 0.5rem;
+    min-width: 65px;
+  }
+  .trip-stat-val {
+    font-size: 0.95rem;
+  }
+  .trip-stat-label {
+    font-size: 0.6rem;
+  }
+  .trip-mode-actions {
+    gap: 0.3rem;
+  }
+  .trip-mode-actions .btn-primary {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.78rem;
   }
 }
 
@@ -3858,8 +4353,47 @@ input[type="number"]::-webkit-inner-spin-button {
   .live-date-badge {
     display: none;
   }
+  .top-header {
+    padding: 2rem 0.65rem 0.65rem !important;
+    padding-top: max(2rem, calc(env(safe-area-inset-top, 0px) + 1.35rem)) !important;
+    gap: 0.35rem;
+    margin-bottom: 0.25rem;
+  }
+  .header-left {
+    gap: 0.35rem;
+  }
   .header-right {
-    gap: 0.4rem;
+    gap: 0.45rem;
+    margin-left: auto;
+    justify-content: flex-end;
+  }
+  .header-icon-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .header-icon-btn svg,
+  .header-icon-btn .material-symbols-rounded {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+  }
+  .header-clock-date {
+    font-size: 0.65rem;
+  }
+  .header-clock-time {
+    font-size: 0.8rem;
+  }
+  .kpi-card {
+    padding: 0.75rem 0.65rem !important;
+  }
+  .kpi-value {
+    font-size: 1.15rem !important;
+  }
+  .kpi-label {
+    font-size: 0.68rem !important;
+  }
+  .kpi-header-actions .material-symbols-rounded {
+    font-size: 26px !important;
   }
   .greeting-title {
     font-size: 1rem;
@@ -3897,8 +4431,9 @@ input[type="number"]::-webkit-inner-spin-button {
     gap: 0.7rem;
   }
   .top-header {
-    padding: 0.6rem 0.45rem;
-    gap: 0.4rem;
+    padding: 1.85rem 0.45rem 0.55rem !important;
+    padding-top: max(1.85rem, calc(env(safe-area-inset-top, 0px) + 1.35rem)) !important;
+    gap: 0.35rem;
   }
   .header-left {
     gap: 0.4rem;
@@ -4140,25 +4675,26 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
   margin-bottom: 1.25rem;
+  width: 100%;
 }
 
 .trip-mode-stats {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
-  flex-wrap: wrap;
+  gap: 0.65rem;
+  flex-shrink: 0;
 }
 
 .trip-stat-chip {
   display: flex;
   flex-direction: column;
-  padding: 0.6rem 1.15rem;
+  padding: 0.5rem 0.85rem;
   background: var(--input-bg);
   border-radius: var(--radius-ctl, 6px);
-  min-width: 110px;
+  min-width: 90px;
   border: none !important;
 }
 
@@ -4183,7 +4719,8 @@ input[type="number"]::-webkit-inner-spin-button {
 .trip-mode-actions {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .trip-checklist-hint {
@@ -4612,9 +5149,45 @@ input[type="number"]::-webkit-inner-spin-button {
 /* ==========================================================================
    EXPANDED ACTIVITY MODULE & CONTAINERS
    ========================================================================== */
+#tab-activity .view-header {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+#tab-activity .view-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.45rem !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+#activityCategoryFilter,
+.filter-select {
+  flex: 0 1 auto !important;
+  min-width: 90px !important;
+  max-width: 160px !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  font-size: 0.82rem !important;
+  padding: 0.46rem 1.6rem 0.46rem 0.65rem !important;
+  box-sizing: border-box !important;
+}
+
+#activityExportPdfBtn {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
 #tab-activity .bento-widget {
-  min-height: 60vh;
-  padding: 1.5rem 1.65rem;
+  min-height: auto;
+  padding: 1.25rem 1.45rem;
 }
 
 #tab-activity .transaction-log-list {
@@ -4632,7 +5205,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .flatpickr-calendar.dark {
   background: var(--bg-elevated, #1a1e28) !important;
   border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12)) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+  box-shadow: none !important;
   border-radius: var(--radius-ctl, 10px) !important;
   font-family: inherit !important;
 }
@@ -4722,15 +5295,15 @@ input[type="number"]::-webkit-inner-spin-button {
   align-items: flex-end;
   gap: 0.75rem;
   width: 100%;
-}
-
-#expAmountControlItem {
-  display: block;
-  width: 100%;
-}
-
-#expAmountControlItem .expanding-control-tray {
-  width: 100%;
+}
+
+#expAmountControlItem {
+  display: block;
+  width: 100%;
+}
+
+#expAmountControlItem .expanding-control-tray {
+  width: 100%;
 }
 
 .expanding-circle-trigger-btn {
@@ -4887,9 +5460,8 @@ input[type="number"]::-webkit-inner-spin-button {
 /* ==========================================================================
    SHOPPING ITEMS EXPANDED CONTAINER & DISTINCTIVE STATUS / UNIT BADGES
    ========================================================================== */
-#tab-shopping .shopping-cards-list,
-#tab-shopping .bento-widget {
-  min-height: 480px;
+#tab-shopping .shopping-cards-list {
+  min-height: auto;
 }
 
 .inv-quick-item {
@@ -4982,7 +5554,7 @@ html[data-theme="light"] .stock-unit-pill {
   width: min(600px, 92vw) !important;
   border-radius: 18px !important;
   background: var(--bg-elevated) !important;
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: none !important;
   border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12)) !important;
   padding: 0;
 }
@@ -5075,4 +5647,1382 @@ html[data-theme="light"] .stock-unit-pill {
 .palette-item-shortcut {
   font-size: 0.72rem;
   color: var(--text-muted);
+}
+
+/* Strict Global Outline and Border Reset for Pure Glassmorphism */
+*:focus,
+*:focus-visible,
+button:focus,
+button:focus-visible,
+input:focus,
+input:focus-visible,
+select:focus,
+select:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+a:focus,
+a:focus-visible,
+div:focus,
+div:focus-visible,
+article:focus,
+article:focus-visible,
+section:focus,
+section:focus-visible,
+dialog:focus,
+dialog:focus-visible,
+.glass-card,
+.kpi-card,
+.bento-widget,
+.admin-profile-card {
+  outline: none !important;
+  border: none;
+}
+
+/* Flat Clean Icons Across UI (No blur, drop-shadow, or off-center offset) */
+.material-symbols-rounded,
+.material-symbols-outlined,
+.material-icons,
+.material-icons-round {
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+.kpi-header-actions .material-symbols-rounded.kpi-icon-sage,
+.kpi-header-actions .material-symbols-rounded {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 0 !important;
+  color: #ffffff !important;
+  font-size: 24px !important;
+  filter: none !important;
+}
+
+.kpi-card:hover .kpi-header-actions .material-symbols-rounded {
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  color: #ffffff !important;
+}
+
+.q-kpi-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+  color: #60a5fa !important;
+  font-size: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 3D Glassmorphic Toast Notification matching #3483eb theme */
+.undo-toast-snackbar {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  padding: 0;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #4f96f7 0%, #3483eb 60%, #2570db 100%) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #ffffff;
+  box-shadow: none !important;
+  font-size: 0.86rem;
+  font-weight: 500;
+  overflow: hidden;
+  pointer-events: auto !important;
+  max-width: min(520px, calc(100vw - 2rem));
+  animation: undoToastEnter 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 1000;
+  border: none !important;
+  outline: none !important;
+}
+
+.undo-toast-text {
+  display: flex;
+  align-items: center;
+  padding: 0.55rem 0.95rem 0.55rem 1.25rem;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+.undo-toast-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  font-size: 0.86rem;
+  font-weight: 700;
+  border: none !important;
+  outline: none !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.25) !important;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.undo-toast-btn:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+.undo-toast-timer-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.undo-toast-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.undo-toast-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+
+/* ==========================================================================
+   FLAT & SOFT BUTTONS & COMPACT MOBILE VIEW (#02007d Navy Blue Theme)
+   ========================================================================== */
+
+#headerOverviewTitle {
+  display: none !important;
+}
+
+/* 1. Primary Buttons: Flat & Soft Solid Navy Blue (#02007d) */
+.btn-primary,
+.trip-mode-actions .btn-primary,
+#viewAddExpenseBtn,
+#viewAddShoppingItemBtn,
+#viewAddInventoryBtn,
+#viewAddBillBtn,
+#activityExportPdfBtn,
+#reportExportPdfBtn,
+#tripAddItemBtn,
+#btnFinishShoppingTrip,
+.btn-save-icon,
+button[type="submit"].btn-primary {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  padding: 0.52rem 1.1rem !important;
+  border-radius: var(--radius-ctl, 12px) !important;
+  border: none !important;
+  outline: none !important;
+  background: #02007d !important;
+  color: #ffffff !important;
+  font-family: inherit !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: background-color 0.16s ease, transform 0.16s ease, opacity 0.16s ease !important;
+}
+
+html[data-theme="dark"] .btn-primary,
+html[data-theme="dark"] .trip-mode-actions .btn-primary,
+html[data-theme="dark"] #viewAddExpenseBtn,
+html[data-theme="dark"] #viewAddShoppingItemBtn,
+html[data-theme="dark"] #viewAddInventoryBtn,
+html[data-theme="dark"] #viewAddBillBtn,
+html[data-theme="dark"] #activityExportPdfBtn,
+html[data-theme="dark"] #reportExportPdfBtn,
+html[data-theme="dark"] #tripAddItemBtn,
+html[data-theme="dark"] #btnFinishShoppingTrip,
+html[data-theme="dark"] .btn-save-icon,
+html[data-theme="dark"] button[type="submit"].btn-primary {
+  background: var(--accent-sage, #455ecb) !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] .btn-primary:hover,
+html[data-theme="dark"] .trip-mode-actions .btn-primary:hover,
+html[data-theme="dark"] #viewAddExpenseBtn:hover,
+html[data-theme="dark"] #viewAddShoppingItemBtn:hover,
+html[data-theme="dark"] #viewAddInventoryBtn:hover,
+html[data-theme="dark"] #viewAddBillBtn:hover,
+html[data-theme="dark"] #activityExportPdfBtn:hover,
+html[data-theme="dark"] #reportExportPdfBtn:hover,
+html[data-theme="dark"] .btn-save-icon:hover,
+html[data-theme="dark"] button[type="submit"].btn-primary:hover {
+  background: #546de0 !important;
+  transform: translateY(-1px) !important;
+  opacity: 0.96 !important;
+}
+
+html[data-theme="dark"] .btn-primary:active,
+html[data-theme="dark"] .trip-mode-actions .btn-primary:active,
+html[data-theme="dark"] .btn-save-icon:active,
+html[data-theme="dark"] button[type="submit"].btn-primary:active {
+  transform: translateY(0.5px) scale(0.98) !important;
+}
+
+/* 2. Secondary & Outline Buttons: Flat & Soft Dark */
+.btn-secondary,
+.btn-outline,
+#toggleShoppingTripModeBtn,
+#companyCancelEditBtn,
+#companyEditSelectBtn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  padding: 0.52rem 1rem !important;
+  border-radius: var(--radius-ctl, 12px) !important;
+  border: 1px solid var(--card-border-strong) !important;
+  outline: none !important;
+  background: #1c212c !important;
+  color: var(--text-primary) !important;
+  font-family: inherit !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: background-color 0.16s ease, transform 0.16s ease !important;
+}
+
+html[data-theme="light"] .btn-secondary,
+html[data-theme="light"] .btn-outline {
+  background: #e8ecf6 !important;
+  border: 1px solid var(--card-border) !important;
+  color: #02007d !important;
+  font-weight: 600 !important;
+}
+
+.btn-secondary:hover,
+.btn-outline:hover,
+#toggleShoppingTripModeBtn:hover,
+#companyEditSelectBtn:hover {
+  background: #252b39 !important;
+  transform: translateY(-1px) !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="light"] .btn-secondary:hover,
+html[data-theme="light"] .btn-outline:hover {
+  background: #dbe2f4 !important;
+  color: #02007d !important;
+}
+
+/* 3. Floating Action Buttons (FAB Stack): Brand Accent & Soft Dark */
+.fab-quick-add {
+  width: 54px !important;
+  height: 54px !important;
+  border-radius: 50% !important;
+  background: var(--accent-sage, #455ecb) !important;
+  color: #ffffff !important;
+  border: none !important;
+  outline: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: var(--shadow-card) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.16s ease, transform 0.16s ease !important;
+}
+
+html[data-theme="light"] .fab-quick-add {
+  background: #02007d !important;
+  box-shadow: var(--shadow-elevated) !important;
+}
+
+.fab-quick-add:hover {
+  background: #546de0 !important;
+  transform: translateY(-2px) scale(1.05) !important;
+}
+
+html[data-theme="light"] .fab-quick-add:hover {
+  background: #111a94 !important;
+}
+
+.fab-quick-add:active {
+  transform: scale(0.96) !important;
+}
+
+.fab-action-btn,
+.fab-search-btn,
+.fab-home-btn {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: #181d27 !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--card-border-strong) !important;
+  outline: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: var(--shadow-card) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.16s ease, transform 0.16s ease !important;
+}
+
+html[data-theme="light"] .fab-action-btn,
+html[data-theme="light"] .fab-search-btn,
+html[data-theme="light"] .fab-home-btn {
+  background: #e8ecf6 !important;
+  border: 1px solid var(--card-border) !important;
+  color: #02007d !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+.fab-action-btn:hover,
+.fab-search-btn:hover,
+.fab-home-btn:hover {
+  background: #232936 !important;
+  color: #ffffff !important;
+  transform: translateY(-1.5px) !important;
+}
+
+html[data-theme="light"] .fab-action-btn:hover,
+html[data-theme="light"] .fab-search-btn:hover,
+html[data-theme="light"] .fab-home-btn:hover {
+  background: #dbe2f4 !important;
+  color: #02007d !important;
+}
+
+/* 4. Header Icon Buttons, Search Circle, and Month Dropdown: Flat & Soft */
+.header-icon-btn,
+.sidebar-open-btn,
+.sidebar-close-btn,
+.mobile-menu-btn,
+.search-circle-btn,
+.search-close-btn,
+.month-dropdown-btn {
+  background: var(--input-bg) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-radius: 10px !important;
+  color: var(--text-primary) !important;
+  cursor: pointer !important;
+  transition: background-color 0.16s ease, transform 0.16s ease !important;
+}
+
+.header-icon-btn:hover,
+.mobile-menu-btn:hover,
+.search-circle-btn:hover,
+.search-close-btn:hover,
+.month-dropdown-btn:hover {
+  background: #1a2254 !important;
+  transform: translateY(-1px) !important;
+}
+
+html[data-theme="light"] .header-icon-btn:hover,
+html[data-theme="light"] .mobile-menu-btn:hover,
+html[data-theme="light"] .search-circle-btn:hover,
+html[data-theme="light"] .search-close-btn:hover,
+html[data-theme="light"] .month-dropdown-btn:hover {
+  background: #dbe2f4 !important;
+  color: #02007d !important;
+}
+
+/* 5. Action Icons on List/Table Items */
+.btn-action-icon,
+.btn-action-edit,
+.btn-action-delete,
+.company-building-toggle-btn,
+.icon-btn-subtle {
+  background: var(--input-bg) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: background-color 0.16s ease, transform 0.16s ease !important;
+}
+
+.btn-action-edit:hover {
+  background: #1a2254 !important;
+  color: #5364fc !important;
+}
+
+.btn-action-delete:hover {
+  background: rgba(220, 38, 38, 0.2) !important;
+  color: #ff8585 !important;
+}
+
+/* 6. Dialog & Toast: Flat & Soft */
+.dialog-close-btn,
+.btn-notif-close-red,
+.undo-toast-btn,
+.undo-toast-close {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+  transition: background-color 0.16s ease !important;
+}
+
+.dialog-close-btn {
+  background: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-radius: 10px !important;
+}
+
+.dialog-close-btn:hover {
+  background: #1a2254 !important;
+}
+
+.btn-notif-close-red {
+  background: rgba(220, 38, 38, 0.18) !important;
+  color: #ff8585 !important;
+  border-radius: 10px !important;
+}
+
+.btn-notif-close-red:hover {
+  background: rgba(220, 38, 38, 0.3) !important;
+  color: #ffffff !important;
+}
+
+.undo-toast-snackbar {
+  background: #141c88 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* 7. Compact Mobile View Layout (Comprehensive Optimization) */
+@media (max-width: 680px) {
+  .top-header {
+    padding: 1.85rem 0.75rem 0.75rem !important;
+    padding-top: max(1.85rem, calc(env(safe-area-inset-top, 0px) + 1.35rem)) !important;
+    min-height: 52px !important;
+  }
+  #headerSearchContainer {
+    display: none !important;
+  }
+  .header-month-external-label {
+    display: none !important;
+  }
+  .header-month-indicator {
+    padding: 0.22rem 0.55rem !important;
+    border-radius: 8px !important;
+    font-size: 0.78rem !important;
+  }
+  .header-clock-date-widget {
+    gap: 0.25rem !important;
+  }
+  .header-clock-date {
+    font-size: 0.68rem !important;
+  }
+  .header-clock-time {
+    font-size: 0.76rem !important;
+  }
+  .header-icon-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .header-icon-btn .material-symbols-rounded {
+    font-size: 19px !important;
+  }
+  .main-content,
+  .tab-view {
+    padding: 0.6rem 0.75rem 6.5rem 0.75rem !important;
+  }
+  .bento-row-kpi {
+    gap: 0.45rem !important;
+    margin-bottom: 0.7rem !important;
+  }
+  .kpi-card {
+    padding: 0.75rem 0.85rem !important;
+    min-height: 80px !important;
+    border-radius: 12px !important;
+  }
+  .kpi-title {
+    font-size: 0.72rem !important;
+    margin-bottom: 0.15rem !important;
+  }
+  .kpi-value {
+    font-size: 1.22rem !important;
+    line-height: 1.2 !important;
+  }
+  .kpi-subtext {
+    font-size: 0.68rem !important;
+  }
+  .bento-widget,
+  .table-card {
+    padding: 0.85rem 0.95rem !important;
+    border-radius: 12px !important;
+    min-height: 220px !important;
+  }
+  .widget-title,
+  .view-title {
+    font-size: 1.05rem !important;
+  }
+  .view-header {
+    padding: 0.35rem 0 0.65rem 0 !important;
+    margin-bottom: 0.15rem !important;
+  }
+  .two-col-layout {
+    gap: 0.65rem !important;
+  }
+  .empty-state-card {
+    padding: 1.8rem 1rem !important;
+  }
+  #tab-activity .view-header {
+    gap: 0.35rem !important;
+  }
+  #tab-activity .view-actions {
+    max-width: calc(100% - 75px) !important;
+    gap: 0.35rem !important;
+  }
+  #activityCategoryFilter,
+  .filter-select {
+    max-width: 135px !important;
+    min-width: 80px !important;
+    font-size: 0.78rem !important;
+    padding: 0.38rem 1.45rem 0.38rem 0.5rem !important;
+  }
+  #activityExportPdfBtn {
+    padding: 0.42rem 0.8rem !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+
+/* ==========================================================================
+   ICON STYLING (White icons, no backgrounds except Plus, Home, Search)
+   ========================================================================== */
+.material-symbols-rounded {
+  color: #ffffff !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+svg:not(.fambam-logo):not(.empty-state-svg) {
+  fill: #ffffff !important;
+}
+
+/* Remove icon container backgrounds */
+.q-kpi-icon-wrap,
+.kpi-header-actions .material-symbols-rounded,
+.header-icon-btn,
+.sidebar-open-btn,
+.sidebar-close-btn,
+.mobile-menu-btn,
+.search-circle-btn,
+.search-close-btn,
+.company-building-toggle-btn,
+.icon-btn-subtle,
+.category-edit-toggle-btn,
+.btn-action-icon {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Only Plus Item, Home, and Search retain their button backgrounds */
+#fabQuickAddBtn {
+  background: var(--accent-sage, #455ecb) !important;
+  color: #ffffff !important;
+}
+html[data-theme="light"] #fabQuickAddBtn {
+  background: #02007d !important;
+  color: #ffffff !important;
+}
+
+#fabHomeBtn,
+#fabSearchBtn {
+  background: #181d27 !important;
+  border: 1px solid var(--card-border-strong) !important;
+}
+html[data-theme="light"] #fabHomeBtn,
+html[data-theme="light"] #fabSearchBtn {
+  background: #e8ecf6 !important;
+  border: 1px solid var(--card-border) !important;
+}
+html[data-theme="light"] #fabHomeBtn .material-symbols-rounded,
+html[data-theme="light"] #fabSearchBtn .material-symbols-rounded {
+  color: #02007d !important;
+}
+
+/* Trip mode container layout fix */
+.trip-mode-header {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.trip-mode-stats {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.trip-stat-chip {
+  padding: 0.35rem 0.55rem !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  box-sizing: border-box !important;
+}
+
+.trip-stat-val {
+  font-size: 0.9rem !important;
+  white-space: nowrap !important;
+}
+
+.trip-mode-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  flex-shrink: 0 !important;
+}
+
+.trip-mode-actions button {
+  padding: 0.45rem 0.75rem !important;
+  font-size: 0.76rem !important;
+  white-space: nowrap !important;
+}
+
+/* Company card delete icon button */
+.btn-company-card-del {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.5) !important;
+  border: none !important;
+  border-radius: 6px;
+  padding: 3px 5px;
+  cursor: pointer;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.16s ease;
+}
+.btn-company-card-del:hover {
+  background: rgba(220, 38, 38, 0.8) !important;
+}
+.company-card-43 {
+  position: relative !important;
+}
+
+
+/* Guarantees zero background and white color on all KPI card icons */
+.kpi-card .material-symbols-rounded,
+.kpi-card .kpi-header-actions .material-symbols-rounded,
+.kpi-card .kpi-icon-wrap,
+.kpi-card .kpi-icon-sage,
+.kpi-card:hover .material-symbols-rounded,
+.kpi-card:hover .kpi-header-actions .material-symbols-rounded,
+.kpi-card:hover .kpi-icon-wrap {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 0 !important;
+  color: #ffffff !important;
+  filter: none !important;
+}
+
+
+
+/* ==========================================================================
+   COMPLETE REMOVAL OF ALL SHADOWS ACROSS THE ENTIRE THEME (100% Flat & Clean)
+   ========================================================================== */
+*,
+*::before,
+*::after,
+*:hover,
+*:focus,
+*:active,
+body,
+header,
+main,
+section,
+article,
+div,
+button,
+a,
+input,
+select,
+textarea,
+dialog,
+.app-shell,
+.app-sidebar,
+.top-header,
+.glass-card,
+.kpi-card,
+.table-card,
+.bento-widget,
+.admin-profile-card,
+.fambam-dialog,
+.dialog-inner,
+.undo-toast-snackbar,
+.btn-primary,
+.btn-secondary,
+.btn-outline,
+.fab-quick-add,
+.fab-action-btn,
+.fab-search-btn,
+.fab-home-btn,
+.header-icon-btn,
+.mobile-menu-btn,
+.sidebar-open-btn,
+.search-circle-btn,
+.month-dropdown-btn,
+.material-symbols-rounded,
+#fabQuickAddBtn,
+#fabHomeBtn,
+#fabSearchBtn {
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+
+/* ==========================================================================
+   ICON REDESIGN AUDIT & OPTICAL CENTERING RULES
+   - Stroke weight: 400 (regular balanced, not thin, not thick)
+   - Corner style: Material Symbols Outlined (balanced, not sharp, not bubble rounded)
+   - Style consistency: 100% unified Outline (FILL 0, GRAD 0)
+   - Alignment: strict inline-flex mathematical centering (no off-center baseline shifts)
+   ========================================================================== */
+.fab-quick-add,
+.fab-action-btn,
+.fab-search-btn,
+.fab-home-btn,
+.header-icon-btn,
+.mobile-menu-btn,
+.sidebar-open-btn,
+.sidebar-close-btn,
+.search-circle-btn,
+.search-close-btn,
+.btn-action-icon,
+.btn-action-edit,
+.btn-action-delete,
+.btn-action-done,
+.kpi-header-actions,
+.kpi-card-collapse-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+/* Optical size & glyph centering per component */
+.nav-link .material-symbols-rounded,
+.nav-link .material-symbols-outlined,
+.nav-link .material-icons {
+  font-size: 22px !important;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.header-icon-btn .material-symbols-rounded,
+.header-icon-btn .material-symbols-outlined,
+.header-icon-btn .material-icons {
+  font-size: 20px !important;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20 !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.fab-quick-add .material-symbols-rounded,
+.fab-quick-add .material-symbols-outlined,
+.fab-quick-add .material-icons {
+  font-size: 26px !important;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.fab-action-btn .material-symbols-rounded,
+.fab-action-btn .material-symbols-outlined,
+.fab-action-btn .material-icons {
+  font-size: 20px !important;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20 !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.kpi-header-actions .material-symbols-rounded,
+.kpi-header-actions .material-symbols-outlined,
+.kpi-header-actions .material-icons {
+  font-size: 24px !important;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+  color: #ffffff !important;
+  background: transparent !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btn-action-icon .material-symbols-rounded,
+.btn-action-icon .material-symbols-outlined,
+.btn-action-icon .material-icons {
+  font-size: 16px !important;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20 !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btn .material-symbols-rounded,
+.btn-primary .material-symbols-rounded,
+.btn-secondary .material-symbols-rounded,
+.btn-outline .material-symbols-rounded {
+  font-size: 18px !important;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+}
+
+/* ==========================================================================
+   COMPACT EXPENSE TABLE & VIEW DETAILS
+   ========================================================================== */
+#tab-expenses .fambam-table {
+  width: 100%;
+}
+
+#tab-expenses .fambam-table th,
+#tab-expenses .fambam-table td {
+  padding: 0.55rem 0.75rem;
+  vertical-align: middle;
+}
+
+#tab-expenses .exp-name-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: block;
+  word-break: break-word;
+}
+
+#tab-expenses .exp-amount-num {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+#tab-expenses .exp-view-btn {
+  padding: 0.32rem 0.65rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  border-radius: var(--radius-ctl, 8px) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#tab-expenses .exp-view-btn:hover {
+  background: rgba(255, 255, 255, 0.14) !important;
+}
+
+@media (max-width: 680px) {
+  #tab-expenses .fambam-table th,
+  #tab-expenses .fambam-table td {
+    padding: 0.45rem 0.5rem !important;
+  }
+  #tab-expenses .exp-name-title {
+    font-size: 0.82rem !important;
+  }
+  #tab-expenses .exp-amount-num {
+    font-size: 0.84rem !important;
+  }
+  #tab-expenses .exp-view-btn {
+    padding: 0.28rem 0.52rem !important;
+    font-size: 0.72rem !important;
+  }
+}
+
+/* ==========================================================================
+   DESKTOP STEADY DASHBOARD (No-Scroll 1-Screen Viewport Fit)
+   ========================================================================== */
+@media (min-width: 921px) {
+  html, body {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  .app-shell {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  .sidebar {
+    height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .main-wrapper {
+    height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 1.5rem 0.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box;
+  }
+
+  .main-wrapper.desktop-dashboard-steady {
+    overflow-y: hidden !important;
+  }
+
+  .app-shell:has(#tab-dashboard.active) .main-wrapper {
+    overflow-y: hidden !important;
+  }
+
+  /* Desktop Dashboard: Locked steady inside viewport with 0 scrolling ONLY when active */
+  #tab-dashboard:not(.active) {
+    display: none !important;
+  }
+
+  #tab-dashboard.active {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 0.6rem !important;
+    padding-bottom: 0.25rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Compact Containers for All Modules (Matching Small Bills Container) */
+  .tab-view.active {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    flex: 0 0 auto !important;
+  }
+
+  .tab-view > .table-card,
+  .tab-view > .bills-grid-cards,
+  .tab-view > .bento-widget,
+  .tab-view > #printableReportArea {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    flex: 0 0 auto !important;
+  }
+
+  /* Compact Top Header on Desktop */
+  .top-header {
+    padding: 0.65rem 0.5rem 0.35rem !important;
+    margin-top: 0.15rem !important;
+    min-height: 44px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Sleek, Full-Width Compact KPI Cards on Desktop */
+  .bento-row-kpi {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 0.55rem !important;
+    flex-shrink: 0 !important;
+    margin-bottom: 0.15rem !important;
+  }
+
+  .kpi-card {
+    padding: 0.65rem 0.95rem !important;
+    border-radius: 12px !important;
+    gap: 0.25rem !important;
+    min-height: 70px !important;
+  }
+
+  .kpi-card-top {
+    font-size: 0.72rem !important;
+  }
+
+  .kpi-label {
+    font-size: 0.74rem !important;
+    font-weight: 600 !important;
+  }
+
+  .kpi-card-top .material-symbols-rounded {
+    font-size: 18px !important;
+  }
+
+  .kpi-value {
+    font-size: 1.25rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .kpi-footer {
+    margin-top: 0.05rem !important;
+  }
+
+  .kpi-subtext {
+    font-size: 0.66rem !important;
+  }
+
+  .predictive-budget-wrap {
+    margin: 0.1rem 0 !important;
+  }
+
+  .predictive-budget-bar-bg {
+    height: 4px !important;
+  }
+
+  .predictive-budget-labels {
+    font-size: 0.65rem !important;
+  }
+
+  /* Full-Width Compact Breakdown Widget on Desktop */
+  .bento-row-middle {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .bento-row-middle .bento-widget {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 12px !important;
+    gap: 0.45rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+  }
+
+  .widget-title {
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+  }
+
+  .breakdown-grid {
+    grid-template-columns: 145px minmax(0, 1fr) !important;
+    gap: 1.25rem !important;
+    align-items: center !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+  }
+
+  .donut-chart-container {
+    width: 130px !important;
+    height: 130px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .donut-center-amount {
+    font-size: 0.88rem !important;
+  }
+
+  .donut-center-caption {
+    font-size: 0.62rem !important;
+  }
+
+  .category-bars-list {
+    gap: 0.25rem !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-evenly !important;
+  }
+
+  .cat-bar-item {
+    gap: 0.1rem !important;
+  }
+
+  .cat-bar-header {
+    font-size: 0.74rem !important;
+  }
+
+  .cat-bar-name {
+    font-size: 0.74rem !important;
+    gap: 0.4rem !important;
+  }
+
+  .cat-dot {
+    width: 7px !important;
+    height: 7px !important;
+  }
+
+  .cat-bar-numbers {
+    font-size: 0.74rem !important;
+  }
+
+  .progress-track {
+    height: 4px !important;
+    border-radius: 2px !important;
+  }
+}
+
+/* ==========================================================================
+   SMOOTH TRANSITIONS & MICRO-INTERACTIONS SUITE
+   ========================================================================== */
+
+/* 1. Buttery Smooth Tab Switch */
+.tab-view.active {
+  animation: tabFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+/* 2. Interactive KPI Cards & Bento Widgets Lift */
+.kpi-card,
+.bento-widget,
+.table-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, opacity 0.2s ease !important;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px) !important;
+}
+
+.kpi-card:active {
+  transform: scale(0.985) !important;
+}
+
+/* 3. Tactile Button Click & Hover Feedback */
+.btn-primary,
+.btn-secondary,
+.btn-outline,
+.btn-put-expense,
+.fab-quick-add,
+.fab-action-btn,
+.fab-search-btn,
+.fab-home-btn,
+.header-icon-btn,
+.mobile-menu-btn,
+.search-circle-btn,
+.month-dropdown-btn {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.18s ease, opacity 0.18s ease, color 0.18s ease !important;
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.btn-outline:active,
+.btn-put-expense:active,
+.fab-quick-add:active,
+.fab-action-btn:active,
+.fab-search-btn:active,
+.fab-home-btn:active,
+.header-icon-btn:active,
+.month-dropdown-btn:active {
+  transform: scale(0.94) !important;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-outline:hover {
+  transform: translateY(-1px) !important;
+}
+
+/* 4. Smooth Category Progress Bar & Budget Fills */
+.progress-fill,
+.predictive-budget-fill {
+  transition: width 0.75s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 5. Smooth Sidebar Nav Link Transitions */
+.sidebar-nav .nav-link {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.18s ease, color 0.18s ease !important;
+}
+
+.sidebar-nav .nav-link:hover {
+  transform: translateX(4px) !important;
+}
+
+.sidebar-nav .nav-link:active {
+  transform: scale(0.98) !important;
+}
+
+/* 6. Smooth Table Row & List Item Hover */
+.fambam-table tbody tr {
+  transition: background-color 0.18s ease !important;
+}
+
+.inv-quick-item,
+.bill-row-item,
+.tx-log-item {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.18s ease !important;
+}
+
+.inv-quick-item:hover,
+.bill-row-item:hover,
+.tx-log-item:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 7. Dropdown Fade & Slide Transition */
+@keyframes dropdownSlideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.month-dropdown-menu:not(.hidden),
+.search-dropdown:not(.hidden) {
+  animation: dropdownSlideFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+
+/* ==========================================================================
+   SURFACE ELEVATION & SHADOW ARCHITECTURE (Dark vs Light Distinct Shadows)
+   - Dark mode: contact depth + subtle hairline border, zero muddy blur
+   - Light mode: soft diffused atmospheric ambient shadows
+   - Soft whites: gentle foreground contrast for relaxed reading
+   ========================================================================== */
+html[data-theme="dark"] .kpi-card,
+html[data-theme="dark"] .table-card,
+html[data-theme="dark"] .bento-widget,
+html[data-theme="dark"] .chart-card,
+html[data-theme="dark"] .admin-profile-card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+html[data-theme="dark"] .kpi-card:hover {
+  background: var(--card-bg-hover) !important;
+  border-color: var(--card-border-strong) !important;
+}
+
+html[data-theme="dark"] .fambam-dialog .dialog-inner {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--card-border-strong) !important;
+  box-shadow: var(--shadow-modal) !important;
+}
+
+html[data-theme="light"] .kpi-card,
+html[data-theme="light"] .table-card,
+html[data-theme="light"] .bento-widget,
+html[data-theme="light"] .chart-card,
+html[data-theme="light"] .admin-profile-card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+html[data-theme="light"] .kpi-card:hover {
+  background: var(--card-bg-hover) !important;
+  border-color: var(--card-border-strong) !important;
+}
+
+html[data-theme="light"] .fambam-dialog .dialog-inner {
+  background: #ffffff !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: var(--shadow-modal) !important;
+}
+
+/* Light mode icon color adaptation */
+html[data-theme="light"] .material-symbols-rounded,
+html[data-theme="light"] .material-symbols-outlined,
+html[data-theme="light"] .material-icons {
+  color: var(--icon-color, #02007d) !important;
+}
+
+/* Elements with solid brand backgrounds keep crisp white icons */
+.btn-primary .material-symbols-rounded,
+.btn-primary .material-symbols-outlined,
+.btn-primary .material-icons,
+#fabQuickAddBtn .material-symbols-rounded,
+#fabQuickAddBtn .material-symbols-outlined {
+  color: #ffffff !important;
 }

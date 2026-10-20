@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>FamBam — Smart Household Expense, Inventory &amp; Bill Management</title>
 
-  <!-- Google Fonts: Plus Jakarta Sans & Varela Round & Material Symbols Rounded -->
+  <!-- Google Fonts: Open Sans & Material Symbols Outlined -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Varela+Round&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400..700,0..1,-50..200" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
 
   <!-- PWA Manifest & App Meta -->
   <link rel="manifest" href="/manifest.webmanifest" />
@@ -22,7 +23,7 @@
   <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
 
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="/static/css/style.css?v=20261020_6" />
+  <link rel="stylesheet" href="/static/css/style.css?v=20261020_41" />
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
@@ -33,7 +34,7 @@
   <!-- html2pdf.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
   <!-- Main Application JS -->
-  <script src="/static/js/main.js?v=20261020_6" defer></script>
+  <script src="/static/js/main.js?v=20261020_41" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -42,8 +43,7 @@
          ========================================== -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
-        <div class="brand-text" style="display:flex;flex-direction:row;align-items:center;gap:0.65rem;">
-          <img src="/static/icons/logo.png" alt="FamBam" class="app-brand-logo" width="30" height="30" />
+        <div class="brand-text">
           <span class="brand-title">FamBam</span>
         </div>
         <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" title="Close sidebar" aria-label="Close sidebar">
@@ -113,7 +113,7 @@
             <span class="material-symbols-rounded">menu</span>
           </button>
           <div class="header-title-date-wrap">
-            <h1 class="greeting-title" id="headerOverviewTitle">Overview</h1>
+            <h1 class="greeting-title hidden" id="headerOverviewTitle" style="display: none;"></h1>
             
             <!-- Month Label Outside Box + Expenses Month Filter -->
             <div class="header-month-outer-wrap">
@@ -169,11 +169,12 @@
             <span class="notif-badge hidden" id="notifBadgeCount">0</span>
           </button>
 
-          <!-- Dark & Light Mode Toggle (Dark Mode moon, Light Mode lightbulb) -->
-          <button type="button" class="header-icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
-            <span id="themeMoonIcon" class="material-symbols-rounded">dark_mode</span>
-            <span id="themeBulbIcon" class="material-symbols-rounded hidden">light_mode</span>
+          <!-- Theme Toggle Switch (Dark / Light Mode) -->
+          <button type="button" class="header-icon-btn" id="themeToggleBtn" title="Switch Theme Mode" aria-label="Switch Theme Mode">
+            <span class="material-symbols-rounded" id="themeToggleIcon">light_mode</span>
           </button>
+
+
         </div>
       </header>
 
@@ -318,7 +319,7 @@
            TAB 2: EXPENSES (FULL CRUD)
            ========================================== -->
       <section id="tab-expenses" class="tab-view">
-        <div class="view-header glass-card">
+        <div class="view-header">
           <div>
             <h2 class="view-title">Expenses</h2>
           </div>
@@ -335,13 +336,9 @@
             <table class="fambam-table">
               <thead>
                 <tr>
-                  <th>Date</th>
                   <th>Name</th>
-                  <th>Qty</th>
-                  <th>Category</th>
-                  <th>Receipt</th>
                   <th class="text-right">Amount</th>
-                  <th class="text-right">Actions</th>
+                  <th class="text-right">Details</th>
                 </tr>
               </thead>
               <tbody id="fullExpensesTableBody"></tbody>
@@ -354,18 +351,18 @@
            TAB 3: SHOPPING
            ========================================== -->
       <section id="tab-shopping" class="tab-view">
-        <div class="view-header glass-card">
+        <div class="view-header">
           <div>
             <h2 class="view-title">Shopping</h2>
           </div>
           <div class="view-actions">
+            <button type="button" class="btn-primary" id="viewAddShoppingItemBtn">
+              <span class="material-symbols-rounded">add</span>
+              <span>Item</span>
+            </button>
             <button type="button" class="btn-secondary" id="toggleShoppingTripModeBtn" title="In-Store Shopping Checklist Mode">
               <span class="material-symbols-rounded">directions_car</span>
               <span id="shoppingTripModeBtnText">Trip Mode</span>
-            </button>
-            <button type="button" class="btn-primary" id="viewAddInventoryBtn">
-              <span class="material-symbols-rounded">add</span>
-              <span>Item</span>
             </button>
           </div>
         </div>
@@ -384,9 +381,9 @@
               </div>
             </div>
             <div class="trip-mode-actions">
-              <button type="button" class="btn-primary" id="tripAddItemBtn" title="Add Item">
+              <button type="button" class="btn-primary" id="tripAddItemBtn" title="Add to Cart">
                 <span class="material-symbols-rounded">add</span>
-                <span>Item</span>
+                <span>Add Cart</span>
               </button>
               <button type="button" class="btn-primary" id="btnFinishShoppingTrip" title="Finish Trip">
                 <span class="material-symbols-rounded">check</span>
@@ -400,27 +397,31 @@
           <div class="trip-checklist-items" id="tripChecklistItems"></div>
         </div>
 
-        <div class="two-col-layout" id="shoppingStandardLayout">
-          <!-- Left: Shopping List -->
-          <div class="glass-card bento-widget">
-            <div class="widget-header">
-              <div>
-                <h3 class="widget-title">Shopping</h3>
-              </div>
-              <span class="status-badge badge-terracotta hidden" id="shoppingActiveCountBadge"></span>
-            </div>
-            <div id="activeShoppingListContainer" class="shopping-cards-list"></div>
-          </div>
+        <!-- Shopping List Standard Container (Full-width matching Recurring Bills) -->
+        <div class="glass-card table-card" id="shoppingStandardLayout">
+          <div id="activeShoppingListContainer" class="shopping-cards-list"></div>
+        </div>
+      </section>
 
-          <!-- Right: Inventory -->
-          <div class="glass-card bento-widget">
-            <div class="widget-header">
-              <div>
-                <h3 class="widget-title">Inventory</h3>
-              </div>
-            </div>
-            <div id="fullInventoryListContainer" class="inventory-full-list"></div>
+      <!-- ==========================================
+           TAB: INVENTORY
+           ========================================== -->
+      <section id="tab-inventory" class="tab-view">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Inventory</h2>
           </div>
+          <div class="view-actions">
+            <button type="button" class="btn-primary" id="viewAddInventoryBtn">
+              <span class="material-symbols-rounded">add</span>
+              <span>Item</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Inventory List Container (Full-width matching Recurring Bills) -->
+        <div class="glass-card table-card">
+          <div id="fullInventoryListContainer" class="inventory-full-list"></div>
         </div>
       </section>
 
@@ -428,7 +429,7 @@
            TAB 4: BILLS
            ========================================== -->
       <section id="tab-bills" class="tab-view">
-        <div class="view-header glass-card">
+        <div class="view-header">
           <div>
             <h2 class="view-title">Bills</h2>
           </div>
@@ -459,7 +460,7 @@
            TAB: ACTIVITY (TRANSACTION LOG / RECEIPT)
            ========================================== -->
       <section id="tab-activity" class="tab-view">
-        <div class="view-header glass-card">
+        <div class="view-header">
           <div>
             <h2 class="view-title">Activity</h2>
           </div>
@@ -468,13 +469,12 @@
               <option value="ALL">All Categories</option>
             </select>
             <button type="button" class="btn-primary" id="activityExportPdfBtn" title="Export PDF">
-              <span class="material-symbols-rounded">picture_as_pdf</span>
               <span>PDF</span>
             </button>
           </div>
         </div>
 
-        <div class="glass-card bento-widget">
+        <div class="glass-card table-card">
           <div class="transaction-log-list" id="activityTransactionList"></div>
         </div>
       </section>
@@ -483,13 +483,12 @@
            TAB 7: REPORTS
            ========================================== -->
       <section id="tab-reports" class="tab-view">
-        <div class="view-header glass-card">
+        <div class="view-header">
           <div>
             <h2 class="view-title">Reports</h2>
           </div>
           <div class="view-actions">
             <button type="button" class="btn-primary" id="reportExportPdfBtn" title="Export PDF">
-              <span class="material-symbols-rounded">picture_as_pdf</span>
               <span>PDF</span>
             </button>
           </div>
@@ -536,11 +535,19 @@
   </div>
 
   <!-- ==========================================
-       FLOATING ACTION BUTTON (FAB)
+       FLOATING ACTION BUTTON (FAB STACK)
        ========================================== -->
-  <button type="button" class="fab-quick-add" id="fabQuickAddBtn" aria-label="Add" title="Add">
-    <span class="material-symbols-rounded">add</span>
-  </button>
+  <div class="fab-stack" id="fabStack">
+    <button type="button" class="fab-action-btn fab-home-btn" id="fabHomeBtn" aria-label="Home" title="Home">
+      <span class="material-symbols-rounded">home</span>
+    </button>
+    <button type="button" class="fab-action-btn fab-search-btn" id="fabSearchBtn" aria-label="Search" title="Search">
+      <span class="material-symbols-rounded">search</span>
+    </button>
+    <button type="button" class="fab-quick-add" id="fabQuickAddBtn" aria-label="Add" title="Add">
+      <span class="material-symbols-rounded">add</span>
+    </button>
+  </div>
 
   <!-- ==========================================
        MODALS (<dialog closedby="any">)
@@ -807,10 +814,7 @@
           <h3 id="convertModalTitle" class="dialog-title">Restock</h3>
           <p class="dialog-subtitle hidden"></p>
         </div>
-        <button type="button" class="dialog-close-btn" data-close-dialog="convertShoppingModal" aria-label="Close dialog">
-          <span class="material-symbols-rounded">close</span>
-          <span>Close</span>
-        </button>
+        <button type="button" class="dialog-close-btn" data-close-dialog="convertShoppingModal" aria-label="Close dialog">Close</button>
       </div>
 
       <form id="convertShoppingForm" enctype="multipart/form-data">
@@ -859,10 +863,7 @@
         <div>
           <h3 id="membersModalTitle" class="dialog-title">Profile</h3>
         </div>
-        <button type="button" class="dialog-close-btn" data-close-dialog="membersModal" aria-label="Close">
-          <span class="material-symbols-rounded">close</span>
-          <span>Close</span>
-        </button>
+        <button type="button" class="dialog-close-btn" data-close-dialog="membersModal" aria-label="Close">Close</button>
       </div>
 
       <form id="profileForm" class="update-profile-form" enctype="multipart/form-data">
@@ -941,10 +942,7 @@
           <h3 id="receiptModalTitle" class="dialog-title">Receipt</h3>
           <p id="receiptModalSubtitle" class="dialog-subtitle"></p>
         </div>
-        <button type="button" class="dialog-close-btn" data-close-dialog="receiptModal" aria-label="Close dialog">
-          <span class="material-symbols-rounded">close</span>
-          <span>Close</span>
-        </button>
+        <button type="button" class="dialog-close-btn" data-close-dialog="receiptModal" aria-label="Close dialog">Close</button>
       </div>
       <div class="receipt-image-container">
         <img id="receiptLightboxImg" src="" alt="Receipt" />
@@ -964,10 +962,7 @@
           <h3 id="kpiDetailTitle" class="dialog-title">Details</h3>
           <p id="kpiDetailSubtitle" class="dialog-subtitle"></p>
         </div>
-        <button type="button" class="dialog-close-btn" data-close-dialog="kpiDetailModal" aria-label="Close dialog">
-          <span class="material-symbols-rounded">close</span>
-          <span>Close</span>
-        </button>
+        <button type="button" class="dialog-close-btn" data-close-dialog="kpiDetailModal" aria-label="Close dialog">Close</button>
       </div>
       <div id="kpiDetailBody" class="kpi-detail-body"></div>
     </div>
@@ -981,10 +976,7 @@
           <h3 id="confirmModalTitle" class="dialog-title">Confirm Action</h3>
           <p id="confirmModalBody" class="dialog-subtitle"></p>
         </div>
-        <button type="button" class="dialog-close-btn" data-close-dialog="confirmModal" aria-label="Close dialog">
-          <span class="material-symbols-rounded">close</span>
-          <span>Close</span>
-        </button>
+        
       </div>
       <div class="dialog-actions">
         <button type="button" class="btn-secondary" data-close-dialog="confirmModal">Cancel</button>
@@ -1039,10 +1031,7 @@
         <div>
           <h3 id="companyDetailsTitle" class="dialog-title">Company Details</h3>
         </div>
-        <button type="button" class="dialog-close-btn" data-close-dialog="companyDetailsModal" title="Close" aria-label="Close">
-          <span class="material-symbols-rounded">close</span>
-          <span>Close</span>
-        </button>
+        <button type="button" class="dialog-close-btn" data-close-dialog="companyDetailsModal" title="Close" aria-label="Close">Close</button>
       </div>
 
       <!-- Add / Edit Company Form (Photo on right side of name) -->
@@ -1071,6 +1060,7 @@
 
         <div class="dialog-actions" style="margin-top: 1rem;">
           <button type="button" class="btn-secondary hidden" id="companyCancelEditBtn">Cancel edit</button>
+          <button type="button" class="btn-secondary hidden" id="companyDeleteBtn" style="color: #ff6b6b;" onclick="deleteCompanyDetailsFromForm()">Delete</button>
           <button type="submit" class="btn-primary btn-save-icon" id="companySubmitBtn" title="Save company" aria-label="Save company">
             <span class="material-symbols-rounded" style="font-size: 20px;">save</span>
           </button>
@@ -1097,6 +1087,24 @@
     </div>
   </dialog>
 
+  <!-- 10. Expense Full Details Modal (View complete purchase details, receipt, price) -->
+  <dialog id="expenseDetailsModal" class="fambam-dialog" closedby="any" aria-labelledby="expenseDetailsModalTitle">
+    <div class="dialog-inner" style="max-width: 480px;">
+      <div class="dialog-header">
+        <div>
+          <h3 id="expenseDetailsModalTitle" class="dialog-title">Expense Details</h3>
+        </div>
+        <button type="button" class="dialog-close-btn" data-close-dialog="expenseDetailsModal">Close</button>
+      </div>
+      <div class="expense-details-body" id="expenseDetailsModalBody" style="display:flex; flex-direction:column; gap:0.75rem; margin-top:1rem;">
+        <!-- Filled dynamically via main.js -->
+      </div>
+      <div class="dialog-actions" style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <button type="button" class="btn-secondary" id="expenseDetailsDeleteBtn" style="color:#ff6b6b;">Delete</button>
+        <button type="button" class="btn-primary" id="expenseDetailsEditBtn">Edit</button>
+      </div>
+    </div>
+  </dialog>
   <!-- Command Palette Modal (Ctrl + K Enhanced Power Actions) -->
   <dialog id="commandPaletteModal" class="fambam-dialog command-palette-dialog" closedby="any" aria-labelledby="paletteTitle">
     <div class="dialog-inner command-palette-inner">

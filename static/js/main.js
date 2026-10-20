@@ -18,106 +18,141 @@ const AppState = {
 };
 
 if (typeof Chart !== "undefined") {
-  Chart.defaults.font.family = "'Varela Round', sans-serif";
+  Chart.defaults.font.family = "'Open Sans', sans-serif";
 }
 
 const CATEGORY_COLORS = {
-  Essential: "#2563eb",
-  Condiments: "#b48a4e",
-  "Meat and Vegetables": "#64748b",
-  Bills: "#9e5a5a",
+  "Housing & Shelter": "#02007d",
+  "Utilities & Connectivity": "#1e64cc",
+  "Food & Household Groceries": "#2e7d32",
+  "Home Maintenance & Upkeep": "#e65100",
+  "Healthcare & Personal Care": "#c2185b",
+  "Transportation & Personal Lifestyle": "#6a1b9a",
+  "Miscellaneous": "#546e7a",
 };
 
 const STORE_COLORS = {
-  Palengke: "#2563eb",
-  Puregold: "#b48a4e",
-  Savemore: "#64748b",
-  "Mercury Drug": "#9e5a5a",
+  Palengke: "#02007d",
+  Puregold: "#e09f3e",
+  Savemore: "#48bb78",
+  "Mercury Drug": "#e06d75",
 };
 
 const HOUSEHOLD_CATEGORY_CATALOG = {
-  Essential: [
-    "Shampoo (Palmolive, Clear men)",
-    "Safeguard and silca",
-    "Powder",
-    "Bar sabon",
-    "Dishwashing liquid",
-    "Toothpaste",
-    "Deo (Milcu)",
-    "Sponge",
-    "Downy",
-    "Sanitary pad (Modes)",
+  "Housing & Shelter": [
+    "Rent / Bahay",
+    "Mortgage",
+    "Apartment",
+    "HOA Dues",
   ],
-  Condiments: [
-    "Suka",
-    "Toyo",
-    "Mantika",
-    "Sibuyas",
-    "Bawang",
-    "Paminta",
-    "Magic sarap",
-    "Asukal",
-    "Tomato",
-    "Sili",
+  "Utilities & Connectivity": [
+    "Meralco / Electricity",
+    "Maynilad / Water",
+    "LPG Gasul / Solane",
+    "PLDT / Converge Wifi",
+    "Globe / Smart Load",
+  ],
+  "Food & Household Groceries": [
     "Bigas",
-    "Kape (kopiko twin pack)",
-    "Water (jag)",
+    "Fish (Tilapia, Bangus)",
+    "Chicken (Manok)",
+    "Pork / Beef",
+    "Gulay at Prutas",
+    "Condiments (Toyo, Suka, Mantika)",
+    "Can foods (Sardinas, Tuna)",
+    "Itlog at Tinapay",
+    "Kape at Gatas",
   ],
-  "Meat and Vegetables": [
-    "Fish (tilapia, bangus, etc.)",
-    "Chicken (Adobo, tinola, pang halo sa gulay, etc.)",
-    "Pork (Adobo, sinigang, Pang halo sa gulay, etc.)",
-    "Gulay (Talong, Kangkong, Repolyo, Sitaw, kalabasa, potato, etc.)",
-    "Cucumber",
-    "Miswa",
-    "Odong",
-    "Can foods (sardinas, tuna)",
-    "Noodles (Lucky me, pancit canton)",
+  "Home Maintenance & Upkeep": [
+    "Dishwashing liquid (Joy)",
+    "Bar sabon / Laundry Powder",
+    "Downy Fabcon",
+    "Zonrox Bleach",
+    "Sponge / Walis / Mop",
+    "Home Repairs / Hardware",
   ],
-  Bills: [
-    "Electric",
-    "Water",
-    "Gas",
-    "House (6k)",
+  "Healthcare & Personal Care": [
+    "Shampoo (Palmolive, Clear)",
+    "Safeguard / Bath Soap",
+    "Toothpaste (Colgate)",
+    "Deodorant (Milcu, Rexona)",
+    "Sanitary pad (Modess)",
+    "Gamot / Vitamins / First Aid",
+  ],
+  "Transportation & Personal Lifestyle": [
+    "Pamasahe (Jeep, Tricycle, Bus)",
+    "Gasolina / Diesel",
+    "Toll / RFID (Easytrip, Autosweep)",
+    "Grab / Taxi / Angkas",
+    "Motor / Car Wash & Maintenance",
+  ],
+  "Miscellaneous": [
+    "Other Household Expenses",
   ],
 };
 
 const ITEM_KEYWORD_TO_CATEGORY = {
-  Essential: [
-    "shampoo", "palmolive", "clear men", "clear", "safeguard", "silca", "powder",
-    "bar sabon", "sabon", "soap", "dishwashing", "joy", "toothpaste", "colgate",
-    "deo", "deodorant", "milcu", "rexona", "sponge", "downy", "fabcon", "ariel",
-    "tide", "surf", "breeze", "zonrox", "bleach", "sanitary", "modes", "modess",
-    "whisper", "charmee", "tissue", "alcohol", "cotton", "toothbrush", "lotion",
+  "Housing & Shelter": [
+    "house", "rent", "upa", "bahay", "mortgage", "apartment", "hoa",
+    "condo", "dues", "lease", "amortization", "6k",
   ],
-  Condiments: [
-    "suka", "vinegar", "toyo", "soy sauce", "patis", "mantika", "cooking oil", "oil",
-    "sibuyas", "onion", "bawang", "garlic", "luya", "ginger", "paminta", "pepper",
-    "magic sarap", "knorr", "sinigang mix", "asin", "salt", "asukal", "sugar",
-    "tomato", "tomato sauce", "ketchup", "catsup", "mayo", "mayonnaise", "oyster",
-    "sili", "chili", "bigas", "rice", "kape", "coffee", "kopiko", "nescafe",
-    "milo", "gatas", "milk", "creamer", "water (jag)", "jag", "mineral water",
-    "drinking water", "gallons",
+  "Utilities & Connectivity": [
+    "electric", "kuryente", "meralco", "water", "tubig", "maynilad",
+    "manila water", "primewater", "lpg", "gas", "gasul", "solane",
+    "internet", "wifi", "pldt", "converge", "globe", "smart", "dito",
+    "load", "cable", "cignal", "netflix", "utility", "bill",
   ],
-  "Meat and Vegetables": [
-    "fish", "isda", "tilapia", "bangus", "galunggong", "tulingan", "chicken", "manok",
-    "adobo", "tinola", "pork", "baboy", "beef", "baka", "karne", "meat", "sinigang",
-    "gulay", "vegetable", "talong", "kangkong", "repolyo", "cabbage", "sitaw",
-    "kalabasa", "squash", "potato", "patatas", "carrots", "cucumber", "pipino",
-    "kamatis", "pechay", "okra", "ampalaya", "sayote", "malunggay", "monggo",
-    "miswa", "odong", "bihon", "sotanghon", "canton", "pancit", "pasta", "spaghetti",
-    "can foods", "canned", "delata", "de lata", "sardinas", "sardines", "tuna",
-    "century", "corned beef", "argentina", "maling", "spam", "meatloaf",
-    "noodles", "lucky me", "pancit canton", "itlog", "egg", "eggs", "hotdog",
-    "tocino", "longganisa", "ulam", "tinapay", "bread",
+  "Food & Household Groceries": [
+    "bigas", "rice", "suka", "vinegar", "toyo", "soy sauce", "patis",
+    "mantika", "cooking oil", "oil", "sibuyas", "onion", "bawang", "garlic",
+    "luya", "ginger", "paminta", "pepper", "magic sarap", "knorr",
+    "sinigang mix", "asin", "salt", "asukal", "sugar", "tomato",
+    "ketchup", "mayo", "sili", "chili", "kape", "coffee", "kopiko",
+    "nescafe", "milo", "gatas", "milk", "water (jag)", "mineral water",
+    "jag", "fish", "isda", "tilapia", "bangus", "chicken", "manok",
+    "adobo", "tinola", "pork", "baboy", "beef", "baka", "karne",
+    "gulay", "vegetable", "talong", "kangkong", "repolyo", "sitaw",
+    "kalabasa", "potato", "patatas", "cucumber", "pipino", "kamatis",
+    "pechay", "okra", "ampalaya", "sayote", "malunggay", "monggo",
+    "miswa", "odong", "bihon", "canton", "pancit", "spaghetti",
+    "can foods", "canned", "delata", "sardinas", "tuna", "century",
+    "corned beef", "spam", "noodles", "lucky me", "itlog", "egg",
+    "hotdog", "tocino", "tinapay", "bread", "grocery", "food", "snack",
   ],
-  Bills: [
-    "electric", "kuryente", "meralco", "water bill", "maynilad", "manila water",
-    "primewater", "water", "tubig", "gas", "lpg", "gasul", "solane", "petron",
-    "house (6k)", "house", "rent", "upa", "bahay", "internet", "wifi", "pldt",
-    "converge", "globe", "smart", "load", "cable", "netflix", "bill", "dues",
+  "Home Maintenance & Upkeep": [
+    "dishwashing", "joy", "bar sabon", "powder", "tide", "surf",
+    "ariel", "breeze", "downy", "fabcon", "bleach", "zonrox",
+    "sponge", "scrub", "walis", "mop", "trash bag", "bulb",
+    "repair", "faucet", "gripo", "hardware", "paint", "cleaning", "upkeep",
+  ],
+  "Healthcare & Personal Care": [
+    "shampoo", "palmolive", "clear men", "clear", "safeguard", "silca",
+    "body wash", "bath soap", "toothpaste", "colgate", "close up",
+    "toothbrush", "deo", "deodorant", "milcu", "rexona", "sanitary",
+    "modes", "modess", "whisper", "napkin", "tissue", "wet wipes",
+    "alcohol", "cotton", "lotion", "gamot", "medicine", "biogesic",
+    "neozep", "paracetamol", "vitamins", "band aid", "betadine",
+    "doctor", "clinic", "dental",
+  ],
+  "Transportation & Personal Lifestyle": [
+    "pamasahe", "fare", "jeep", "jeepney", "tricycle", "trike", "bus",
+    "mrt", "lrt", "grab", "taxi", "angkas", "joyride", "gasoline",
+    "diesel", "petron", "shell", "caltex", "parking", "toll", "rfid",
+    "easytrip", "autosweep", "car wash", "motor", "motorcycle", "gym",
+    "cinema", "movie", "shopping", "clothes", "damit", "shoes",
   ],
 };
+
+function detectCategoryForItem(itemName) {
+  const norm = (itemName || "").toLowerCase().trim();
+  if (!norm) return "Miscellaneous";
+  for (const [cat, keywords] of Object.entries(ITEM_KEYWORD_TO_CATEGORY)) {
+    if (keywords.some((kw) => norm.includes(kw))) {
+      return cat;
+    }
+  }
+  return "Miscellaneous";
+}
 
 const CUSTOM_ITEM_CATEGORY_STORAGE_KEY = "fambam_custom_item_categories";
 
@@ -143,25 +178,15 @@ function saveCustomItemCategory(itemName, category) {
 }
 
 function getAllAvailableCategories() {
-  const defaults = ["Essential", "Condiments", "Meat and Vegetables", "Bills"];
-  const set = new Set(defaults);
-
-  if (window.AppState && window.AppState.data) {
-    if (Array.isArray(window.AppState.data.categories)) {
-      window.AppState.data.categories.forEach((c) => c && set.add(c.trim()));
-    }
-    if (Array.isArray(window.AppState.data.expenses)) {
-      window.AppState.data.expenses.forEach((e) => e.category && set.add(e.category.trim()));
-    }
-    if (window.AppState.data.kpi && window.AppState.data.kpi.category_breakdown) {
-      Object.keys(window.AppState.data.kpi.category_breakdown).forEach((c) => c && set.add(c.trim()));
-    }
-  }
-
-  const customCats = getCustomItemCategories();
-  Object.values(customCats).forEach((c) => c && set.add(c.trim()));
-
-  return Array.from(set).filter(Boolean);
+  return [
+    "Housing & Shelter",
+    "Utilities & Connectivity",
+    "Food & Household Groceries",
+    "Home Maintenance & Upkeep",
+    "Healthcare & Personal Care",
+    "Transportation & Personal Lifestyle",
+    "Miscellaneous",
+  ];
 }
 
 
@@ -321,7 +346,8 @@ let pendingUndoAction = null;
 
 function showUndoDeleteToast({ name, onUndo, onConfirm, duration = 5000 }) {
   if (pendingUndoAction) {
-    clearTimeout(pendingUndoAction.timer);
+    if (pendingUndoAction.interval) clearInterval(pendingUndoAction.interval);
+    if (pendingUndoAction.timer) clearTimeout(pendingUndoAction.timer);
     pendingUndoAction.onConfirm?.();
     pendingUndoAction.element?.remove();
     pendingUndoAction = null;
@@ -333,16 +359,17 @@ function showUndoDeleteToast({ name, onUndo, onConfirm, duration = 5000 }) {
     return;
   }
 
+  let remainingSec = 5;
+
   const toast = document.createElement("div");
   toast.className = "undo-toast-snackbar";
   toast.innerHTML = `
-    <span class="material-symbols-rounded undo-toast-trash-icon">delete</span>
     <span class="undo-toast-text">Removed &ldquo;${escapeHtml(name)}&rdquo;</span>
-    <button type="button" class="undo-toast-btn">
-      <span class="material-symbols-rounded" style="font-size:15px;margin-right:2px;">undo</span>Cancel
+    <button type="button" class="undo-toast-btn" aria-label="Undo deletion">
+      <span class="undo-toast-label">Undo</span>
+      <span class="undo-toast-timer-number" id="undoToastTimer">${remainingSec}</span>
     </button>
     <button type="button" class="undo-toast-close" aria-label="Dismiss">&times;</button>
-    <div class="undo-toast-timer-bar" style="animation-duration: ${duration}ms;"></div>
   `;
 
   container.appendChild(toast);
@@ -352,8 +379,9 @@ function showUndoDeleteToast({ name, onUndo, onConfirm, duration = 5000 }) {
   const dismiss = (cancelled = false) => {
     if (hasDismissed) return;
     hasDismissed = true;
-    if (pendingUndoAction && pendingUndoAction.timer) {
-      clearTimeout(pendingUndoAction.timer);
+    if (pendingUndoAction) {
+      if (pendingUndoAction.timer) clearTimeout(pendingUndoAction.timer);
+      if (pendingUndoAction.interval) clearInterval(pendingUndoAction.interval);
     }
     pendingUndoAction = null;
     toast.style.opacity = "0";
@@ -368,12 +396,23 @@ function showUndoDeleteToast({ name, onUndo, onConfirm, duration = 5000 }) {
     }
   };
 
+  const timerEl = toast.querySelector("#undoToastTimer");
+  const interval = setInterval(() => {
+    remainingSec -= 1;
+    if (remainingSec > 0) {
+      if (timerEl) timerEl.textContent = `${remainingSec}`;
+    } else {
+      clearInterval(interval);
+    }
+  }, 1000);
+
   const timer = setTimeout(() => {
     dismiss(false);
-  }, duration);
+  }, 5000);
 
   pendingUndoAction = {
     timer,
+    interval,
     element: toast,
     onConfirm,
   };
@@ -391,7 +430,8 @@ function showUndoDeleteToast({ name, onUndo, onConfirm, duration = 5000 }) {
 
 window.addEventListener("beforeunload", () => {
   if (pendingUndoAction) {
-    clearTimeout(pendingUndoAction.timer);
+    if (pendingUndoAction.interval) clearInterval(pendingUndoAction.interval);
+    if (pendingUndoAction.timer) clearTimeout(pendingUndoAction.timer);
     pendingUndoAction.onConfirm?.();
   }
 });
@@ -497,6 +537,7 @@ function renderAll() {
   renderFullExpensesTab();
   renderActivityTab();
   renderFullShoppingTab();
+  renderFullInventoryTab();
   renderFullBillsTab();
   renderFullReportsTab();
   updateQuickAddKpiCards();
@@ -507,19 +548,36 @@ function renderAll() {
 // ==========================================
 // THEME & HEADER UI
 // ==========================================
-function syncThemeUI(themePref) {
-  const theme = themePref === "light" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", theme);
-  const moonIcon = document.getElementById("themeMoonIcon");
-  const bulbIcon = document.getElementById("themeBulbIcon") || document.getElementById("themeSunIcon");
-  if (moonIcon && bulbIcon) {
-    moonIcon.classList.toggle("hidden", theme !== "dark");
-    bulbIcon.classList.toggle("hidden", theme === "dark");
+function syncThemeUI(theme) {
+  const saved = theme || localStorage.getItem("fambam_theme") || "dark";
+  const currentTheme = saved === "light" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  try {
+    localStorage.setItem("fambam_theme", currentTheme);
+  } catch (e) {}
+
+  const icon = document.getElementById("themeToggleIcon");
+  if (icon) {
+    icon.textContent = currentTheme === "dark" ? "light_mode" : "dark_mode";
   }
   const btn = document.getElementById("themeToggleBtn");
   if (btn) {
-    btn.setAttribute("title", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
-    btn.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+    const label = currentTheme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode";
+    btn.setAttribute("title", label);
+    btn.setAttribute("aria-label", label);
+  }
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) {
+    metaTheme.setAttribute("content", currentTheme === "dark" ? "#12151b" : "#f2f4fa");
+  }
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute("data-theme") || "dark";
+  const newTheme = current === "dark" ? "light" : "dark";
+  syncThemeUI(newTheme);
+  if (window.AppState && AppState.data && AppState.data.settings) {
+    AppState.data.settings.theme_preference = newTheme;
   }
 }
 
@@ -536,12 +594,10 @@ function updateHeaderClock() {
     });
   }
   if (dateEl) {
-    dateEl.textContent = now.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    const yyyy = now.getFullYear();
+    dateEl.textContent = `${mm}/${dd}/${yyyy}`;
   }
 }
 setInterval(updateHeaderClock, 1000);
@@ -647,7 +703,8 @@ function renderHeaderAndNavBadges() {
 
   const monthList = document.getElementById("monthDropdownList");
   if (monthList) {
-    monthList.innerHTML = available_months
+    const filteredMonths = (available_months || []).filter((m) => m !== "2026-09");
+    monthList.innerHTML = filteredMonths
       .map(
         (m) => `
         <button type="button" class="month-dropdown-item ${m === selected_month ? "active" : ""}" onclick="selectCustomMonth('${escapeHtml(m)}')">
@@ -665,7 +722,7 @@ function renderHeaderAndNavBadges() {
 
   const monthSelect = document.getElementById("monthFilterSelect");
   if (monthSelect) {
-    monthSelect.innerHTML = available_months
+    monthSelect.innerHTML = (available_months || []).filter((m) => m !== "2026-09")
       .map(
         (m) =>
           `<option value="${escapeHtml(m)}" ${m === selected_month ? "selected" : ""}>${formatMonthHuman(m)}</option>`
@@ -748,9 +805,9 @@ function populateMemberSelects() {
 
     if (avatarEl) {
       if (settings.admin_photo) {
-        avatarEl.innerHTML = `<img src="${escapeHtml(settings.admin_photo)}" alt="${escapeHtml(displayName)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />`;
+        avatarEl.innerHTML = `<img src="${escapeHtml(settings.admin_photo)}" alt="${escapeHtml(displayName)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'material-symbols-rounded\\' style=\\'font-size:22px;color:#fff;\\'>person</span>';" />`;
       } else {
-        avatarEl.textContent = getInitials(displayName);
+        avatarEl.innerHTML = `<span class="material-symbols-rounded" style="font-size:22px;color:#fff;">person</span>`;
       }
     }
   }
@@ -793,13 +850,13 @@ function renderDashboardKpis() {
   if (budgetPaceEl) {
     if (budgetPct >= 100) {
       budgetPaceEl.textContent = "Budget exceeded";
-      budgetPaceEl.style.color = "#ef4444";
+      budgetPaceEl.style.color = "#e06d75";
     } else if (budgetPct >= 80) {
       budgetPaceEl.textContent = "Approaching budget";
-      budgetPaceEl.style.color = "#f59e0b";
+      budgetPaceEl.style.color = "#e09f3e";
     } else {
       budgetPaceEl.textContent = "On track";
-      budgetPaceEl.style.color = "#10b981";
+      budgetPaceEl.style.color = "#48bb78";
     }
   }
 
@@ -876,7 +933,7 @@ function showKpiDetailModal(type) {
 
   if (type === "expenses") {
     titleEl.textContent = `Granular Expense Breakdown (${formatMonthHuman(selected_month)})`;
-    subEl.textContent = `Compared against ${formatMonthHuman(previous_month)} (${formatPHP(kpi.prev_month_expenses)})`;
+    subEl.textContent = ""; subEl.classList.add("hidden");
     const cats = kpi.category_breakdown || {};
     const totalSpent = Number(kpi.total_expenses || 0);
     bodyEl.innerHTML = `
@@ -915,7 +972,7 @@ function showKpiDetailModal(type) {
     `;
   } else if (type === "daily_avg") {
     titleEl.textContent = `Daily Average Spending (${formatMonthHuman(selected_month)})`;
-    subEl.textContent = `Average burn rate: ${formatPHP(kpi.daily_avg_spending || 0)}/day over ${kpi.days_elapsed || 1} day(s)`;
+    subEl.textContent = ""; subEl.classList.add("hidden");
     const daysElapsed = Math.max(1, kpi.days_elapsed || 1);
     const totalDays = kpi.total_days_in_month || 30;
     const cats = kpi.category_breakdown || {};
@@ -996,7 +1053,7 @@ function showKpiDetailModal(type) {
     `;
   } else if (type === "projected") {
     titleEl.textContent = `Projected Month-End Forecast (${formatMonthHuman(selected_month)})`;
-    subEl.textContent = `Estimated total spend & remaining balance based on daily burn rate + unpaid recurring bills`;
+    subEl.textContent = ""; subEl.classList.add("hidden");
     const isDeficit = (kpi.projected_month_end_balance || 0) < 0;
     bodyEl.innerHTML = `
       <div class="report-summary-grid">
@@ -1291,7 +1348,7 @@ function renderPriceLineChart(canvasId, chartKey, compData) {
   const datasets = stores.map((storeName, idx) => {
     const color =
       STORE_COLORS[storeName] ||
-      ["#2563eb", "#b48a4e", "#64748b", "#9e5a5a"][idx % 4];
+      ["#02007d", "#1c25a0", "#3341b8", "#5364fc"][idx % 4];
     const dataPoints = allDates.map((d) => {
       const match = history.filter((h) => h.store_name === storeName && h.recorded_date <= d).pop();
       return match ? Number(match.price) : null;
@@ -1537,9 +1594,9 @@ function renderFullExpensesTab() {
 
   if (filtered.length === 0) {
     tbody.innerHTML = `
-      <tr>
-        <td colspan="7" style="padding:2.2rem 1rem;">
-          <div class="empty-state-card" style="margin:0 auto;max-width:420px;">
+      <tr class="empty-state-row" style="background:transparent !important;">
+        <td colspan="3" style="padding:2.2rem 1rem; background:transparent !important;">
+          <div class="empty-state-card" style="margin:0 auto;max-width:420px; background:transparent !important;">
             <p class="empty-state-title">No matching expenses</p>
             <p class="empty-state-sub">No expenses logged for this month yet.</p>
             <button type="button" class="btn-primary btn-sm" onclick="openAddExpenseModal()">Add expense</button>
@@ -1553,28 +1610,15 @@ function renderFullExpensesTab() {
   tbody.innerHTML = filtered
     .map(
       (e) => `
-      <tr>
-        <td>${escapeHtml(e.date_incurred)}</td>
-        <td>
-          <strong>${escapeHtml(e.title)}</strong>
+      <tr class="expense-compact-row">
+        <td class="exp-cell-name">
+          <strong class="exp-name-title">${escapeHtml(e.title)}</strong>
         </td>
-        <td><span class="tx-chip-box tx-chip-qty" style="display:inline-block;padding:0.2rem 0.55rem;font-size:0.8rem;">${escapeHtml(e.quantity || 1)}</span></td>
-        <td><span class="status-badge badge-slate">${escapeHtml(e.category)}</span></td>
-        <td>
-          ${
-            e.receipt_path
-              ? `<button type="button" class="btn-xs btn-ghost-sm" onclick="previewReceipt('${escapeHtml(e.receipt_path)}', '${escapeHtml(e.title)}')">View Receipt</button>`
-              : `<span class="kpi-subtext">None</span>`
-          }
+        <td class="text-right exp-cell-amount">
+          <span class="exp-amount-num">${formatPHP(e.amount)}</span>
         </td>
-        <td class="text-right"><strong>${formatPHP(e.amount)}</strong></td>
-        <td class="text-right">
-          <button type="button" class="btn-action-icon btn-action-edit" onclick="openEditExpenseModal(${e.id})" title="Edit" aria-label="Edit">
-            <span class="material-symbols-rounded" style="font-size:16px;">edit</span>
-          </button>
-          <button type="button" class="btn-action-icon btn-action-delete" onclick="deleteExpense(${e.id})" title="Delete" aria-label="Delete">
-            <span class="material-symbols-rounded" style="font-size:16px;">delete</span>
-          </button>
+        <td class="text-right exp-cell-action">
+          <button type="button" class="btn-secondary btn-sm exp-view-btn" onclick="openExpenseDetailsModal(${e.id})">View Details</button>
         </td>
       </tr>
     `
@@ -1627,16 +1671,36 @@ function renderFullShoppingTab() {
     }
   }
 
-  const filterStatus = document.getElementById("inventoryStatusFilter")?.value || "ALL";
+  renderFullInventoryTab();
+}
+
+function renderFullInventoryTab() {
+  const { inventory_items } = AppState.data || {};
   const fullContainer = document.getElementById("fullInventoryListContainer");
+  const navBadge = document.getElementById("navInventoryBadge");
+
+  if (navBadge) {
+    const lowCount = (inventory_items || []).filter(
+      (i) => i.status === "LOW" || i.status === "OUT"
+    ).length;
+    if (lowCount > 0) {
+      navBadge.textContent = `${lowCount} Low`;
+      navBadge.classList.remove("hidden");
+    } else {
+      navBadge.textContent = "";
+      navBadge.classList.add("hidden");
+    }
+  }
+
   if (fullContainer) {
+    const filterStatus = document.getElementById("inventoryStatusFilter")?.value || "ALL";
     const filteredInv = (inventory_items || []).filter(
       (i) => filterStatus === "ALL" || i.status === filterStatus
     );
     if (filteredInv.length === 0) {
       fullContainer.innerHTML = `
         <div class="empty-state-card">
-          <p class="empty-state-title">No shopping items found</p>
+          <p class="empty-state-title">No inventory items found</p>
           <p class="empty-state-sub">Add household essentials to monitor stock counts and price history.</p>
           <button type="button" class="btn-primary btn-sm" onclick="openAddInventoryModal()">Add item</button>
         </div>
@@ -1831,7 +1895,10 @@ function renderFullPricesTab() {
 function renderFullReportsTab() {
   const { selected_month, kpi, monthly_trend } = AppState.data;
   const heading = document.getElementById("reportMonthHeading");
-  if (heading) heading.textContent = `${formatMonthHuman(selected_month)} (${selected_month})`;
+  if (heading && selected_month) {
+    const parts = selected_month.split("-");
+    heading.textContent = parts.length === 2 ? `${parts[1]}/${parts[0]}` : selected_month;
+  }
 
   const summaryGrid = document.getElementById("reportSummaryStatsGrid");
   if (summaryGrid) {
@@ -2529,6 +2596,9 @@ function renderCompanyList() {
 
     return `
       <div class="company-card-43 ${isEditing ? 'is-editing' : ''} ${isCompanySelectMode ? 'selectable-mode' : ''}" data-company-id="${c.id}" onclick="chooseCompanyToEdit(${c.id})" role="button" tabindex="0" title="Click to choose ${escapeHtml(c.name)}">
+        <button type="button" class="btn-company-card-del" onclick="event.stopPropagation(); deleteCompanyDetails(${c.id})" title="Delete ${escapeHtml(c.name)}" aria-label="Delete company">
+          <span class="material-symbols-rounded" style="font-size:15px; color:#ff6b6b;">delete</span>
+        </button>
         <div class="company-card-43-logo">${thumbHtml}</div>
         <span class="company-card-43-name">${escapeHtml(c.name)}</span>
       </div>
@@ -2557,6 +2627,7 @@ window.editCompanyDetails = function (companyId) {
     if (emptyState) emptyState.classList.remove("hidden");
   }
   document.getElementById("companyCancelEditBtn")?.classList.remove("hidden");
+  document.getElementById("companyDeleteBtn")?.classList.remove("hidden");
   const submitBtn = document.getElementById("companySubmitBtn");
   if (submitBtn) {
     submitBtn.innerHTML = COMPANY_SAVE_ICON_SVG;
@@ -2581,6 +2652,7 @@ window.cancelCompanyEdit = function () {
   }
   if (emptyState) emptyState.classList.remove("hidden");
   document.getElementById("companyCancelEditBtn")?.classList.add("hidden");
+  document.getElementById("companyDeleteBtn")?.classList.add("hidden");
   const submitBtn = document.getElementById("companySubmitBtn");
   if (submitBtn) {
     submitBtn.innerHTML = COMPANY_SAVE_ICON_SVG;
@@ -2847,11 +2919,14 @@ function openProfileModal(startInEdit = false) {
       previewImg.src = settings.admin_photo;
       previewImg.classList.remove("hidden");
       defaultAvatar.classList.add("hidden");
+      previewImg.onerror = function() {
+        this.classList.add("hidden");
+        defaultAvatar.classList.remove("hidden");
+      };
     } else {
       previewImg.src = "";
       previewImg.classList.add("hidden");
       defaultAvatar.classList.remove("hidden");
-      defaultAvatar.textContent = getInitials(settings.admin_name || "Admin");
     }
   }
 
@@ -3022,6 +3097,9 @@ function handleGlobalSearch(query) {
 // ==========================================
 function switchTab(tabName) {
   AppState.activeTab = tabName;
+  try {
+    localStorage.setItem("fambam_active_tab", tabName);
+  } catch (e) {}
   document.querySelectorAll(".sidebar-nav .nav-link").forEach((btn) => {
     btn.classList.toggle("active", btn.getAttribute("data-tab") === tabName);
   });
@@ -3029,17 +3107,25 @@ function switchTab(tabName) {
     sec.classList.toggle("active", sec.id === `tab-${tabName}`);
   });
   document.getElementById("sidebar")?.classList.remove("open");
-
-  const overviewTitle = document.getElementById("headerOverviewTitle");
-  if (overviewTitle) {
-    overviewTitle.classList.toggle("hidden", tabName !== "dashboard");
-  }
+  document.getElementById("sidebarBackdrop")?.classList.add("hidden");
+  document.body.style.overflow = "";
 
   if (tabName === "reports") renderFullReportsTab();
   if (tabName === "activity") renderActivityTab();
   if (tabName === "expenses") renderFullExpensesTab();
   if (tabName === "bills") renderFullBillsTab();
   if (tabName === "shopping") renderFullShoppingTab();
+  if (tabName === "inventory") renderFullInventoryTab();
+
+  const mainWrap = document.querySelector(".main-wrapper");
+  if (mainWrap) {
+    if (tabName === "dashboard" && window.innerWidth > 920) {
+      mainWrap.classList.add("desktop-dashboard-steady");
+      mainWrap.scrollTop = 0;
+    } else {
+      mainWrap.classList.remove("desktop-dashboard-steady");
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -3059,6 +3145,24 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   loadBootstrapData("2026-10");
+  if (window.innerWidth > 920) {
+    const curTab = AppState.activeTab || "dashboard";
+    if (curTab === "dashboard") {
+      document.querySelector(".main-wrapper")?.classList.add("desktop-dashboard-steady");
+    }
+  }
+
+  // Restore saved active tab on page refresh
+  try {
+    const savedTab = localStorage.getItem("fambam_active_tab");
+    if (savedTab && document.getElementById(`tab-${savedTab}`)) {
+      switchTab(savedTab);
+    }
+  } catch (err) {}
+
+  // PWA Install state check & trigger
+  checkPwaInstallState();
+  document.getElementById("pwaInstallBtn")?.addEventListener("click", triggerPwaDownload);
 
   // Sidebar Navigation
   document.querySelectorAll(".sidebar-nav .nav-link").forEach((btn) => {
@@ -3101,11 +3205,49 @@ document.addEventListener("DOMContentLoaded", () => {
     openSidebar();
   });
 
-  // Mobile Menu Toggle & Outside Click Close
+  // Mobile Menu & Sidebar Backdrop Handlers
+  function openMobileNav() {
+    const sidebar = document.getElementById("sidebar");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    if (sidebar) sidebar.classList.add("open");
+    if (backdrop) backdrop.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMobileNav() {
+    const sidebar = document.getElementById("sidebar");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    if (sidebar) sidebar.classList.remove("open");
+    if (backdrop) backdrop.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+
   document.getElementById("mobileMenuBtn")?.addEventListener("click", (e) => {
     e.stopPropagation();
     const sidebar = document.getElementById("sidebar");
-    if (sidebar) sidebar.classList.toggle("open");
+    if (sidebar?.classList.contains("open")) {
+      closeMobileNav();
+    } else {
+      openMobileNav();
+    }
+  });
+
+  document.getElementById("sidebarCloseBtn")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    closeMobileNav();
+  });
+
+  document.getElementById("sidebarBackdrop")?.addEventListener("click", () => {
+    closeMobileNav();
+  });
+
+  // Auto-close sidebar on mobile when navigating
+  document.querySelectorAll(".sidebar .nav-link, #sidebarProfileCard").forEach((el) => {
+    el.addEventListener("click", () => {
+      if (window.innerWidth <= 920) {
+        closeMobileNav();
+      }
+    });
   });
 
   document.addEventListener("click", (e) => {
@@ -3117,23 +3259,14 @@ document.addEventListener("DOMContentLoaded", () => {
       !sidebar.contains(e.target) &&
       (!menuBtn || !menuBtn.contains(e.target))
     ) {
-      sidebar.classList.remove("open");
+      closeMobileNav();
     }
   });
 
-  // Theme Toggle (Moon or Sun icon only beside bell)
-  document.getElementById("themeToggleBtn")?.addEventListener("click", async () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    if (AppState.data && AppState.data.settings) {
-      AppState.data.settings.theme_preference = newTheme;
-    }
-    syncThemeUI(newTheme);
-    await fetch("/api/settings", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ theme_preference: newTheme }),
-    });
+  // Theme Toggle (Dark / Light Mode)
+  const themeToggle = document.getElementById("themeToggleBtn");
+  themeToggle?.addEventListener("click", () => {
+    toggleTheme();
   });
 
   // Month Filter Dropdown Trigger & Outside Click
@@ -3212,6 +3345,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && searchSlideWrap && !searchSlideWrap.classList.contains("hidden")) {
+      searchSlideWrap.classList.add("hidden");
+      document.getElementById("globalSearchDropdown")?.classList.add("hidden");
+    }
+  });
+
   // Native Date Pickers Default Handling
   function initNativeDatePickers() {
     document.querySelectorAll('.date-input-wrap input[type="date"], .date-custom-input').forEach((inputEl) => {
@@ -3273,24 +3413,51 @@ document.addEventListener("DOMContentLoaded", () => {
     { title: "Dashboard Overview", action: () => switchTab("dashboard"), shortcut: "Tab 1", icon: "dashboard" },
     { title: "View Expenses Table", action: () => switchTab("expenses"), shortcut: "Tab 2", icon: "receipt_long" },
     { title: "Open Shopping List", action: () => switchTab("shopping"), shortcut: "Tab 3", icon: "shopping_bag" },
-    { title: "Manage Recurring Bills", action: () => switchTab("bills"), shortcut: "Tab 4", icon: "calendar_month" },
-    { title: "Household Activity Log", action: () => switchTab("activity"), shortcut: "Tab 5", icon: "history" },
-    { title: "Financial Reports", action: () => switchTab("reports"), shortcut: "Tab 6", icon: "bar_chart" },
+    { title: "Open Inventory Stock", action: () => switchTab("inventory"), shortcut: "Tab 4", icon: "inventory_2" },
+    { title: "Manage Recurring Bills", action: () => switchTab("bills"), shortcut: "Tab 5", icon: "calendar_month" },
+    { title: "Household Activity Log", action: () => switchTab("activity"), shortcut: "Tab 6", icon: "history" },
+    { title: "Financial Reports", action: () => switchTab("reports"), shortcut: "Tab 7", icon: "bar_chart" },
     { title: "Add New Expense", action: () => openQuickAddModal("expense"), shortcut: "N", icon: "add_circle" },
     { title: "Add Recurring Bill", action: () => openQuickAddModal("bill"), shortcut: "B", icon: "event_repeat" },
-    { title: "Add Shopping Item", action: () => openQuickAddModal("inventory"), shortcut: "S", icon: "post_add" },
-    { title: "Toggle Theme (Light / Dark)", action: () => toggleTheme(), shortcut: "T", icon: "contrast" },
+    { title: "Add Inventory Item", action: () => openQuickAddModal("inventory"), shortcut: "S", icon: "post_add" },
+    
   ];
 
   function renderPaletteCommands(query = "") {
     if (!paletteResults) return;
     const q = query.trim().toLowerCase();
-    const filtered = COMMAND_ITEMS.filter((item) =>
+    const cmdMatches = COMMAND_ITEMS.filter((item) =>
       item.title.toLowerCase().includes(q) || item.shortcut.toLowerCase().includes(q)
     );
 
+    const dataResults = [];
+    if (q && AppState.data) {
+      (AppState.data.expenses || []).slice(0, 5).forEach((e) => {
+        if (`${e.title} ${e.category} ${e.paid_by_name}`.toLowerCase().includes(q)) {
+          dataResults.push({
+            title: `Expense: ${e.title} (${formatPHP(e.amount)})`,
+            shortcut: e.category || "Expense",
+            icon: "receipt_long",
+            action: () => switchTab("expenses"),
+          });
+        }
+      });
+      (AppState.data.inventory_items || []).slice(0, 5).forEach((i) => {
+        if (i.item_name && i.item_name.toLowerCase().includes(q)) {
+          dataResults.push({
+            title: `Item: ${i.item_name} (Qty: ${i.quantity || 0})`,
+            shortcut: i.status || "Stock",
+            icon: "inventory_2",
+            action: () => switchTab("inventory"),
+          });
+        }
+      });
+    }
+
+    const filtered = [...cmdMatches, ...dataResults];
+
     if (filtered.length === 0) {
-      paletteResults.innerHTML = `<div class="empty-state-card"><p class="empty-state-sub">No commands matching "${escapeHtml(query)}"</p></div>`;
+      paletteResults.innerHTML = `<div class="empty-state-card"><p class="empty-state-sub">No results matching "${escapeHtml(query)}"</p></div>`;
       return;
     }
 
@@ -3299,7 +3466,7 @@ document.addEventListener("DOMContentLoaded", () => {
         (cmd, idx) => `
       <div class="palette-item ${idx === 0 ? "active" : ""}" data-cmd-idx="${idx}" role="menuitem" tabindex="0">
         <div class="palette-item-left">
-          <span class="material-symbols-rounded" style="color:#3b82f6;font-size:20px;">${cmd.icon}</span>
+          <span class="material-symbols-rounded" style="color:#02007d;font-size:20px;">${cmd.icon}</span>
           <span class="palette-item-title">${escapeHtml(cmd.title)}</span>
         </div>
         <span class="palette-item-shortcut">${escapeHtml(cmd.shortcut)}</span>
@@ -3428,12 +3595,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Quick Add FAB & Direct Form Triggers
   document.getElementById("fabQuickAddBtn")?.addEventListener("click", () => openQuickAddModal(null));
+  document.getElementById("fabHomeBtn")?.addEventListener("click", () => switchTab("dashboard"));
+  document.getElementById("headerHomeBtn")?.addEventListener("click", () => switchTab("dashboard"));
   document.getElementById("viewAddExpenseBtn")?.addEventListener("click", () => openQuickAddModal("expense"));
   document.getElementById("dashAddBillBtn")?.addEventListener("click", () => openQuickAddModal("bill"));
   document.getElementById("viewAddBillBtn")?.addEventListener("click", () => openQuickAddModal("bill"));
   document.getElementById("viewCompanyDetailsBtn")?.addEventListener("click", () => openCompanyDetailsModal());
   document.getElementById("dashAddInventoryBtn")?.addEventListener("click", () => openQuickAddModal("inventory"));
   document.getElementById("viewAddInventoryBtn")?.addEventListener("click", () => openQuickAddModal("inventory"));
+  document.getElementById("viewAddShoppingItemBtn")?.addEventListener("click", () => openQuickAddModal("inventory"));
+  document.getElementById("fabSearchBtn")?.addEventListener("click", () => {
+    const paletteInput = document.getElementById("paletteSearchInput");
+    renderPaletteCommands("");
+    if (paletteInput) paletteInput.value = "";
+    openModal("commandPaletteModal");
+    setTimeout(() => paletteInput?.focus(), 80);
+  });
 
   document.querySelectorAll("#quickAddModeTabs .q-tab").forEach((tabBtn) => {
     tabBtn.addEventListener("click", () => {
@@ -3965,26 +4142,62 @@ function updateOnlineStatus() {
 window.addEventListener("online", updateOnlineStatus);
 window.addEventListener("offline", updateOnlineStatus);
 
+// ==========================================
+// PWA INSTALL / DOWNLOAD FAMBAM APP
+// ==========================================
 let deferredInstallPrompt = null;
+
+function checkPwaInstallState() {
+  const isInstalled =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true ||
+    localStorage.getItem("fambam_app_installed") === "true";
+
+  const wrap = document.getElementById("sidebarDownloadWrap");
+  if (wrap) {
+    if (isInstalled) {
+      wrap.classList.add("hidden");
+    } else {
+      wrap.classList.remove("hidden");
+    }
+  }
+}
+
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredInstallPrompt = e;
-  const btn = document.getElementById("pwaInstallBtn");
-  if (btn) {
-    btn.classList.remove("hidden");
-    btn.onclick = async () => {
-      if (deferredInstallPrompt) {
-        deferredInstallPrompt.prompt();
-        const { outcome } = await deferredInstallPrompt.userChoice;
-        if (outcome === "accepted") {
-          showToast("FamBam installed to your device!");
-        }
-        deferredInstallPrompt = null;
-        btn.classList.add("hidden");
-      }
-    };
-  }
+  checkPwaInstallState();
 });
+
+window.addEventListener("appinstalled", () => {
+  try {
+    localStorage.setItem("fambam_app_installed", "true");
+  } catch (e) {}
+  checkPwaInstallState();
+  showToast("FamBam App has been downloaded!");
+});
+
+async function triggerPwaDownload() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    const { outcome } = await deferredInstallPrompt.userChoice;
+    if (outcome === "accepted") {
+      try {
+        localStorage.setItem("fambam_app_installed", "true");
+      } catch (e) {}
+      checkPwaInstallState();
+      showToast("FamBam App downloaded successfully!");
+    }
+    deferredInstallPrompt = null;
+  } else {
+    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+    if (isIos) {
+      showToast("To download FamBam: tap Share in Safari, then 'Add to Home Screen'");
+    } else {
+      showToast("To download: tap browser menu (⋮) and select 'Install app'");
+    }
+  }
+}
 
 // ==========================================
 // BILL DUE DATE PUSH & CALENDAR REMINDERS
@@ -4212,9 +4425,11 @@ window.enterShoppingTripMode = function () {
   const container = document.getElementById("shoppingTripModeContainer");
   const layout = document.getElementById("shoppingStandardLayout");
   const btnText = document.getElementById("shoppingTripModeBtnText");
+  const topAddItemBtn = document.getElementById("viewAddShoppingItemBtn");
   if (container) container.classList.remove("hidden");
   if (layout) layout.classList.add("hidden");
   if (btnText) btnText.textContent = "Exit Trip";
+  if (topAddItemBtn) topAddItemBtn.classList.add("hidden");
 
   const invItems = AppState.data?.inventory_items || [];
   const lowItems = invItems.filter(
@@ -4245,9 +4460,11 @@ window.exitShoppingTripMode = function () {
   const container = document.getElementById("shoppingTripModeContainer");
   const layout = document.getElementById("shoppingStandardLayout");
   const btnText = document.getElementById("shoppingTripModeBtnText");
+  const topAddItemBtn = document.getElementById("viewAddShoppingItemBtn");
   if (container) container.classList.add("hidden");
   if (layout) layout.classList.remove("hidden");
   if (btnText) btnText.textContent = "Trip Mode";
+  if (topAddItemBtn) topAddItemBtn.classList.remove("hidden");
 };
 
 function renderShoppingTripItems() {
@@ -4351,4 +4568,139 @@ window.finishShoppingTripAndLog = async function () {
 
   exitShoppingTripMode();
   showToast(`Trip total: ${formatPHP(totalSum)} (${checkedItems.length} items). Please review & save expense.`);
+};
+
+// ==========================================
+// EXPENSE FULL DETAILS MODAL
+// ==========================================
+window.openExpenseDetailsModal = function (expenseId) {
+  const exp = (AppState.data?.expenses || []).find((e) => e.id === expenseId);
+  if (!exp) return;
+
+  const modal = document.getElementById("expenseDetailsModal");
+  const bodyEl = document.getElementById("expenseDetailsModalBody");
+  if (!modal || !bodyEl) return;
+
+  const qty = exp.quantity || 1;
+  const unitPrice = qty > 1 ? formatPHP(exp.amount / qty) : formatPHP(exp.amount);
+
+  bodyEl.innerHTML = `
+    <div class="report-summary-grid">
+      <div class="report-stat-box">
+        <div class="kpi-label">Item / Name</div>
+        <div class="kpi-value" style="font-size:1.05rem; font-weight:700;">${escapeHtml(exp.title)}</div>
+      </div>
+      <div class="report-stat-box">
+        <div class="kpi-label">Category</div>
+        <div class="kpi-value" style="font-size:0.95rem;">
+          <span class="status-badge badge-slate" style="font-size:0.85rem; padding:0.25rem 0.65rem; border-radius:6px; display:inline-block;">${escapeHtml(exp.category || "Miscellaneous")}</span>
+        </div>
+      </div>
+    </div>
+    <div class="report-summary-grid">
+      <div class="report-stat-box">
+        <div class="kpi-label">Date of Purchase</div>
+        <div class="kpi-value" style="font-size:0.98rem; letter-spacing:0.04em;">${escapeHtml(exp.date_incurred)}</div>
+      </div>
+      <div class="report-stat-box">
+        <div class="kpi-label">Total Amount</div>
+        <div class="kpi-value" style="font-size:1.1rem; color:#4d8bf5; font-weight:700; letter-spacing:0.04em;">${formatPHP(exp.amount)}</div>
+      </div>
+    </div>
+    <div class="report-summary-grid">
+      <div class="report-stat-box">
+        <div class="kpi-label">Quantity</div>
+        <div class="kpi-value" style="font-size:0.98rem; letter-spacing:0.04em;">${escapeHtml(qty)}</div>
+      </div>
+      <div class="report-stat-box">
+        <div class="kpi-label">Price of Item (Per Unit)</div>
+        <div class="kpi-value" style="font-size:0.98rem; letter-spacing:0.04em;">${unitPrice}</div>
+      </div>
+    </div>
+    ${
+      exp.store_name || exp.paid_by_name
+        ? `
+    <div class="report-summary-grid">
+      ${
+        exp.store_name
+          ? `<div class="report-stat-box">
+              <div class="kpi-label">Store / Merchant</div>
+              <div class="kpi-value" style="font-size:0.95rem;">${escapeHtml(exp.store_name)}</div>
+            </div>`
+          : ""
+      }
+      ${
+        exp.paid_by_name
+          ? `<div class="report-stat-box">
+              <div class="kpi-label">Paid By</div>
+              <div class="kpi-value" style="font-size:0.95rem;">${escapeHtml(exp.paid_by_name)}</div>
+            </div>`
+          : ""
+      }
+    </div>
+    `
+        : ""
+    }
+    ${
+      exp.notes
+        ? `<div class="report-stat-box" style="margin-top:0.35rem;">
+            <div class="kpi-label">Notes</div>
+            <div class="kpi-value" style="font-size:0.88rem; font-weight:normal; color:var(--text-secondary); margin-top:0.2rem;">${escapeHtml(exp.notes)}</div>
+          </div>`
+        : ""
+    }
+    <div class="report-stat-box" style="margin-top:0.35rem;">
+      <div class="kpi-label">Receipt</div>
+      <div style="margin-top: 0.45rem;">
+        ${
+          exp.receipt_path
+            ? `<div style="display:flex; align-items:center; gap:0.75rem;">
+                 <img src="${escapeHtml(exp.receipt_path)}" alt="Receipt thumbnail" style="width:56px; height:56px; object-fit:cover; border-radius:8px; cursor:pointer;" onclick="previewReceipt('${escapeHtml(exp.receipt_path)}', '${escapeHtml(exp.title)}')" />
+                 <button type="button" class="btn-secondary btn-sm" onclick="previewReceipt('${escapeHtml(exp.receipt_path)}', '${escapeHtml(exp.title)}')">View Full Receipt</button>
+               </div>`
+            : `<span class="kpi-subtext">No receipt attached</span>`
+        }
+      </div>
+    </div>
+  `;
+
+  const editBtn = document.getElementById("expenseDetailsEditBtn");
+  if (editBtn) {
+    editBtn.onclick = () => {
+      closeModal("expenseDetailsModal");
+      openEditExpenseModal(exp.id);
+    };
+  }
+
+  const deleteBtn = document.getElementById("expenseDetailsDeleteBtn");
+  if (deleteBtn) {
+    deleteBtn.onclick = () => {
+      closeModal("expenseDetailsModal");
+      deleteExpense(exp.id);
+    };
+  }
+
+  openModal("expenseDetailsModal");
+};
+
+// Dialog helpers
+window.openDialog = function (dialog) {
+  if (!dialog) return;
+  if (typeof dialog === "string") openModal(dialog);
+  else if (dialog.id) openModal(dialog.id);
+  else if (dialog.showModal && !dialog.open) dialog.showModal();
+};
+
+window.closeDialog = function (dialog) {
+  if (!dialog) return;
+  if (typeof dialog === "string") closeModal(dialog);
+  else if (dialog.id) closeModal(dialog.id);
+  else if (dialog.close && dialog.open) dialog.close();
+};
+
+window.deleteCompanyDetailsFromForm = function () {
+  const currentEditId = parseInt(document.getElementById("companyEditIdInput")?.value || "0", 10);
+  if (currentEditId > 0) {
+    deleteCompanyDetails(currentEditId);
+  }
 };
