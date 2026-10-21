@@ -217,10 +217,18 @@ function detectCategoryFromItem(itemName, fallbackCategory = "") {
     }
   }
 
-  // 4. Keyword match
+  // 4. Keyword match (with whole-word boundary for short words like "gas", "oil", etc.)
+  const words = val.split(/[^a-zA-Z0-9]+/).filter(Boolean);
   for (const [cat, keywords] of Object.entries(ITEM_KEYWORD_TO_CATEGORY)) {
-    if (keywords.some((kw) => val.includes(kw))) {
-      return cat;
+    for (const kw of keywords) {
+      const kwLower = kw.toLowerCase();
+      if (kwLower.includes(" ")) {
+        if (val.includes(kwLower)) return cat;
+      } else if (kwLower.length <= 4) {
+        if (words.includes(kwLower)) return cat;
+      } else {
+        if (val.includes(kwLower)) return cat;
+      }
     }
   }
 
@@ -1264,7 +1272,7 @@ function renderDashboardInventory() {
       return `
         <div class="inv-quick-item">
           <div class="inv-item-left">
-            <span class="inv-item-title">${escapeHtml(item.item_name)} <span class="stock-unit-pill">${escapeHtml(item.unit)}</span> <small class="kpi-sub-inline">&bull; ${escapeHtml(item.category || "Essential")}</small></span>
+            <span class="inv-item-title">${escapeHtml(item.item_name)} <span class="stock-unit-pill">${escapeHtml(item.unit)}</span> <small class="kpi-sub-inline">&bull; ${escapeHtml(item.category || "Food & Household Groceries")}</small></span>
           </div>
           <div class="inv-item-right">
             <span class="status-badge-box ${statusKey}">${escapeHtml(displayStatus)}</span>
@@ -1712,7 +1720,7 @@ function renderFullInventoryTab() {
         (item) => `
         <div class="inv-quick-item">
           <div class="inv-item-left">
-            <span class="inv-item-title">${escapeHtml(item.item_name)} <span class="stock-unit-pill">${escapeHtml(item.unit)}</span> <small class="kpi-sub-inline">&bull; ${escapeHtml(item.category || "Essential")}</small></span>
+            <span class="inv-item-title">${escapeHtml(item.item_name)} <span class="stock-unit-pill">${escapeHtml(item.unit)}</span> <small class="kpi-sub-inline">&bull; ${escapeHtml(item.category || "Food & Household Groceries")}</small></span>
           </div>
           <div class="inv-item-right">
             <button type="button" class="btn-action-icon btn-action-edit" onclick="editInventoryModal(${item.id})" title="Edit" aria-label="Edit">
@@ -1925,9 +1933,13 @@ function renderFullReportsTab() {
       .map(([cat, info]) => {
         const spent = Number(info.spent || 0);
         const sharePct = totalSpent > 0 ? ((spent / totalSpent) * 100).toFixed(1) : "0.0";
+        const catColor = CATEGORY_COLORS[cat] || "#546e7a";
         return `
           <tr>
-            <td><strong>${escapeHtml(cat)}</strong></td>
+            <td>
+              <span class="cat-dot" style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${catColor}; margin-right:6px; vertical-align:middle;"></span>
+              <strong>${escapeHtml(cat)}</strong>
+            </td>
             <td class="text-right">${formatPHP(spent)}</td>
             <td class="text-right"><span class="status-badge badge-sage">${sharePct}%</span></td>
           </tr>
@@ -1936,43 +1948,65 @@ function renderFullReportsTab() {
       .join("");
   }
 
-  // Month-over-Month Chart
+  // Month-over-Month Trend Chart (Matching standard 7-category taxonomy)
   const ctx = document.getElementById("reportsMomChart");
   if (ctx && window.Chart && monthly_trend) {
     if (AppState.charts.reportsMom) {
       AppState.charts.reportsMom.destroy();
     }
     const labels = monthly_trend.map((m) => formatMonthHuman(m.month));
+
+    const standardCategories = [
+      "Housing & Shelter",
+      "Utilities & Connectivity",
+      "Food & Household Groceries",
+      "Home Maintenance & Upkeep",
+      "Healthcare & Personal Care",
+      "Transportation & Personal Lifestyle",
+      "Miscellaneous",
+    ];
+
+    // Collect any extra user custom categories from the trend dataset
+    const extraCategories = [];
+    monthly_trend.forEach((m) => {
+      Object.keys(m).forEach((k) => {
+        if (
+          k !== "month" &&
+          k !== "total" &&
+          k !== "Essential" &&
+          k !== "Condiments" &&
+          k !== "Meat and Vegetables" &&
+          k !== "Bills" &&
+          !standardCategories.includes(k) &&
+          !extraCategories.includes(k)
+        ) {
+          extraCategories.push(k);
+        }
+      });
+    });
+
+    const allCategories = [...standardCategories, ...extraCategories];
+
+    const datasets = allCategories.map((cat, idx) => {
+      const color = CATEGORY_COLORS[cat] || [
+        "#02007d", "#1e64cc", "#2e7d32", "#e65100",
+        "#c2185b", "#6a1b9a", "#546e7a", "#00838f", "#d84315"
+      ][idx % 9];
+
+      return {
+        label: cat,
+        data: monthly_trend.map((m) => Number(m[cat] || 0)),
+        backgroundColor: color,
+        borderRadius: 4,
+        maxBarThickness: 48,
+      };
+    });
+
     AppState.charts.reportsMom = new Chart(ctx, {
       type: "bar",
       data: {
         labels,
-        datasets: [
-          {
-            label: "Essential",
-            data: monthly_trend.map((m) => m.Essential || 0),
-            backgroundColor: CATEGORY_COLORS.Essential,
-            borderRadius: 8,
-          },
-          {
-            label: "Condiments",
-            data: monthly_trend.map((m) => m.Condiments || 0),
-            backgroundColor: CATEGORY_COLORS.Condiments,
-            borderRadius: 8,
-          },
-          {
-            label: "Meat and Vegetables",
-            data: monthly_trend.map((m) => m["Meat and Vegetables"] || 0),
-            backgroundColor: CATEGORY_COLORS["Meat and Vegetables"],
-            borderRadius: 8,
-          },
-          {
-            label: "Bills",
-            data: monthly_trend.map((m) => m.Bills || 0),
-            backgroundColor: CATEGORY_COLORS.Bills,
-            borderRadius: 8,
-          },
-        ],
+        datasets,
       },
       options: {
         responsive: true,
@@ -1980,20 +2014,38 @@ function renderFullReportsTab() {
         plugins: {
           legend: {
             position: "bottom",
-            labels: { color: "#94a3b8", boxWidth: 12 },
+            labels: {
+              color: "#94a3b8",
+              boxWidth: 12,
+              padding: 10,
+              font: { family: "'Open Sans', sans-serif", size: 11 },
+            },
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => ` ${context.dataset.label}: ${formatPHP(context.raw)}`,
+              footer: (tooltipItems) => {
+                const total = tooltipItems.reduce((sum, item) => sum + (Number(item.raw) || 0), 0);
+                return `Total: ${formatPHP(total)}`;
+              },
+            },
           },
         },
         scales: {
           x: {
             stacked: true,
-            ticks: { color: "#94a3b8" },
+            ticks: {
+              color: "#94a3b8",
+              font: { family: "'Open Sans', sans-serif" },
+            },
             grid: { color: "rgba(148, 163, 184, 0.08)" },
           },
           y: {
             stacked: true,
             ticks: {
               color: "#94a3b8",
-              callback: (v) => "₱" + v.toLocaleString(),
+              font: { family: "'Open Sans', sans-serif" },
+              callback: (v) => "₱" + Number(v).toLocaleString(),
             },
             grid: { color: "rgba(148, 163, 184, 0.08)" },
           },
@@ -2029,7 +2081,7 @@ function setExpenseCategoryEditMode(isEditing) {
     inputEl.focus();
     inputEl.select();
   } else {
-    const val = inputEl.value.trim() || "Essential";
+    const val = inputEl.value.trim() || "Food & Household Groceries";
     inputEl.value = val;
     displayEl.textContent = val;
     displayEl.classList.remove("hidden");
@@ -2068,7 +2120,7 @@ function setInventoryCategoryEditMode(isEditing) {
     inputEl.focus();
     inputEl.select();
   } else {
-    const val = inputEl.value.trim() || "Essential";
+    const val = inputEl.value.trim() || "Food & Household Groceries";
     inputEl.value = val;
     displayEl.textContent = val;
     displayEl.classList.remove("hidden");
@@ -2105,14 +2157,14 @@ function syncAllCategoryAutoSelectors() {
       expCat.value = detected;
       if (expDisplay) expDisplay.textContent = detected;
     } else if (expTitle.length === 0) {
-      expCat.value = "Essential";
+      expCat.value = "Food & Household Groceries";
       if (expDisplay) expDisplay.textContent = "";
     }
   }
 
   const billName = (document.getElementById("billNameInput")?.value || "").trim();
   const billCat = document.getElementById("billCategoryInput");
-  if (billCat) billCat.value = detectCategoryFromItem(billName, "Bills");
+  if (billCat) billCat.value = detectCategoryFromItem(billName, "Utilities & Connectivity");
 
   const invName = (document.getElementById("invNameInput")?.value || "").trim();
   const invCat = document.getElementById("invCategorySelect");
@@ -2243,15 +2295,15 @@ function openQuickAddModal(mode = null) {
   if (expQtyEl) expQtyEl.value = "1";
   const expCatEl = document.getElementById("expCategory");
   const expDisplayEl = document.getElementById("expCategoryDisplay");
-  if (expCatEl) expCatEl.value = "Essential";
-  if (expDisplayEl) expDisplayEl.textContent = "Essential";
+  if (expCatEl) expCatEl.value = "Food & Household Groceries";
+  if (expDisplayEl) expDisplayEl.textContent = "Food & Household Groceries";
   setExpenseCategoryEditMode(false);
   document.getElementById("customSplitsContainer")?.classList.add("hidden");
   setExpenseNotesExpanded(false);
 
   document.getElementById("billForm").reset();
   document.getElementById("billIdInput").value = "";
-  document.getElementById("billCategoryInput").value = "Bills";
+  document.getElementById("billCategoryInput").value = "Utilities & Connectivity";
   document.getElementById("billDueDayInput").value = todayStr;
   syncBillDueDateButtonLabel();
   setBillDueDateExpanded(false);
@@ -2263,8 +2315,8 @@ function openQuickAddModal(mode = null) {
   if (invUnitEl) invUnitEl.value = "1";
   const invCatEl = document.getElementById("invCategorySelect");
   const invDisplayEl = document.getElementById("invCategoryDisplay");
-  if (invCatEl) invCatEl.value = "Essential";
-  if (invDisplayEl) invDisplayEl.textContent = "Essential";
+  if (invCatEl) invCatEl.value = "Food & Household Groceries";
+  if (invDisplayEl) invDisplayEl.textContent = "Food & Household Groceries";
   setInventoryCategoryEditMode(false);
   syncInventoryStockStatus();
 
@@ -2292,7 +2344,7 @@ window.openEditExpenseModal = function (expenseId) {
 
   const expCatInput = document.getElementById("expCategory");
   const expDisplay = document.getElementById("expCategoryDisplay");
-  const catVal = exp.category || "Essential";
+  const catVal = exp.category || "Food & Household Groceries";
   if (expCatInput) expCatInput.value = catVal;
   if (expDisplay) expDisplay.textContent = catVal;
   setExpenseCategoryEditMode(false);
@@ -2715,7 +2767,7 @@ window.editInventoryModal = function (itemId) {
   document.getElementById("invNameInput").value = item.item_name;
   const invCat = document.getElementById("invCategorySelect");
   const invDisplay = document.getElementById("invCategoryDisplay");
-  const currentCat = item.category || detectCategoryFromItem(item.item_name, "Essential");
+  const currentCat = item.category || detectCategoryFromItem(item.item_name, "Food & Household Groceries");
   if (invCat) invCat.value = currentCat;
   if (invDisplay) invDisplay.textContent = currentCat;
   setInventoryCategoryEditMode(false);
@@ -3702,7 +3754,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputEl = document.getElementById("expCategory");
     const displayEl = document.getElementById("expCategoryDisplay");
     if (inputEl && displayEl) {
-      const val = inputEl.value.trim() || "Essential";
+      const val = inputEl.value.trim() || "Food & Household Groceries";
       inputEl.value = val;
       displayEl.textContent = val;
     }
@@ -3712,7 +3764,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const val = e.target.value;
     const catEl = document.getElementById("billCategoryInput");
     if (catEl) {
-      catEl.value = detectCategoryFromItem(val, "Bills");
+      catEl.value = detectCategoryFromItem(val, "Utilities & Connectivity");
     }
     if (val.trim().toLowerCase() === "house (6k)") {
       const amtEl = document.getElementById("billAmountInput");
@@ -3762,7 +3814,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputEl = document.getElementById("invCategorySelect");
     const displayEl = document.getElementById("invCategoryDisplay");
     if (inputEl && displayEl) {
-      const val = inputEl.value.trim() || "Essential";
+      const val = inputEl.value.trim() || "Food & Household Groceries";
       inputEl.value = val;
       displayEl.textContent = val;
     }
@@ -4030,7 +4082,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const itemCat = (document.getElementById("invCategorySelect")?.value || "").trim() || "Essential";
+    const itemCat = (document.getElementById("invCategorySelect")?.value || "").trim() || "Food & Household Groceries";
     if (itemName && itemCat) {
       saveCustomItemCategory(itemName, itemCat);
     }
@@ -4469,7 +4521,7 @@ window.enterShoppingTripMode = function () {
     return {
       id: item.id,
       item_name: item.item_name,
-      category: item.category || "Essential",
+      category: item.category || "Food & Household Groceries",
       unit: item.unit || "1",
       checked: false,
       price: estPrice > 0 ? estPrice : 50.0,
@@ -4588,8 +4640,8 @@ window.finishShoppingTripAndLog = async function () {
   if (titleInput) titleInput.value = "In-Store Grocery Trip";
   if (amountInput) amountInput.value = totalSum.toFixed(2);
   if (notesInput) notesInput.value = `Bought in-store: ${itemNames}`;
-  if (catInput) catInput.value = "Essential";
-  if (catDisplay) catDisplay.textContent = "Essential";
+  if (catInput) catInput.value = "Food & Household Groceries";
+  if (catDisplay) catDisplay.textContent = "Food & Household Groceries";
 
   exitShoppingTripMode();
   showToast(`Trip total: ${formatPHP(totalSum)} (${checkedItems.length} items). Please review & save expense.`);

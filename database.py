@@ -210,7 +210,20 @@ def init_db():
     cursor.execute("PRAGMA table_info(inventory_items)")
     inv_cols = [col["name"] for col in cursor.fetchall()]
     if "category" not in inv_cols:
-        cursor.execute("ALTER TABLE inventory_items ADD COLUMN category TEXT NOT NULL DEFAULT 'Essential'")
+        cursor.execute("ALTER TABLE inventory_items ADD COLUMN category TEXT NOT NULL DEFAULT 'Food & Household Groceries'")
+
+    # Migrate legacy category names across tables to the unified 7-category taxonomy
+    legacy_cat_updates = [
+        ("Essential", "Food & Household Groceries"),
+        ("Condiments", "Food & Household Groceries"),
+        ("Meat and Vegetables", "Food & Household Groceries"),
+        ("Bills", "Utilities & Connectivity"),
+        ("Groceries", "Food & Household Groceries"),
+    ]
+    for old_cat, new_cat in legacy_cat_updates:
+        cursor.execute("UPDATE expenses SET category = ? WHERE category = ?", (new_cat, old_cat))
+        cursor.execute("UPDATE recurring_bills SET category = ? WHERE category = ?", (new_cat, old_cat))
+        cursor.execute("UPDATE inventory_items SET category = ? WHERE category = ?", (new_cat, old_cat))
 
     # 6. Price History Table
     cursor.execute("""

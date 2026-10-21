@@ -97,6 +97,14 @@ VALID_CATEGORIES = (
     "Miscellaneous",
 )
 
+LEGACY_CATEGORY_MAP = {
+    "Essential": "Food & Household Groceries",
+    "Condiments": "Food & Household Groceries",
+    "Meat and Vegetables": "Food & Household Groceries",
+    "Bills": "Utilities & Connectivity",
+    "Groceries": "Food & Household Groceries",
+}
+
 CATEGORY_KEYWORDS = {
     "Housing & Shelter": [
         "house", "rent", "upa", "bahay", "mortgage", "apartment", "hoa",
@@ -153,10 +161,20 @@ def infer_category_from_title(title, fallback="Miscellaneous"):
     t = (title or "").strip().lower()
     if not t:
         return fallback
+    import re
+    words = set(re.findall(r"[a-zA-Z0-9]+", t))
     for cat, keywords in CATEGORY_KEYWORDS.items():
         for kw in keywords:
-            if kw in t:
-                return cat
+            kw_lower = kw.lower()
+            if " " in kw_lower:
+                if kw_lower in t:
+                    return cat
+            elif len(kw_lower) <= 4:
+                if kw_lower in words:
+                    return cat
+            else:
+                if kw_lower in t:
+                    return cat
     return fallback
 
 
@@ -296,7 +314,28 @@ def api_bootstrap():
         }
 
     # 7. Monthly Trend (for MoM comparison chart)
-    trend_months = sorted(list(set(["2026-07", "2026-08", "2026-09", "2026-10"] + [selected_month, prev_month])))
+    try:
+        sm_year, sm_month_num = map(int, selected_month.split("-"))
+    except Exception:
+        sm_year, sm_month_num = 2026, 10
+
+    trailing_months = []
+    curr_y, curr_m = sm_year, sm_month_num
+    for _ in range(6):
+        trailing_months.append(f"{curr_y:04d}-{curr_m:02d}")
+        curr_m -= 1
+        if curr_m < 1:
+            curr_m = 12
+            curr_y -= 1
+    trailing_months.reverse()
+
+    cursor.execute("SELECT DISTINCT substr(date_incurred, 1, 7) as m FROM expenses WHERE date_incurred IS NOT NULL")
+    db_months = [r["m"] for r in cursor.fetchall() if r["m"]]
+
+    trend_months = sorted(list(set(trailing_months + db_months + [selected_month, prev_month])))
+    if len(trend_months) > 12:
+        trend_months = trend_months[-12:]
+
     monthly_trend = []
     for tm in trend_months:
         cursor.execute(
@@ -310,14 +349,31 @@ def api_bootstrap():
         )
         cat_rows = {r["category"]: round(float(r["cat_total"]), 2) for r in cursor.fetchall()}
         tm_total = round(sum(cat_rows.values()), 2)
-        monthly_trend.append({
+
+        trend_item = {
             "month": tm,
             "total": tm_total,
-            "Essential": cat_rows.get("Essential", 0.0),
-            "Condiments": cat_rows.get("Condiments", 0.0),
-            "Meat and Vegetables": cat_rows.get("Meat and Vegetables", 0.0),
-            "Bills": cat_rows.get("Bills", 0.0),
-        })
+        }
+        for cat in VALID_CATEGORIES:
+            trend_item[cat] = cat_rows.get(cat, 0.0)
+
+        # Merge legacy categories into their modern standard equivalent
+        for leg_cat, target_cat in LEGACY_CATEGORY_MAP.items():
+            if leg_cat in cat_rows and leg_cat not in VALID_CATEGORIES:
+                trend_item[target_cat] = round(trend_item[target_cat] + cat_rows[leg_cat], 2)
+
+        # Include custom categories if any
+        for cat, val in cat_rows.items():
+            if cat not in trend_item:
+                trend_item[cat] = val
+
+        # Retain backward compatibility legacy aliases
+        trend_item["Essential"] = trend_item.get("Food & Household Groceries", 0.0)
+        trend_item["Condiments"] = 0.0
+        trend_item["Meat and Vegetables"] = 0.0
+        trend_item["Bills"] = trend_item.get("Utilities & Connectivity", 0.0)
+
+        monthly_trend.append(trend_item)
 
     # 8. Recurring Bills
     cursor.execute("SELECT * FROM recurring_bills ORDER BY due_day ASC, id ASC")
@@ -586,9 +642,11 @@ def create_expense():
         receipt_path = form.get("receipt_path", "")
 
     title = (form.get("title") or "").strip()
-    category = (form.get("category") or "").strip()
-    if not category:
-        category = infer_category_from_title(title, fallback="Essential")
+    raw_category = (form.get("category") or "").strip()
+    if not raw_category:
+        category = infer_category_from_title(title, fallback="Food & Household Groceries")
+    else:
+        category = LEGACY_CATEGORY_MAP.get(raw_category, raw_category)
 
     try:
         amount = round(float(form.get("amount", 0)), 2)
@@ -685,7 +743,8 @@ def update_expense(expense_id):
         receipt_path = form.get("receipt_path", existing["receipt_path"])
 
     title = (form.get("title") or existing["title"]).strip()
-    category = (form.get("category") or existing["category"]).strip()
+    raw_category = (form.get("category") or existing["category"]).strip()
+    category = LEGACY_CATEGORY_MAP.get(raw_category, raw_category)
     amount = round(float(form.get("amount", existing["amount"])), 2)
     try:
         raw_qty = form.get("quantity") if "quantity" in form else existing["quantity"]
@@ -1036,7 +1095,8 @@ def create_inventory_item():
     status = compute_stock_status(stock_num)
     last_price = round(float(data.get("last_price") or 0), 2)
     preferred_store = (data.get("preferred_store") or "").strip()
-    category = (data.get("category") or "").strip() or infer_category_from_title(item_name, fallback="Essential")
+    raw_cat = (data.get("category") or "").strip()
+    category = LEGACY_CATEGORY_MAP.get(raw_cat, raw_cat) or infer_category_from_title(item_name, fallback="Food & Household Groceries")
 
     if not item_name:
         return jsonify({"error": "Item name is required."}), 400
@@ -1087,8 +1147,9 @@ def update_inventory_item(item_id):
         return jsonify({"error": "Item not found"}), 404
 
     item_name = (data.get("item_name") or existing["item_name"]).strip()
-    existing_cat = existing["category"] if "category" in existing.keys() else "Essential"
-    category = (data.get("category") or existing_cat).strip() or infer_category_from_title(item_name, fallback="Essential")
+    existing_cat = existing["category"] if "category" in existing.keys() else "Food & Household Groceries"
+    raw_cat = (data.get("category") or existing_cat).strip()
+    category = LEGACY_CATEGORY_MAP.get(raw_cat, raw_cat) or infer_category_from_title(item_name, fallback="Food & Household Groceries")
     raw_unit = str(data.get("unit") if data.get("unit") is not None else existing["unit"]).strip()
     try:
         stock_num = max(0, int(float(raw_unit)))
@@ -1175,7 +1236,9 @@ def convert_inventory_to_expense(item_id):
     paid_by_member_id = resolve_member_id(conn, paid_by_raw)
     date_incurred = (form.get("date_incurred") or datetime.now().strftime("%Y-%m-%d")).strip()
     raw_cat = (form.get("category") or "").strip()
-    category = raw_cat if raw_cat else (item["category"] if "category" in item.keys() and item["category"] else infer_category_from_title(item["item_name"], fallback="Essential"))
+    item_cat = item["category"] if "category" in item.keys() and item["category"] else ""
+    cat_candidate = raw_cat or item_cat or infer_category_from_title(item["item_name"], fallback="Food & Household Groceries")
+    category = LEGACY_CATEGORY_MAP.get(cat_candidate, cat_candidate)
     notes = (form.get("notes") or f"Restocked {item['item_name']} (Stock: {item['unit']})").strip()
 
     expense_title = f"{item['item_name']}"
