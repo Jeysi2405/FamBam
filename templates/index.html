@@ -23,7 +23,7 @@
   <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
 
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="/static/css/style.css?v=20261021_44" />
+  <link rel="stylesheet" href="/static/css/style.css?v=20261021_45" />
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
@@ -989,8 +989,9 @@
   <dialog id="notificationsModal" class="fambam-dialog" closedby="any" aria-labelledby="notificationsModalTitle">
     <div class="dialog-inner notif-dialog-inner">
       <div class="dialog-header notif-dialog-header">
-        <div>
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
           <h3 id="notificationsModalTitle" class="dialog-title">Notifications</h3>
+          <span class="badge-status-pill" id="notifAppVersionBadge">v.1.2</span>
         </div>
         <button type="button" class="btn-notif-close-red" data-close-dialog="notificationsModal" aria-label="Close">Close</button>
       </div>
@@ -1019,6 +1020,19 @@
           <div id="notifStockList" class="notif-items-list"></div>
         </div>
 
+        <!-- Section 3: App Version -->
+        <div class="notif-section">
+          <div class="notif-version-card">
+            <div class="notif-version-header">
+              <span style="font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem;">
+                <span class="material-symbols-rounded" style="font-size: 16px; color: var(--accent-sage-text);">verified</span>
+                <span>System Version</span>
+              </span>
+              <span class="badge-status-pill">v.1.2</span>
+            </div>
+            <div class="notif-version-desc">FamBam is currently running on version <strong>v.1.2</strong>.</div>
+          </div>
+        </div>
 
       </div>
     </div>
