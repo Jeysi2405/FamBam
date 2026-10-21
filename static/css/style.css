@@ -6588,64 +6588,276 @@ dialog,
 }
 
 /* ==========================================================================
-   COMPACT EXPENSE TABLE & VIEW DETAILS
+   COMPACT EXPENSE TABLE & CARD-STYLE MOBILE FEED
    ========================================================================== */
 #tab-expenses .fambam-table {
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-#tab-expenses .fambam-table th,
-#tab-expenses .fambam-table td {
-  padding: 0.55rem 0.75rem;
+#tab-expenses .fambam-table th {
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--card-border-strong);
+}
+
+#tab-expenses .expense-compact-row {
+  cursor: pointer;
+  transition: background 0.16s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#tab-expenses .expense-compact-row:hover {
+  background: var(--card-bg-hover, rgba(255, 255, 255, 0.035));
+}
+
+#tab-expenses .expense-compact-row td {
+  padding: 0.75rem 1rem;
   vertical-align: middle;
+  border-bottom: 1px solid var(--card-border);
 }
 
-#tab-expenses .exp-name-title {
-  font-size: 0.88rem;
+/* Card Media Stack (Avatar + Text) */
+.exp-card-media {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.exp-cat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+
+.exp-cat-avatar .material-symbols-rounded {
+  font-size: 21px;
+}
+
+.expense-compact-row:hover .exp-cat-avatar {
+  transform: scale(1.05);
+}
+
+.exp-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.exp-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.exp-name-title {
+  font-size: 0.94rem;
   font-weight: 600;
   color: var(--text-primary);
-  display: block;
-  word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-#tab-expenses .exp-amount-num {
-  font-size: 0.92rem;
+.exp-receipt-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(69, 94, 203, 0.15);
+  color: var(--brand-light, #455ecb);
+  flex-shrink: 0;
+}
+
+.exp-receipt-badge .material-symbols-rounded {
+  font-size: 13px;
+}
+
+.exp-meta-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+  line-height: 1.2;
+}
+
+.exp-meta-date {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.exp-meta-dot {
+  opacity: 0.4;
+  font-size: 0.65rem;
+}
+
+.exp-meta-cat {
+  color: var(--text-muted);
+}
+
+.exp-meta-qty {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.68rem;
+}
+
+.exp-meta-member {
+  background: rgba(69, 94, 203, 0.12);
+  color: var(--brand-light, #455ecb);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.68rem;
+}
+
+html[data-theme="light"] .exp-meta-member {
+  background: rgba(2, 0, 125, 0.08);
+  color: #02007d;
+}
+
+.exp-amount-num {
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  color: var(--text-primary);
+  color: var(--text-soft-white, #e2e7f0);
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-#tab-expenses .exp-view-btn {
-  padding: 0.32rem 0.65rem !important;
-  font-size: 0.75rem !important;
-  font-weight: 500 !important;
-  white-space: nowrap !important;
-  border-radius: var(--radius-ctl, 8px) !important;
-  background: rgba(255, 255, 255, 0.07) !important;
-  color: var(--text-primary) !important;
-  border: none !important;
-  box-shadow: none !important;
+html[data-theme="light"] .exp-amount-num {
+  color: #0a0e28;
 }
 
-#tab-expenses .exp-view-btn:hover {
-  background: rgba(255, 255, 255, 0.14) !important;
+.exp-card-chevron {
+  color: var(--text-muted);
+  font-size: 20px;
+  vertical-align: middle;
+  transition: transform 0.18s ease, color 0.18s ease;
 }
 
-@media (max-width: 680px) {
-  #tab-expenses .fambam-table th,
-  #tab-expenses .fambam-table td {
-    padding: 0.45rem 0.5rem !important;
+.expense-compact-row:hover .exp-card-chevron {
+  color: var(--brand-light, #455ecb);
+  transform: translateX(2px);
+}
+
+/* ==========================================================================
+   MOBILE CARD-STYLE EXPENSE FEED
+   ========================================================================== */
+@media (max-width: 768px), (max-width: 1080px) and (orientation: portrait), (max-aspect-ratio: 1.14/1) {
+  #tab-expenses .glass-card.table-card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
+
+  #tab-expenses .table-responsive {
+    overflow: visible !important;
+  }
+
+  #tab-expenses .fambam-table {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    border: none !important;
+  }
+
+  #tab-expenses .fambam-table thead {
+    display: none !important;
+  }
+
+  #tab-expenses .fambam-table tbody {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+    width: 100% !important;
+  }
+
+  #tab-expenses .fambam-table tbody tr.expense-compact-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: var(--card-bg, #181c25) !important;
+    border: 1px solid var(--card-border-strong) !important;
+    border-radius: 16px !important;
+    padding: 0.85rem 0.95rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28) !important;
+    cursor: pointer !important;
+    transition: transform 0.15s ease, background 0.15s ease !important;
+  }
+
+  #tab-expenses .fambam-table tbody tr.expense-compact-row:active {
+    transform: scale(0.982) !important;
+    background: var(--card-bg-hover, #1f2532) !important;
+  }
+
+  html[data-theme="light"] #tab-expenses .fambam-table tbody tr.expense-compact-row {
+    background: #ffffff !important;
+    border: 1px solid rgba(2, 0, 125, 0.08) !important;
+    box-shadow: 0 2px 10px rgba(2, 0, 125, 0.04) !important;
+  }
+
+  html[data-theme="light"] #tab-expenses .fambam-table tbody tr.expense-compact-row:active {
+    background: #f7f9fd !important;
+  }
+
+  #tab-expenses .exp-cell-main {
+    flex: 1 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  #tab-expenses .exp-cell-amount {
+    flex-shrink: 0 !important;
+    padding: 0 0.25rem 0 0.75rem !important;
+    border: none !important;
+    text-align: right !important;
+  }
+
+  #tab-expenses .exp-cell-action {
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  #tab-expenses .exp-cat-avatar {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  #tab-expenses .exp-cat-avatar .material-symbols-rounded {
+    font-size: 20px !important;
+  }
+
   #tab-expenses .exp-name-title {
-    font-size: 0.82rem !important;
+    font-size: 0.9rem !important;
   }
+
   #tab-expenses .exp-amount-num {
-    font-size: 0.84rem !important;
-  }
-  #tab-expenses .exp-view-btn {
-    padding: 0.28rem 0.52rem !important;
-    font-size: 0.72rem !important;
+    font-size: 0.98rem !important;
   }
 }
 

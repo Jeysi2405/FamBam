@@ -32,6 +32,48 @@ const CATEGORY_COLORS = {
   "Miscellaneous": "#546e7a",
 };
 
+const CATEGORY_ICONS = {
+  "Housing & Shelter": "home",
+  "Utilities & Connectivity": "bolt",
+  "Food & Household Groceries": "shopping_basket",
+  "Home Maintenance & Upkeep": "build",
+  "Healthcare & Personal Care": "medical_services",
+  "Transportation & Personal Lifestyle": "directions_car",
+  "Miscellaneous": "payments",
+};
+
+function getCategoryIcon(cat) {
+  return CATEGORY_ICONS[cat] || "receipt_long";
+}
+
+function getCategoryColor(cat) {
+  return CATEGORY_COLORS[cat] || "#455ecb";
+}
+
+function getCategorySoftBg(cat) {
+  const col = getCategoryColor(cat);
+  if (col && col.startsWith("#") && col.length === 7) {
+    const r = parseInt(col.slice(1, 3), 16) || 69;
+    const g = parseInt(col.slice(3, 5), 16) || 94;
+    const b = parseInt(col.slice(5, 7), 16) || 203;
+    return `rgba(${r}, ${g}, ${b}, 0.16)`;
+  }
+  return "rgba(69, 94, 203, 0.16)";
+}
+
+function formatDateShort(ymd) {
+  if (!ymd || !ymd.includes("-")) return ymd || "";
+  const today = getTodayDateString();
+  if (ymd === today) return "Today";
+  const [y, m, d] = ymd.split("-").map(Number);
+  const dt = new Date(y, m - 1, d);
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, "0")}-${String(yesterday.getDate()).padStart(2, "0")}`;
+  if (ymd === yStr) return "Yesterday";
+  return dt.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
 const STORE_COLORS = {
   Palengke: "#02007d",
   Puregold: "#e09f3e",
@@ -1844,21 +1886,44 @@ function renderFullExpensesTab() {
   }
 
   tbody.innerHTML = filtered
-    .map(
-      (e) => `
-      <tr class="expense-compact-row">
-        <td class="exp-cell-name">
-          <strong class="exp-name-title">${escapeHtml(e.title)}</strong>
-        </td>
-        <td class="text-right exp-cell-amount">
-          <span class="exp-amount-num">${formatPHP(e.amount)}</span>
-        </td>
-        <td class="text-right exp-cell-action">
-          <button type="button" class="btn-secondary btn-sm exp-view-btn" onclick="openExpenseDetailsModal(${e.id})">View Details</button>
-        </td>
-      </tr>
-    `
-    )
+    .map((e) => {
+      const hasReceipt = Boolean(e.receipt_path);
+      const catColor = getCategoryColor(e.category);
+      const catBg = getCategorySoftBg(e.category);
+      const catIcon = getCategoryIcon(e.category);
+      const dateText = formatDateShort(e.date_incurred);
+
+      return `
+        <tr class="expense-compact-row" onclick="openExpenseDetailsModal(${e.id})" tabindex="0" role="button" aria-label="${escapeHtml(e.title)} details">
+          <td class="exp-cell-main">
+            <div class="exp-card-media">
+              <div class="exp-cat-avatar" style="background:${catBg}; color:${catColor};" aria-hidden="true">
+                <span class="material-symbols-rounded">${catIcon}</span>
+              </div>
+              <div class="exp-card-info">
+                <div class="exp-title-row">
+                  <strong class="exp-name-title">${escapeHtml(e.title)}</strong>
+                  ${hasReceipt ? `<span class="exp-receipt-badge" title="Receipt attached"><span class="material-symbols-rounded">receipt</span></span>` : ""}
+                </div>
+                <div class="exp-meta-chips">
+                  <span class="exp-meta-date">${dateText}</span>
+                  <span class="exp-meta-dot">•</span>
+                  <span class="exp-meta-cat">${escapeHtml(e.category || "General")}</span>
+                  ${e.quantity && e.quantity > 1 ? `<span class="exp-meta-qty">×${e.quantity}</span>` : ""}
+                  ${e.paid_by_name ? `<span class="exp-meta-member">${escapeHtml(e.paid_by_name)}</span>` : ""}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="text-right exp-cell-amount">
+            <span class="exp-amount-num">${formatPHP(e.amount)}</span>
+          </td>
+          <td class="text-right exp-cell-action">
+            <span class="material-symbols-rounded exp-card-chevron" aria-hidden="true">chevron_right</span>
+          </td>
+        </tr>
+      `;
+    })
     .join("");
 }
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fambam-pwa-v6';
+const CACHE_NAME = 'fambam-pwa-v7';
 const PRECACHE_URLS = [
   '/',
   '/static/css/style.css',
