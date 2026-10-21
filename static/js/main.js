@@ -277,6 +277,140 @@ function animateCountUp(element, endVal, prefix = "", suffix = "", duration = 75
   requestAnimationFrame(updateCount);
 }
 
+/**
+ * Celebration Confetti, Haptic & Delight Sound Suite
+ */
+function playDelightChime() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    if (ctx.state === "suspended") {
+      ctx.resume().catch(() => {});
+    }
+    const now = ctx.currentTime;
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc1.type = "sine";
+    osc2.type = "sine";
+    osc1.frequency.setValueAtTime(1046.5, now); // C6
+    osc2.frequency.setValueAtTime(1318.5, now + 0.08); // E6
+
+    gain.gain.setValueAtTime(0.045, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc1.start(now);
+    osc1.stop(now + 0.12);
+    osc2.start(now + 0.08);
+    osc2.stop(now + 0.42);
+  } catch (e) {
+    // Audio context may be restricted by user agent - fail silently
+  }
+}
+
+function runFallbackConfetti() {
+  let canvas = document.getElementById("fambamFallbackConfettiCanvas");
+  if (!canvas) {
+    canvas = document.createElement("canvas");
+    canvas.id = "fambamFallbackConfettiCanvas";
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.pointerEvents = "none";
+    canvas.style.zIndex = "999999";
+    document.body.appendChild(canvas);
+  }
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const colors = ["#455ecb", "#6b82ea", "#489370", "#b48540", "#60a5fa", "#34d399", "#f43f5e", "#fbbf24"];
+  const particles = Array.from({ length: 65 }, () => ({
+    x: canvas.width / 2 + (Math.random() - 0.5) * 80,
+    y: canvas.height * 0.65,
+    vx: (Math.random() - 0.5) * 14,
+    vy: -(Math.random() * 12 + 6),
+    color: colors[Math.floor(Math.random() * colors.length)],
+    size: Math.random() * 8 + 4,
+    rotation: Math.random() * 360,
+    rotSpeed: (Math.random() - 0.5) * 12,
+    opacity: 1,
+  }));
+
+  const start = performance.now();
+  function animateFrame(now) {
+    const elapsed = now - start;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.45; // gravity
+      p.rotation += p.rotSpeed;
+      if (elapsed > 1100) {
+        p.opacity = Math.max(0, 1 - (elapsed - 1100) / 600);
+      }
+      if (p.opacity > 0 && p.y < canvas.height + 50) {
+        alive = true;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+        ctx.restore();
+      }
+    }
+    if (alive && elapsed < 2000) {
+      requestAnimationFrame(animateFrame);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+  requestAnimationFrame(animateFrame);
+}
+
+function triggerCelebration(opts = {}) {
+  // 1. Confetti
+  try {
+    if (typeof confetti === "function") {
+      confetti({
+        particleCount: opts.particleCount || 75,
+        spread: opts.spread || 70,
+        origin: opts.origin || { y: 0.65 },
+        colors: opts.colors || ["#455ecb", "#6b82ea", "#489370", "#b48540", "#60a5fa", "#34d399", "#f43f5e", "#fbbf24"],
+        disableForReducedMotion: true,
+      });
+    } else {
+      runFallbackConfetti();
+    }
+  } catch (e) {
+    runFallbackConfetti();
+  }
+
+  // 2. Tactile Haptic Vibration for Mobile
+  if (navigator.vibrate) {
+    try {
+      navigator.vibrate([25, 40, 35]);
+    } catch (e) {}
+  }
+
+  // 3. Audio Chime
+  if (!opts.silent) {
+    playDelightChime();
+  }
+}
+window.triggerCelebration = triggerCelebration;
+
 function formatMonthHuman(ym) {
   if (!ym || !ym.includes("-")) return ym;
   const [y, m] = ym.split("-").map(Number);
@@ -755,25 +889,51 @@ function renderHeaderAndNavBadges() {
   }
 
   const navBillsBadge = document.getElementById("navBillsBadge");
-  if (navBillsBadge) {
+  const mobileBillsBadge = document.getElementById("mobileBillsBadge");
+  if (navBillsBadge || mobileBillsBadge) {
     if (unpaidCount > 0) {
-      navBillsBadge.textContent = unpaidCount;
-      navBillsBadge.classList.remove("hidden");
+      if (navBillsBadge) {
+        navBillsBadge.textContent = unpaidCount;
+        navBillsBadge.classList.remove("hidden");
+      }
+      if (mobileBillsBadge) {
+        mobileBillsBadge.textContent = unpaidCount;
+        mobileBillsBadge.classList.remove("hidden");
+      }
     } else {
-      navBillsBadge.textContent = "";
-      navBillsBadge.classList.add("hidden");
+      if (navBillsBadge) {
+        navBillsBadge.textContent = "";
+        navBillsBadge.classList.add("hidden");
+      }
+      if (mobileBillsBadge) {
+        mobileBillsBadge.textContent = "";
+        mobileBillsBadge.classList.add("hidden");
+      }
     }
   }
 
   const shoppingCount = (shopping_list || []).length;
   const navShoppingBadge = document.getElementById("navShoppingBadge");
-  if (navShoppingBadge) {
+  const mobileShoppingBadge = document.getElementById("mobileShoppingBadge");
+  if (navShoppingBadge || mobileShoppingBadge) {
     if (shoppingCount > 0) {
-      navShoppingBadge.textContent = shoppingCount;
-      navShoppingBadge.classList.remove("hidden");
+      if (navShoppingBadge) {
+        navShoppingBadge.textContent = shoppingCount;
+        navShoppingBadge.classList.remove("hidden");
+      }
+      if (mobileShoppingBadge) {
+        mobileShoppingBadge.textContent = shoppingCount;
+        mobileShoppingBadge.classList.remove("hidden");
+      }
     } else {
-      navShoppingBadge.textContent = "";
-      navShoppingBadge.classList.add("hidden");
+      if (navShoppingBadge) {
+        navShoppingBadge.textContent = "";
+        navShoppingBadge.classList.add("hidden");
+      }
+      if (mobileShoppingBadge) {
+        mobileShoppingBadge.textContent = "";
+        mobileShoppingBadge.classList.add("hidden");
+      }
     }
   }
 }
@@ -2410,6 +2570,7 @@ window.payRecurringBill = async function (billId) {
   });
   const result = await res.json();
   if (res.ok) {
+    triggerCelebration({ particleCount: 90, spread: 75 });
     showToast(result.message ? "Bill marked paid and logged to expenses" : "Bill paid and logged to expenses");
     closeModal("kpiDetailModal");
     await loadBootstrapData();
@@ -3155,6 +3316,9 @@ function switchTab(tabName) {
   document.querySelectorAll(".sidebar-nav .nav-link").forEach((btn) => {
     btn.classList.toggle("active", btn.getAttribute("data-tab") === tabName);
   });
+  document.querySelectorAll(".mobile-bottom-nav .mobile-nav-item").forEach((btn) => {
+    btn.classList.toggle("active", btn.getAttribute("data-tab") === tabName);
+  });
   document.querySelectorAll(".tab-view").forEach((sec) => {
     sec.classList.toggle("active", sec.id === `tab-${tabName}`);
   });
@@ -3232,6 +3396,23 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       switchTab(btn.getAttribute("data-tab"));
     });
+  });
+
+  // Mobile Bottom Navigation
+  document.querySelectorAll(".mobile-bottom-nav .mobile-nav-item").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (navigator.vibrate) {
+        try { navigator.vibrate(10); } catch (e) {}
+      }
+      switchTab(btn.getAttribute("data-tab"));
+    });
+  });
+
+  document.getElementById("mobileNavQuickAddBtn")?.addEventListener("click", () => {
+    if (navigator.vibrate) {
+      try { navigator.vibrate(14); } catch (e) {}
+    }
+    openQuickAddModal(null);
   });
 
   // Desktop & Mobile Sidebar Logic (Desktop Sidebar is Steady)
@@ -4644,6 +4825,7 @@ window.finishShoppingTripAndLog = async function () {
   if (catDisplay) catDisplay.textContent = "Food & Household Groceries";
 
   exitShoppingTripMode();
+  triggerCelebration({ particleCount: 75, spread: 65 });
   showToast(`Trip total: ${formatPHP(totalSum)} (${checkedItems.length} items). Please review & save expense.`);
 };
 

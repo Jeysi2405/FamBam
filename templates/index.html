@@ -23,10 +23,12 @@
   <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
 
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="/static/css/style.css?v=20261021_45" />
+  <link rel="stylesheet" href="/static/css/style.css?v=20261021_46" />
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+  <!-- Canvas Confetti (Celebration effects) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
   <!-- jsPDF & AutoTable (PDF Export) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
   <!-- jsPDF-AutoTable -->
@@ -34,7 +36,7 @@
   <!-- html2pdf.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
   <!-- Main Application JS -->
-  <script src="/static/js/main.js?v=20261021_43" defer></script>
+  <script src="/static/js/main.js?v=20261021_44" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -535,7 +537,7 @@
   </div>
 
   <!-- ==========================================
-       FLOATING ACTION BUTTON (FAB STACK)
+       FLOATING ACTION BUTTON (FAB STACK - DESKTOP/TABLET)
        ========================================== -->
   <div class="fab-stack" id="fabStack">
     <button type="button" class="fab-action-btn fab-home-btn" id="fabHomeBtn" aria-label="Home" title="Home">
@@ -548,6 +550,35 @@
       <span class="material-symbols-rounded">add</span>
     </button>
   </div>
+
+  <!-- ==========================================
+       MOBILE BOTTOM NAVIGATION BAR
+       ========================================== -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile Navigation">
+    <button type="button" class="mobile-nav-item active" data-tab="dashboard" aria-label="Dashboard">
+      <span class="material-symbols-rounded">dashboard</span>
+      <span class="mobile-nav-label">Dashboard</span>
+    </button>
+    <button type="button" class="mobile-nav-item" data-tab="expenses" aria-label="Expenses">
+      <span class="material-symbols-rounded">receipt_long</span>
+      <span class="mobile-nav-label">Expenses</span>
+    </button>
+    <div class="mobile-nav-fab-wrap">
+      <button type="button" class="mobile-nav-fab-btn" id="mobileNavQuickAddBtn" aria-label="Quick Add" title="Quick Add">
+        <span class="material-symbols-rounded">add</span>
+      </button>
+    </div>
+    <button type="button" class="mobile-nav-item" data-tab="shopping" aria-label="Shopping">
+      <span class="material-symbols-rounded">shopping_cart</span>
+      <span class="mobile-nav-label">Shopping</span>
+      <span class="mobile-nav-pill hidden" id="mobileShoppingBadge"></span>
+    </button>
+    <button type="button" class="mobile-nav-item" data-tab="bills" aria-label="Bills">
+      <span class="material-symbols-rounded">calendar_month</span>
+      <span class="mobile-nav-label">Bills</span>
+      <span class="mobile-nav-pill hidden" id="mobileBillsBadge"></span>
+    </button>
+  </nav>
 
   <!-- ==========================================
        MODALS (<dialog closedby="any">)

@@ -7655,6 +7655,192 @@ html[data-theme="light"] .material-icons {
 .btn-primary .material-symbols-outlined,
 .btn-primary .material-icons,
 #fabQuickAddBtn .material-symbols-rounded,
-#fabQuickAddBtn .material-symbols-outlined {
+#fabQuickAddBtn .material-symbols-outlined,
+#mobileNavQuickAddBtn .material-symbols-rounded,
+#mobileNavQuickAddBtn .material-symbols-outlined {
   color: #ffffff !important;
+}
+
+/* ==========================================================================
+   MOBILE BOTTOM NAVIGATION BAR
+   ========================================================================== */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(64px + env(safe-area-inset-bottom, 0px));
+  padding: 0 0.5rem env(safe-area-inset-bottom, 0px);
+  background: rgba(18, 21, 27, 0.94);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-top: 1px solid var(--card-border-strong, rgba(255, 255, 255, 0.08));
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  align-items: center;
+  justify-content: space-around;
+  box-sizing: border-box;
+}
+
+html[data-theme="light"] .mobile-bottom-nav {
+  background: rgba(255, 255, 255, 0.94);
+  border-top: 1px solid rgba(2, 0, 125, 0.09);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.mobile-nav-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-muted);
+  padding: 6px 4px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  transition: color 0.18s ease, transform 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-item .material-symbols-rounded {
+  font-size: 23px;
+  color: inherit;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+html[data-theme="light"] .mobile-nav-item .material-symbols-rounded {
+  color: inherit !important;
+}
+
+.mobile-nav-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item:focus-visible {
+  color: var(--text-primary);
+}
+
+.mobile-nav-item:active {
+  transform: scale(0.92);
+}
+
+.mobile-nav-item.active {
+  color: var(--brand-light, #455ecb);
+}
+
+html[data-theme="light"] .mobile-nav-item.active {
+  color: #02007d !important;
+}
+
+.mobile-nav-item.active .material-symbols-rounded {
+  transform: translateY(-2px);
+  font-variation-settings: 'FILL' 1;
+}
+
+/* Center Elevated Quick Add Button */
+.mobile-nav-fab-wrap {
+  flex: 0 0 58px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -24px;
+  position: relative;
+  z-index: 102;
+}
+
+.mobile-nav-fab-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5ea5f9 0%, #3483eb 55%, #1e64cc 100%);
+  color: #ffffff;
+  border: 3.5px solid var(--bg-primary);
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(52, 131, 235, 0.45);
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html[data-theme="light"] .mobile-nav-fab-btn {
+  border-color: #f2f4fa;
+}
+
+.mobile-nav-fab-btn:active {
+  transform: scale(0.91);
+  box-shadow: 0 2px 8px rgba(52, 131, 235, 0.35);
+}
+
+.mobile-nav-fab-btn .material-symbols-rounded {
+  font-size: 28px;
+  color: #ffffff !important;
+  line-height: 1;
+}
+
+/* Badge for Shopping and Bills on Mobile Bottom Nav */
+.mobile-nav-pill {
+  position: absolute;
+  top: 3px;
+  right: calc(50% - 16px);
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  background: var(--accent-terracotta, #b85454);
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: 1.5px solid var(--bg-primary);
+  box-sizing: border-box;
+}
+
+html[data-theme="light"] .mobile-nav-pill {
+  border-color: #ffffff;
+}
+
+#mobileBillsBadge {
+  background: var(--accent-amber, #b48540);
+}
+
+.mobile-nav-pill.hidden {
+  display: none !important;
+}
+
+/* Responsive activation for Mobile Bottom Nav:
+   Shown on phones & portrait mode (<= 768px or portrait with width <= 1080px) */
+@media (max-width: 768px), (max-width: 1080px) and (orientation: portrait), (max-aspect-ratio: 1.14/1) {
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+
+  /* On mobile bottom nav devices, hide the redundant floating action button stack */
+  .fab-stack {
+    display: none !important;
+  }
+
+  .main-wrapper {
+    padding-bottom: calc(75px + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }
