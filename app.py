@@ -14,7 +14,7 @@ from flask import (
     Response,
 )
 from werkzeug.utils import secure_filename
-from database import get_db_connection, init_db
+from database import get_db_connection, init_db, is_postgres
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads", "receipts")
@@ -1533,8 +1533,19 @@ def export_csv():
     )
 
 
+@app.cli.command("init-db")
+def init_db_cli():
+    """CLI command to initialize database schema and seeds."""
+    target = "PostgreSQL" if is_postgres() else "local SQLite"
+    print(f"Initializing FamBam database targeting {target}...")
+    init_db()
+    print("Database initialization completed successfully.")
+
+
 if __name__ == "__main__":
     init_db()
+    target = "PostgreSQL" if is_postgres() else "local SQLite (fambam.db)"
+    print(f"FamBam running on {target}")
     port = int(os.environ.get("PORT", 5000))
     debug_mode = os.environ.get("FLASK_DEBUG", "false").lower() in ("true", "1")
     app.run(host="0.0.0.0", port=port, debug=debug_mode)
