@@ -23,7 +23,7 @@
   <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
 
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="/static/css/style.css?v=20261021_46" />
+  <link rel="stylesheet" href="/static/css/style.css?v=20261021_49" />
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
@@ -36,7 +36,7 @@
   <!-- html2pdf.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
   <!-- Main Application JS -->
-  <script src="/static/js/main.js?v=20261021_44" defer></script>
+  <script src="/static/js/main.js?v=20261021_47" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -169,6 +169,11 @@
           <button type="button" class="header-icon-btn" id="notifBellBtn" title="Notifications" aria-label="Notifications">
             <span class="material-symbols-rounded">notifications</span>
             <span class="notif-badge hidden" id="notifBadgeCount">0</span>
+          </button>
+
+          <!-- Privacy Eye Toggle (Mask / Discreet Mode) -->
+          <button type="button" class="header-icon-btn" id="privacyToggleBtn" title="Privacy Mode: Mask amounts" aria-label="Toggle Privacy Mode">
+            <span class="material-symbols-rounded" id="privacyToggleIcon">visibility</span>
           </button>
 
           <!-- Theme Toggle Switch (Dark / Light Mode) -->
@@ -597,6 +602,18 @@
             <p class="dialog-subtitle hidden" id="expenseModalSubtitle"></p>
           </div>
         </div>
+      </div>
+
+      <!-- Quick Log Smart Search Bar -->
+      <div class="quick-log-search-container" id="quickLogSearchContainer">
+        <div class="quick-log-search-box">
+          <span class="material-symbols-rounded quick-log-search-icon" aria-hidden="true">search</span>
+          <input type="text" id="quickLogSearchInput" class="quick-log-search-input" placeholder="Search item, bill, or past expense..." autocomplete="off" aria-label="Search items" />
+          <button type="button" class="quick-log-search-clear hidden" id="quickLogSearchClearBtn" aria-label="Clear search" title="Clear search">
+            <span class="material-symbols-rounded">close</span>
+          </button>
+        </div>
+        <div class="quick-log-search-results hidden" id="quickLogSearchResults" role="listbox"></div>
       </div>
 
       <!-- Entry Type Selection inside Quick Add -->

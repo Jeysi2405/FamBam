@@ -7,6 +7,7 @@ const AppState = {
   selectedMonth: "2026-10",
   data: null,
   activeTab: "dashboard",
+  privacyMode: false,
   selectedDashPriceItem: "",
   selectedFullPriceItem: "",
   charts: {
@@ -239,6 +240,9 @@ function detectCategoryFromItem(itemName, fallbackCategory = "") {
 // UTILITY HELPERS
 // ==========================================
 function formatPHP(amount) {
+  if (AppState && AppState.privacyMode) {
+    return "₱ • • • •";
+  }
   const num = Number(amount || 0);
   return "₱" + num.toLocaleString("en-PH", {
     minimumFractionDigits: 2,
@@ -247,6 +251,9 @@ function formatPHP(amount) {
 }
 
 function formatMoney(amount) {
+  if (AppState && AppState.privacyMode) {
+    return "• • • •";
+  }
   const num = Number(amount || 0);
   return num.toLocaleString("en-PH", {
     minimumFractionDigits: 2,
@@ -257,6 +264,12 @@ function formatMoney(amount) {
 function animateCountUp(element, endVal, prefix = "", suffix = "", duration = 750) {
   if (!element) return;
   const target = Number(endVal) || 0;
+  element._rawAmount = target;
+  if (AppState && AppState.privacyMode) {
+    element.textContent = prefix ? `${prefix} • • • •` : "₱ • • • •";
+    element._countUpVal = target;
+    return;
+  }
   const start = element._countUpVal !== undefined ? element._countUpVal : 0;
   element._countUpVal = target;
   const startTime = performance.now();
@@ -722,6 +735,57 @@ function toggleTheme() {
     AppState.data.settings.theme_preference = newTheme;
   }
 }
+
+/**
+ * Privacy Mode (Discreet Eye Mask for sensitive household amounts)
+ */
+function syncPrivacyUI(isPrivate) {
+  AppState.privacyMode = Boolean(isPrivate);
+  try {
+    localStorage.setItem("fambam_privacy_mode", AppState.privacyMode ? "true" : "false");
+  } catch (e) {}
+
+  document.body.classList.toggle("privacy-mode", AppState.privacyMode);
+  const icon = document.getElementById("privacyToggleIcon");
+  const btn = document.getElementById("privacyToggleBtn");
+  if (icon) {
+    icon.textContent = AppState.privacyMode ? "visibility_off" : "visibility";
+  }
+  if (btn) {
+    const label = AppState.privacyMode
+      ? "Turn Off Privacy Mode (Show amounts)"
+      : "Turn On Privacy Mode (Mask amounts)";
+    btn.setAttribute("title", label);
+    btn.setAttribute("aria-label", label);
+    btn.classList.toggle("active", AppState.privacyMode);
+  }
+}
+
+function togglePrivacyMode() {
+  const next = !AppState.privacyMode;
+  syncPrivacyUI(next);
+
+  // Instantly re-render numbers into tuldok-tuldok (₱ • • • •) or real numbers
+  if (AppState.data) {
+    renderDashboardKpis();
+    renderDashboardBreakdown();
+    renderDashboardBills();
+    renderDashboardTransactions();
+    if (AppState.activeTab === "expenses") renderFullExpensesTab();
+    if (AppState.activeTab === "bills") renderFullBillsTab();
+    if (AppState.activeTab === "reports") renderFullReportsTab();
+    if (AppState.activeTab === "activity") renderActivityTab();
+    if (AppState.activeTab === "shopping") renderFullShoppingTab();
+  }
+
+  if (navigator.vibrate) {
+    try {
+      navigator.vibrate(12);
+    } catch (e) {}
+  }
+  showToast(next ? "Privacy mode ON (₱••••)" : "Privacy mode OFF");
+}
+window.togglePrivacyMode = togglePrivacyMode;
 
 function updateHeaderClock() {
   const timeEl = document.getElementById("headerClockTime");
@@ -1294,8 +1358,12 @@ function renderDashboardBreakdown() {
   const labels = Object.keys(cats);
   const values = labels.map((l) => cats[l].spent);
 
-  document.getElementById("donutCenterTotal").textContent =
-    Math.round(kpi.total_expenses || 0).toLocaleString("en-PH");
+  const donutEl = document.getElementById("donutCenterTotal");
+  if (donutEl) {
+    donutEl.textContent = AppState.privacyMode
+      ? "• • • •"
+      : Math.round(kpi.total_expenses || 0).toLocaleString("en-PH");
+  }
 
   const ctx = document.getElementById("expenseDonutChart");
   if (ctx && window.Chart) {
@@ -1352,7 +1420,7 @@ function renderDashboardBreakdown() {
                 <span class="cat-dot" style="background:${CATEGORY_COLORS[cat]}"></span>
                 ${escapeHtml(cat)}
               </span>
-              <span class="cat-bar-numbers">${formatPHP(spent)} (${sharePct}%)</span>
+              <span class="cat-bar-numbers">${AppState.privacyMode ? "₱ • • • •" : `${formatPHP(spent)} (${sharePct}%)`}</span>
             </div>
             <div class="progress-track">
               <div class="progress-fill sage" style="width:${widthPct}%"></div>
@@ -2376,6 +2444,18 @@ function switchQuickAddMode(mode = null) {
     kpiGrid.classList.toggle("hidden", hasMode);
   }
 
+  // Toggle Quick Log Smart Search Container
+  const searchContainer = document.getElementById("quickLogSearchContainer");
+  if (searchContainer) {
+    searchContainer.classList.toggle("hidden", hasMode);
+    if (!hasMode) {
+      const searchInput = document.getElementById("quickLogSearchInput");
+      if (searchInput) searchInput.value = "";
+      document.getElementById("quickLogSearchResults")?.classList.add("hidden");
+      document.getElementById("quickLogSearchClearBtn")?.classList.add("hidden");
+    }
+  }
+
   document.querySelectorAll("#quickAddModeTabs .q-tab").forEach((btn) => {
     const isSelected = hasMode && btn.getAttribute("data-qmode") === mode;
     btn.classList.toggle("active", isSelected);
@@ -2445,6 +2525,285 @@ function setExpenseNotesExpanded(expanded) {
   // Notes is now an integrated, persistent field aligned beside Date in the form grid
 }
 
+/**
+ * Quick Log Smart Search Bar:
+ * Auto-suggests past expenses, recurring bills, and inventory items
+ * with 1-click pre-fill into Expense, Bill, or Shopping modes.
+ */
+function initQuickLogSearch() {
+  const searchInput = document.getElementById("quickLogSearchInput");
+  const clearBtn = document.getElementById("quickLogSearchClearBtn");
+  const resultsContainer = document.getElementById("quickLogSearchResults");
+  if (!searchInput || !resultsContainer) return;
+
+  function performSearch(query) {
+    const q = (query || "").trim().toLowerCase();
+    if (!q) {
+      resultsContainer.innerHTML = "";
+      resultsContainer.classList.add("hidden");
+      clearBtn?.classList.add("hidden");
+      return;
+    }
+    clearBtn?.classList.remove("hidden");
+
+    const expenses = AppState.data?.expenses || [];
+    const bills = AppState.data?.recurring_bills || [];
+    const inventory = AppState.data?.inventory_items || [];
+    const shopping = AppState.data?.shopping_list || [];
+
+    const matches = [];
+    const seenKeys = new Set();
+
+    // 1. Recurring Bills
+    for (const b of bills) {
+      const name = b.bill_name || "";
+      if (name.toLowerCase().includes(q) || (b.company_name && b.company_name.toLowerCase().includes(q))) {
+        const key = `bill:${name.toLowerCase()}`;
+        if (!seenKeys.has(key)) {
+          seenKeys.add(key);
+          matches.push({
+            type: "bill",
+            title: name,
+            subtitle: `${b.company_name ? b.company_name + " • " : ""}${b.category || "Bills"}`,
+            amount: b.default_amount,
+            company_name: b.company_name || "",
+            category: b.category || "Utilities & Connectivity",
+          });
+        }
+      }
+    }
+
+    // 2. Past Expenses (unique by title)
+    for (const exp of expenses) {
+      const title = exp.title || "";
+      if (title.toLowerCase().includes(q) || (exp.category && exp.category.toLowerCase().includes(q))) {
+        const key = `expense:${title.toLowerCase()}`;
+        if (!seenKeys.has(key)) {
+          seenKeys.add(key);
+          matches.push({
+            type: "expense",
+            title: title,
+            subtitle: `${exp.category || "Expense"}${exp.store_name ? " • " + exp.store_name : ""}`,
+            amount: exp.amount,
+            category: exp.category || "Food & Household Groceries",
+            store: exp.store_name || "",
+          });
+        }
+      }
+    }
+
+    // 3. Inventory & Shopping List items
+    for (const item of [...inventory, ...shopping]) {
+      const name = item.item_name || "";
+      if (name.toLowerCase().includes(q)) {
+        const key = `inv:${name.toLowerCase()}`;
+        if (!seenKeys.has(key)) {
+          seenKeys.add(key);
+          matches.push({
+            type: "inventory",
+            title: name,
+            subtitle: `${item.category || "Shopping"} • Qty: ${item.quantity || 1}`,
+            amount: item.last_price || item.price || null,
+            category: item.category || "Food & Household Groceries",
+          });
+        }
+      }
+    }
+
+    // 4. Pre-catalog items
+    if (typeof HOUSEHOLD_CATEGORY_CATALOG === "object") {
+      for (const [cat, items] of Object.entries(HOUSEHOLD_CATEGORY_CATALOG)) {
+        for (const item of items) {
+          if (item.toLowerCase().includes(q)) {
+            const key = `catalog:${item.toLowerCase()}`;
+            if (!seenKeys.has(key) && matches.length < 10) {
+              seenKeys.add(key);
+              matches.push({
+                type: "expense",
+                title: item,
+                subtitle: `${cat} • Catalog item`,
+                amount: null,
+                category: cat,
+              });
+            }
+          }
+        }
+      }
+    }
+
+    const topMatches = matches.slice(0, 6);
+
+    let html = "";
+    if (topMatches.length > 0) {
+      html += topMatches
+        .map((m, idx) => {
+          const badgeClass =
+            m.type === "bill"
+              ? "quick-log-badge-bill"
+              : m.type === "inventory"
+              ? "quick-log-badge-shopping"
+              : "quick-log-badge-expense";
+          const badgeLabel = m.type === "bill" ? "Bill" : m.type === "inventory" ? "Shop" : "Expense";
+          const amtHtml = m.amount ? `<span>₱${formatMoney(m.amount)}</span>` : "";
+          return `
+          <div class="quick-log-result-item" data-idx="${idx}">
+            <div class="quick-log-result-left">
+              <span class="quick-log-result-badge ${badgeClass}">${badgeLabel}</span>
+              <div class="quick-log-result-texts">
+                <span class="quick-log-result-title">${escapeHtml(m.title)}</span>
+                <span class="quick-log-result-subtitle">${escapeHtml(m.subtitle)}</span>
+              </div>
+            </div>
+            <div class="quick-log-result-right">${amtHtml}</div>
+          </div>
+        `;
+        })
+        .join("");
+    }
+
+    // Quick-action shortcuts for the typed query
+    html += `
+      <div class="quick-log-quickaction-item" data-action="new-expense">
+        <span class="material-symbols-rounded" style="font-size: 18px;">receipt_long</span>
+        <span>Log "<strong>${escapeHtml(query)}</strong>" as Expense</span>
+      </div>
+      <div class="quick-log-quickaction-item" data-action="new-bill">
+        <span class="material-symbols-rounded" style="font-size: 18px;">calendar_month</span>
+        <span>Log "<strong>${escapeHtml(query)}</strong>" as Bill</span>
+      </div>
+      <div class="quick-log-quickaction-item" data-action="new-inventory">
+        <span class="material-symbols-rounded" style="font-size: 18px;">shopping_bag</span>
+        <span>Add "<strong>${escapeHtml(query)}</strong>" to Shopping</span>
+      </div>
+    `;
+
+    resultsContainer.innerHTML = html;
+    resultsContainer.classList.remove("hidden");
+
+    // Click handler for matched items
+    resultsContainer.querySelectorAll(".quick-log-result-item").forEach((el) => {
+      el.addEventListener("click", () => {
+        const idx = Number(el.getAttribute("data-idx"));
+        const item = topMatches[idx];
+        if (!item) return;
+
+        if (navigator.vibrate) {
+          try {
+            navigator.vibrate(10);
+          } catch (e) {}
+        }
+
+        if (item.type === "expense") {
+          switchQuickAddMode("expense");
+          const titleEl = document.getElementById("expTitle");
+          if (titleEl) titleEl.value = item.title;
+          const catEl = document.getElementById("expCategory");
+          const catDisplay = document.getElementById("expCategoryDisplay");
+          const catGroup = document.getElementById("expCategoryGroup");
+          if (catEl) catEl.value = item.category || "Food & Household Groceries";
+          if (catDisplay) catDisplay.textContent = item.category || "Food & Household Groceries";
+          if (catGroup) catGroup.classList.remove("hidden");
+          const storeEl = document.getElementById("expStore");
+          if (storeEl) storeEl.value = item.store || "";
+          const amtEl = document.getElementById("expAmount");
+          if (amtEl) {
+            if (item.amount) amtEl.value = Number(item.amount).toFixed(2);
+            setTimeout(() => amtEl.focus(), 60);
+          }
+        } else if (item.type === "bill") {
+          switchQuickAddMode("bill");
+          const billName = document.getElementById("billNameInput");
+          if (billName) billName.value = item.title;
+          const billCat = document.getElementById("billCategoryInput");
+          if (billCat) billCat.value = item.category || "Utilities & Connectivity";
+          const billAmt = document.getElementById("billAmountInput");
+          if (billAmt) {
+            if (item.amount) billAmt.value = Number(item.amount).toFixed(2);
+            setTimeout(() => billAmt.focus(), 60);
+          }
+          if (item.company_name) {
+            populateBillCompanySelect(item.company_name);
+          }
+        } else if (item.type === "inventory") {
+          switchQuickAddMode("inventory");
+          const invName = document.getElementById("invNameInput");
+          if (invName) invName.value = item.title;
+          const invCat = document.getElementById("invCategorySelect");
+          const invDisplay = document.getElementById("invCategoryDisplay");
+          if (invCat) invCat.value = item.category || "Food & Household Groceries";
+          if (invDisplay) invDisplay.textContent = item.category || "Food & Household Groceries";
+          const invPrice = document.getElementById("invPriceInput");
+          if (invPrice) {
+            if (item.amount) invPrice.value = Number(item.amount).toFixed(2);
+            setTimeout(() => invPrice.focus(), 60);
+          }
+        }
+
+        searchInput.value = "";
+        resultsContainer.innerHTML = "";
+        resultsContainer.classList.add("hidden");
+        clearBtn?.classList.add("hidden");
+      });
+    });
+
+    // Click handler for quick-action shortcuts
+    resultsContainer.querySelectorAll(".quick-log-quickaction-item").forEach((el) => {
+      el.addEventListener("click", () => {
+        const action = el.getAttribute("data-action");
+        if (navigator.vibrate) {
+          try {
+            navigator.vibrate(10);
+          } catch (e) {}
+        }
+        if (action === "new-expense") {
+          switchQuickAddMode("expense");
+          const titleEl = document.getElementById("expTitle");
+          if (titleEl) titleEl.value = query;
+          syncAllCategoryAutoSelectors();
+          const amtEl = document.getElementById("expAmount");
+          setTimeout(() => amtEl?.focus(), 60);
+        } else if (action === "new-bill") {
+          switchQuickAddMode("bill");
+          const billName = document.getElementById("billNameInput");
+          if (billName) billName.value = query;
+          const billAmt = document.getElementById("billAmountInput");
+          setTimeout(() => billAmt?.focus(), 60);
+        } else if (action === "new-inventory") {
+          switchQuickAddMode("inventory");
+          const invName = document.getElementById("invNameInput");
+          if (invName) invName.value = query;
+          const invPrice = document.getElementById("invPriceInput");
+          setTimeout(() => invPrice?.focus(), 60);
+        }
+        searchInput.value = "";
+        resultsContainer.innerHTML = "";
+        resultsContainer.classList.add("hidden");
+        clearBtn?.classList.add("hidden");
+      });
+    });
+  }
+
+  searchInput.addEventListener("input", (e) => performSearch(e.target.value));
+
+  clearBtn?.addEventListener("click", () => {
+    searchInput.value = "";
+    performSearch("");
+    searchInput.focus();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#quickLogSearchContainer")) {
+      resultsContainer.classList.add("hidden");
+    }
+  });
+
+  searchInput.addEventListener("focus", () => {
+    if (searchInput.value.trim()) {
+      performSearch(searchInput.value);
+    }
+  });
+}
+
 function openQuickAddModal(mode = null) {
   const todayStr = getTodayDateString();
   document.getElementById("expenseModalTitle").textContent = "Add";
@@ -2483,6 +2842,15 @@ function openQuickAddModal(mode = null) {
   syncAllCategoryAutoSelectors();
   updateQuickAddKpiCards();
   switchQuickAddMode(mode);
+  if (!mode) {
+    const searchInput = document.getElementById("quickLogSearchInput");
+    if (searchInput) {
+      searchInput.value = "";
+      setTimeout(() => searchInput.focus(), 120);
+    }
+    document.getElementById("quickLogSearchResults")?.classList.add("hidden");
+    document.getElementById("quickLogSearchClearBtn")?.classList.add("hidden");
+  }
   openModal("expenseModal");
 }
 
@@ -3527,6 +3895,14 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleTheme();
   });
 
+  // Privacy Mode Toggle (Eye Mask)
+  const privacyToggle = document.getElementById("privacyToggleBtn");
+  privacyToggle?.addEventListener("click", () => {
+    togglePrivacyMode();
+  });
+  const savedPrivacy = localStorage.getItem("fambam_privacy_mode") === "true";
+  syncPrivacyUI(savedPrivacy);
+
   // Month Filter Dropdown Trigger & Outside Click
   const monthBtn = document.getElementById("monthDropdownBtn");
   monthBtn?.addEventListener("click", (e) => {
@@ -3678,7 +4054,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { title: "Add New Expense", action: () => openQuickAddModal("expense"), shortcut: "N", icon: "add_circle" },
     { title: "Add Recurring Bill", action: () => openQuickAddModal("bill"), shortcut: "B", icon: "event_repeat" },
     { title: "Add Inventory Item", action: () => openQuickAddModal("inventory"), shortcut: "S", icon: "post_add" },
-    
+    { title: "Toggle Privacy Mode (Mask Amounts)", action: () => togglePrivacyMode(), shortcut: "P", icon: "visibility" },
   ];
 
   function renderPaletteCommands(query = "") {
@@ -3774,6 +4150,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (e.key === "n" || e.key === "N") {
       e.preventDefault();
       openQuickAddModal(null);
+    } else if (e.key === "p" || e.key === "P") {
+      e.preventDefault();
+      togglePrivacyMode();
     }
   });
 
@@ -3817,6 +4196,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   initSwipeableActionRows();
+  initQuickLogSearch();
 
   // Registered Companies Collapsible Toggle via Apartment Icon Button
   const compCollapseBtn = document.getElementById("companyListCollapseToggleBtn");
