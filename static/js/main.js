@@ -3119,13 +3119,22 @@ function switchTab(tabName) {
 
   const mainWrap = document.querySelector(".main-wrapper");
   if (mainWrap) {
-    if (tabName === "dashboard" && window.innerWidth > 920) {
+    if (tabName === "dashboard" && isDesktopLandscapeMode()) {
       mainWrap.classList.add("desktop-dashboard-steady");
       mainWrap.scrollTop = 0;
     } else {
       mainWrap.classList.remove("desktop-dashboard-steady");
     }
   }
+}
+
+function isDesktopLandscapeMode() {
+  const isLandscape = window.matchMedia("(orientation: landscape)").matches || window.innerWidth > window.innerHeight;
+  return window.innerWidth >= 1025 && isLandscape && (window.innerWidth / window.innerHeight >= 1.15);
+}
+
+function isMobileOrDrawerMode() {
+  return !isDesktopLandscapeMode();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -3145,11 +3154,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   loadBootstrapData("2026-10");
-  if (window.innerWidth > 920) {
+  if (isDesktopLandscapeMode()) {
     const curTab = AppState.activeTab || "dashboard";
     if (curTab === "dashboard") {
       document.querySelector(".main-wrapper")?.classList.add("desktop-dashboard-steady");
     }
+  } else {
+    document.querySelector(".main-wrapper")?.classList.remove("desktop-dashboard-steady");
   }
 
   // Restore saved active tab on page refresh
@@ -3176,22 +3187,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebarCloseBtn = document.getElementById("sidebarCloseBtn");
   const sidebarOpenBtn = document.getElementById("sidebarOpenBtn");
 
-  // Ensure desktop sidebar is steady and active
-  if (appShell) appShell.classList.remove("sidebar-closed");
+  // Ensure desktop sidebar is steady and active on landscape desktop
+  if (appShell && isDesktopLandscapeMode()) {
+    appShell.classList.remove("sidebar-closed");
+  }
   localStorage.removeItem("fambam_sidebar_closed");
 
   function closeSidebar() {
     // Only close mobile overlay drawer
-    if (window.innerWidth <= 920) {
-      const sidebar = document.getElementById("sidebar");
-      if (sidebar) sidebar.classList.remove("open");
+    if (isMobileOrDrawerMode()) {
+      closeMobileNav();
     }
   }
 
   function openSidebar() {
-    if (window.innerWidth <= 920) {
-      const sidebar = document.getElementById("sidebar");
-      if (sidebar) sidebar.classList.add("open");
+    if (isMobileOrDrawerMode()) {
+      openMobileNav();
     }
   }
 
@@ -3244,10 +3255,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // Auto-close sidebar on mobile when navigating
   document.querySelectorAll(".sidebar .nav-link, #sidebarProfileCard").forEach((el) => {
     el.addEventListener("click", () => {
-      if (window.innerWidth <= 920) {
+      if (isMobileOrDrawerMode()) {
         closeMobileNav();
       }
     });
+  });
+
+  // Handle dynamic screen resizing / orientation changes (e.g. 1080x2340 or device rotation)
+  window.addEventListener("resize", () => {
+    const mainWrapEl = document.querySelector(".main-wrapper");
+    if (!isDesktopLandscapeMode()) {
+      mainWrapEl?.classList.remove("desktop-dashboard-steady");
+    } else {
+      const curTab = AppState.activeTab || "dashboard";
+      if (curTab === "dashboard") {
+        mainWrapEl?.classList.add("desktop-dashboard-steady");
+      }
+      closeMobileNav();
+    }
   });
 
   document.addEventListener("click", (e) => {
