@@ -3366,6 +3366,7 @@ html[data-theme="light"] .company-select-item:hover {
   padding: 0.55rem 0.25rem;
   color: var(--text-primary);
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .stock-number-stepper input[type="number"]::-webkit-outer-spin-button,
